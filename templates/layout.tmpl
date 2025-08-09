@@ -14,9 +14,36 @@
 
   <body hx-history="false"
         hx-ext="response-targets">
+
+    {{template "layout-head" .}}
 {{end}}
 
 {{block "foot" .}}
+    {{template "layout-foot" .}}
   </body>
 </html>
+{{end}}
+
+{{block "layout-head" .}}
+  <div class="flex flex-row">
+    <nav>
+      <ul class="menu bg-base-200 rounded-box w-56">
+        {{range .Nav.PageLinks}}
+          <li><a href="{{.Href}}"
+                 hx-get="{{.Href}}"
+                 hx-trigger="click"
+                 hx-target="#main"
+                 hx-swap="innerHTML"
+                 hx-push-url="true"
+              >{{.Label}}</a></li>
+        {{end}}
+      </ul>
+    </nav>
+
+    <main id="main" class="m-4 grow">
+{{end}}
+
+{{block "layout-foot" .}}
+    </main>
+  </div>
 {{end}}

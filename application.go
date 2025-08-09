@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bonh/internal/nav"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -46,6 +47,10 @@ func (app *Application) render(w http.ResponseWriter,
 		// Setup non-specific page template data here.
 		if pageData == nil {
 			pageData = map[string]any{}
+		}
+
+		pageData["Nav"] = map[string]any{
+			"PageLinks": nav.PageLinks(),
 		}
 
 		block += "-page"
