@@ -28,14 +28,16 @@
   <div class="flex flex-row">
     <nav>
       <ul class="menu bg-base-200 rounded-box w-56">
-        {{range .Nav.PageLinks}}
-          <li><a href="{{.Href}}"
-                 hx-get="{{.Href}}"
-                 hx-trigger="click"
-                 hx-target="#main"
-                 hx-swap="innerHTML"
-                 hx-push-url="true"
-              >{{.Label}}</a></li>
+        {{block "nav" .}}
+          {{range .Nav}}
+            <li><a href="{{.Href}}"
+                   class="{{if .Active}}menu-active{{end}}"
+                   hx-get="/nav{{.Href}}"
+                   hx-trigger="click"
+                   hx-target="closest ul"
+                   hx-swap="innerHTML"
+                >{{.Label}}</a></li>
+          {{end}}
         {{end}}
       </ul>
     </nav>
@@ -45,5 +47,23 @@
 
 {{block "layout-foot" .}}
     </main>
+  </div>
+{{end}}
+
+{{block "nav-main" .}}
+  {{template "nav" .}}
+
+  <div id="main" class="m-4 grow" hx-swap-oob="true">
+    <div hx-get="{{.Href}}"
+         hx-trigger="load delay:500ms"
+         hx-target="this"
+         hx-swap="outerHTML"
+         >{{template "main-loading"}}</div>
+  </div>
+{{end}}
+
+{{define "main-loading"}}
+  <div class="flex flex-col gap-4">
+    <div class="skeleton h-8 w-full"></div>
   </div>
 {{end}}

@@ -1,15 +1,19 @@
 package main
 
 import (
-	"bonh/internal/nav"
 	"bytes"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 
+	"bonh/internal/nav"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+)
+
+const (
+	muxCompressionLevel = 5
 )
 
 type Application struct {
@@ -22,7 +26,7 @@ func newApplication() *Application {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Logger)
-	mux.Use(middleware.Compress(5, "text/html", "text/css", "text/javascript"))
+	mux.Use(middleware.Compress(muxCompressionLevel, "text/html", "text/css", "text/javascript"))
 	mux.Handle("/css/*", assetFileServer)
 	mux.Handle("/js/*", assetFileServer)
 
@@ -49,9 +53,7 @@ func (app *Application) render(w http.ResponseWriter,
 			pageData = map[string]any{}
 		}
 
-		pageData["Nav"] = map[string]any{
-			"PageLinks": nav.PageLinks(),
-		}
+		pageData["Nav"] = nav.PageLinks(r.URL.String())
 
 		block += "-page"
 	}
@@ -80,9 +82,12 @@ func (app *Application) render(w http.ResponseWriter,
 	}
 }
 
-func (app *Application) listen(port int) {
+func (app *Application) listen(port int) error {
 	log.Printf("listening on port %d\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), app.mux)
+
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), app.mux)
+
+	return fmt.Errorf("http.ListenAndServe(%d): %w", port, err)
 }
 
 func (app *Application) serverError(
@@ -94,3 +99,14 @@ func (app *Application) serverError(
 	log.Printf("%s %s: %v\n", r.Method, r.URL, err)
 	http.Error(w, http.StatusText(statusCode), statusCode)
 }
+
+/*
+func (app *Application) delayResponse(ms int) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			time.Sleep(time.Duration(ms) * time.Millisecond)
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+*/
