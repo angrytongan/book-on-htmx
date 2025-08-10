@@ -1,11 +1,19 @@
 package main
 
+import (
+	"fmt"
+	"log"
+)
+
 const (
 	port = 8880
 )
 
-func main() {
-	app := newApplication()
+func run() error {
+	app, err := newApplication()
+	if err != nil {
+		return fmt.Errorf("newApplication(): %w", err)
+	}
 
 	// Navigation.
 	app.mux.Get("/nav/", app.nav)
@@ -16,5 +24,13 @@ func main() {
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/settings", app.settings)
 
-	_ = app.listen(port)
+	app.mux.Post("/settings/theme", app.settingsTheme)
+
+	return app.listen(port)
+}
+
+func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
 }

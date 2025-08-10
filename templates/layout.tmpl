@@ -1,6 +1,6 @@
 {{block "head" .}}
 <!doctype html>
-<html>
+<html {{if .DataTheme}}data-theme="{{.DataTheme}}"{{end}}>
   <head>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="stylesheet" href="/css/style.css" />

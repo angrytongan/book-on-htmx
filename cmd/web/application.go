@@ -2,14 +2,19 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 
 	"bonh/internal/nav"
+	"bonh/internal/theme"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
@@ -19,9 +24,11 @@ const (
 type Application struct {
 	mux *chi.Mux
 	tpl *template.Template
+
+	themeRepo theme.Repository
 }
 
-func newApplication() *Application {
+func newApplication() (*Application, error) {
 	assetFileServer := http.FileServer(http.Dir("./assets"))
 	mux := chi.NewRouter()
 
@@ -32,10 +39,18 @@ func newApplication() *Application {
 
 	tpl := template.Must(template.ParseGlob("templates/*.tmpl"))
 
+	db, err := sql.Open("sqlite3", "database.db")
+	if err != nil {
+		return nil, fmt.Errorf("sql.Open(): %w", err)
+	}
+
+	themeRepo := theme.SQLRepository(db)
+
 	return &Application{
 		mux,
 		tpl,
-	}
+		themeRepo,
+	}, nil
 }
 
 func (app *Application) render(w http.ResponseWriter,
@@ -53,6 +68,12 @@ func (app *Application) render(w http.ResponseWriter,
 			pageData = map[string]any{}
 		}
 
+		activeTheme, err := app.themeRepo.Active(1)
+		if err != nil {
+			activeTheme = theme.DefaultTheme()
+		}
+
+		pageData["DataTheme"] = activeTheme
 		pageData["Nav"] = nav.PageLinks(r.URL.String())
 
 		block += "-page"
@@ -98,6 +119,14 @@ func (app *Application) serverError(
 ) {
 	log.Printf("%s %s: %v\n", r.Method, r.URL, err)
 	http.Error(w, http.StatusText(statusCode), statusCode)
+}
+
+func (app *Application) clientRedirect(w http.ResponseWriter, r *http.Request, url string, code int) {
+	if r.Header.Get("Hx-Request") == "true" {
+		w.Header().Set("Hx-Redirect", url)
+	} else {
+		http.Redirect(w, r, url, code)
+	}
 }
 
 /*

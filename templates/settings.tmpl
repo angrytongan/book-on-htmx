@@ -8,4 +8,34 @@
 
 {{block "settings" .}}
   <h1 class="text-xl">Settings</h1>
+
+  <div class="flex flex-row gap-4">
+    <div class="card card-border w-1/2">
+      <div class="card-body">
+        <div class="card-title">Theme</div>
+        <form>
+          <ul>
+            {{range .Themes}}
+              <li>
+                <label>
+                  <input type="radio"
+                         name="theme"
+                         value="{{.Value}}"
+                         {{if .Active}}checked{{end}}
+                         hx-post="/settings/theme"
+                         hx-trigger="change"
+                         /> {{.Label}}
+                </label>
+              </li>
+            {{end}}
+          </ul>
+        </form>
+      </div>
+    </div>
+
+    <div class="card card-border w-1/2">
+      <div class="card-body">
+        <div class="card-title">Something else</div>
+      </div>
+    </div>
 {{end}}
