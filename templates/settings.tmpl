@@ -12,9 +12,9 @@
   <div class="flex flex-row gap-4">
 
     <div class="card card-border w-1/2">
-      <div class="card-body">
+      <div class="card-body flex flex-col w-full h-50">
         <div class="card-title">Theme</div>
-        <div class="h-50 overflow-auto">
+        <div class="grow overflow-auto">
           <div hx-get="/theme-chooser"
                hx-trigger="load delay:250ms"
                hx-target="this"
