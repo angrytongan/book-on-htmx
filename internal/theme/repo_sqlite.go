@@ -42,7 +42,7 @@ func (tr *ThemeRepository) Active(id int) (string, error) {
 
 	row := tr.db.QueryRow(sqlThemeByID, id)
 	if err := row.Scan(&theme); err != nil {
-		return "", fmt.Errorf("row.Scan(): %w", err)
+		return "light", fmt.Errorf("row.Scan(): %w", err) // default to "light"
 	}
 
 	return theme, nil

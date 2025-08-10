@@ -68,10 +68,7 @@ func (app *Application) render(w http.ResponseWriter,
 			pageData = map[string]any{}
 		}
 
-		activeTheme, err := app.themeRepo.Active(1)
-		if err != nil {
-			activeTheme = theme.DefaultTheme()
-		}
+		activeTheme, _ := app.themeRepo.Active(1)
 
 		pageData["DataTheme"] = activeTheme
 		pageData["Nav"] = nav.PageLinks(r.URL.String())

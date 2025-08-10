@@ -5,7 +5,3 @@ type ThemeLink struct {
 	Value  string
 	Active bool
 }
-
-func DefaultTheme() string {
-	return ""
-}
