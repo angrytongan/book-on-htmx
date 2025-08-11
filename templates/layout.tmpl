@@ -14,17 +14,14 @@
 
   <body hx-history="false"
         hx-ext="response-targets">
-
-    {{template "layout-head" .}}
 {{end}}
 
 {{block "foot" .}}
-    {{template "layout-foot" .}}
   </body>
 </html>
 {{end}}
 
-{{block "layout-head" .}}
+{{block "nav-head" .}}
   <div class="flex flex-row gap-2 m-2">
     <nav>
       <ul class="menu bg-base-200 rounded-box w-56">
@@ -45,7 +42,7 @@
     <main id="main" class="grow">
 {{end}}
 
-{{block "layout-foot" .}}
+{{block "nav-foot" .}}
     </main>
   </div>
 {{end}}
