@@ -15,10 +15,22 @@ func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 			r,
 			fmt.Errorf("app.themeRepo.Active(%d): %w", id, err),
 			http.StatusInternalServerError,
+			"Couldn't load active theme!",
 		)
+
+		return
 	}
 
-	themes, _ := app.themeRepo.Themes(activeTheme)
+	themes, err := app.themeRepo.Themes(activeTheme)
+	if err != nil {
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("app.themeRepo.Themes(%s): %w", activeTheme, err),
+			http.StatusInternalServerError,
+			"Couldn't load themes!",
+		)
+	}
 
 	pageData := map[string]any{
 		"Themes": themes,

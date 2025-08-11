@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 
 	"bonh/internal/nav"
 	"bonh/internal/theme"
@@ -113,9 +114,16 @@ func (app *Application) serverError(
 	r *http.Request,
 	err error,
 	statusCode int,
+	msg ...string,
 ) {
 	log.Printf("%s %s: %v\n", r.Method, r.URL, err)
-	http.Error(w, http.StatusText(statusCode), statusCode)
+
+	clientMessage := http.StatusText(statusCode)
+	if len(msg) > 0 {
+		clientMessage = strings.Join(msg, " - ") // :shrug:
+	}
+
+	http.Error(w, clientMessage, statusCode)
 }
 
 func (app *Application) clientRedirect(w http.ResponseWriter, r *http.Request, url string, code int) {
