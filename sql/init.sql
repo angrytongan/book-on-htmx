@@ -1,16 +1,21 @@
+BEGIN;
+
 DROP TABLE IF EXISTS settings;
 CREATE TABLE settings (
-  id INTEGER PRIMARY KEY,
-  theme TEXT NOT NULL DEFAULT 'light'
+  id INTEGER GENERATED ALWAYS AS IDENTITY,
+  theme TEXT NOT NULL DEFAULT 'light',
+  
+  PRIMARY KEY (id)
 );
 
 INSERT INTO settings (id, theme) VALUES (1, 'light');
 
 DROP TABLE IF EXISTS themes;
 CREATE TABLE themes (
-  id INTEGER PRIMARY KEY,
+  id INTEGER GENERATED ALWAYS AS IDENTITY,
   label TEXT NOT NULL,
-  value TEXT NOT NULL
+  value TEXT NOT NULL,
+  PRIMARY KEY (id)
 );
 
 INSERT INTO themes (label, value) VALUES
@@ -50,3 +55,5 @@ INSERT INTO themes (label, value) VALUES
   ('Abyss', 'abyss'),
   ('Silk', 'silk')
 ;
+
+COMMIT;

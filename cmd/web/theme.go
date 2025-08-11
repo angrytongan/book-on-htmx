@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 )
@@ -8,7 +9,7 @@ import (
 func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 	id := 1
 
-	activeTheme, err := app.themeRepo.Active(id)
+	activeTheme, err := app.themeRepo.Active(context.Background(), id)
 	if err != nil {
 		app.serverError(
 			w,
@@ -21,7 +22,7 @@ func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	themes, err := app.themeRepo.Themes(activeTheme)
+	themes, err := app.themeRepo.Themes(r.Context(), activeTheme)
 	if err != nil {
 		app.serverError(
 			w,
@@ -49,7 +50,7 @@ func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request)
 	id := 1
 	activeTheme := r.FormValue("theme")
 
-	if err := app.themeRepo.SetActive(id, activeTheme); err != nil {
+	if err := app.themeRepo.SetActive(context.Background(), id, activeTheme); err != nil {
 		app.serverError(
 			w,
 			r,

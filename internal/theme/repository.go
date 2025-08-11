@@ -1,7 +1,9 @@
 package theme
 
+import "context"
+
 type Repository interface {
-	Active(id int) (string, error)
-	SetActive(id int, name string) error
-	Themes(activeTheme string) ([]ThemeLink, error)
+	Active(ctx context.Context, id int) (string, error)
+	SetActive(ctx context.Context, id int, name string) error
+	Themes(ctx context.Context, activeTheme string) ([]ThemeLink, error)
 }

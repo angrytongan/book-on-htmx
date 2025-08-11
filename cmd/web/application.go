@@ -2,11 +2,12 @@ package main
 
 import (
 	"bytes"
-	"database/sql"
+	"context"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"bonh/internal/nav"
@@ -14,8 +15,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 const (
@@ -29,6 +29,15 @@ type Application struct {
 	themeRepo theme.Repository
 }
 
+func mustGetenv(key string) string {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		log.Fatalf("missing: %s", key)
+	}
+
+	return value
+}
+
 func newApplication() (*Application, error) {
 	assetFileServer := http.FileServer(http.Dir("./assets"))
 	mux := chi.NewRouter()
@@ -40,12 +49,12 @@ func newApplication() (*Application, error) {
 
 	tpl := template.Must(template.ParseGlob("templates/*.tmpl"))
 
-	db, err := sql.Open("sqlite3", "database.db")
+	pool, err := pgxpool.New(context.Background(), mustGetenv("DATABASE_CONNECTION_STRING"))
 	if err != nil {
-		return nil, fmt.Errorf("sql.Open(): %w", err)
+		return nil, fmt.Errorf("pgxpool.New(%s): %w", mustGetenv("DATABASE_CONNECTION_STRING"), err)
 	}
 
-	themeRepo := theme.SQLRepository(db)
+	themeRepo := theme.NewPGXPoolRepository(pool)
 
 	return &Application{
 		mux,
@@ -69,7 +78,7 @@ func (app *Application) render(w http.ResponseWriter,
 			pageData = map[string]any{}
 		}
 
-		activeTheme, _ := app.themeRepo.Active(1)
+		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
 
 		pageData["DataTheme"] = activeTheme
 		pageData["Nav"] = nav.PageLinks(r.URL.String())
