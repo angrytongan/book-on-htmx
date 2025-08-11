@@ -20,7 +20,8 @@
           <div hx-get="/theme-chooser"
                hx-trigger="load delay:250ms"
                hx-target="this"
-               hx-swap="outerHTML">{{template "theme-chooser-loader"}}</div>
+               hx-swap="outerHTML"
+               hx-target-error="this">{{template "theme-chooser-loader"}}</div>
         </div>
       </div>
     </div>
