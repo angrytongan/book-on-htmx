@@ -26,6 +26,7 @@
              hx-trigger="load delay:100ms"
              hx-target="this"
              hx-swap="outerHTML"></div>
+        <div id="tab-buttons-content"></div>
     </div>
 
     <div class="card card-border w-full">
@@ -46,12 +47,19 @@
         {{range .Tabs}}
             <button class="tab{{if .Active}} tab-active{{end}}"
                     hx-get="{{.Href}}"
-                    hx-trigger="click{{if .Active}}, load{{end}}"
-                    hx-target="next .content">{{.Label}}</button>
+                    hx-trigger="click"
+                    hx-target="closest div.tabs"
+                    hx-swap="outerHTML"
+                    >{{.Label}}</button>
         {{end}}
     </div>
 
-    <div class="content">Loading button content</div>
+    <div id="tab-buttons-content" hx-swap-oob="true">
+        <div hx-get="/tabs/content/{{.Active}}"
+             hx-trigger="load"
+             hx-target="this"
+             hx-swap="outerHTML"></div>
+    </div>
 {{end}}
 
 {{block "tab-radio-buttons" .}}
@@ -62,14 +70,16 @@
                    class="tab"
                    aria-label="{{.Label}}"
                    {{if .Active}}checked{{end}}
-                   hx-get="{{.Href}}"
+                   hx-get="/tabs/content/{{.Content}}"
                    hx-trigger="change{{if .Active}}, load{{end}}"
                    hx-target="next .content"
+                   hx-swap="innertHTML"
+                   hx-params="not tab-radio-buttons"
                    />
         {{end}}
     </div>
 
-    <div class="content">Loading radio button content</div>
+    <div class="content"></div>
 {{end}}
 
 {{define "tab-content-one"}}
