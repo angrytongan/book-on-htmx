@@ -14,6 +14,27 @@ func (app *Application) tabs(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "tabs", nil, http.StatusOK)
 }
 
+func (app *Application) tabsButtons(w http.ResponseWriter, r *http.Request) {
+	tabs := []TabLink{
+		{"One", "/tabs/buttons/one", true},
+		{"Two", "/tabs/buttons/two", false},
+		{"Three", "/tabs/buttons/three", false},
+	}
+
+	pageData := map[string]any{
+		"Tabs": tabs,
+	}
+
+	app.render(w, r, "tab-buttons", pageData, http.StatusOK)
+}
+
+func (app *Application) tabsButtonsTab(w http.ResponseWriter, r *http.Request) {
+	tab := r.PathValue("tab")
+	block := "tab-content-" + tab
+
+	app.render(w, r, block, nil, http.StatusOK)
+}
+
 func (app *Application) tabsRadioButtons(w http.ResponseWriter, r *http.Request) {
 	tabs := []TabLink{
 		{"One", "/tabs/radio-buttons/one", true},

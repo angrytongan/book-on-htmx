@@ -22,7 +22,10 @@
     <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full h-50">
         <div class="card-title">buttons</div>
-      </div>
+        <div hx-get="/tabs/buttons"
+             hx-trigger="load delay:100ms"
+             hx-target="this"
+             hx-swap="outerHTML"></div>
     </div>
 
     <div class="card card-border w-full">
@@ -36,6 +39,19 @@
     </div>
 
   </div>
+{{end}}
+
+{{block "tab-buttons" .}}
+    <div class="tabs">
+        {{range .Tabs}}
+            <button class="tab{{if .Active}} tab-active{{end}}"
+                    hx-get="{{.Href}}"
+                    hx-trigger="click{{if .Active}}, load{{end}}"
+                    hx-target="next .content">{{.Label}}</button>
+        {{end}}
+    </div>
+
+    <div class="content">Loading button content</div>
 {{end}}
 
 {{block "tab-radio-buttons" .}}
@@ -53,7 +69,7 @@
         {{end}}
     </div>
 
-    <div class="content"></div>
+    <div class="content">Loading radio button content</div>
 {{end}}
 
 {{define "tab-content-one"}}
