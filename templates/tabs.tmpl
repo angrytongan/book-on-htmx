@@ -39,18 +39,17 @@
 {{end}}
 
 {{block "tab-radio-buttons" .}}
-    <div>
+    <div class="tabs">
         {{range .Tabs}}
-            <label>
-                <input type="radio"
-                       name="tab-radio-buttons"
-                       class="{{if .Active}}tab-active{{end}}"
-                       {{if .Active}}checked{{end}}
-                       hx-get="{{.Href}}"
-                       hx-trigger="change{{if .Active}}, load{{end}}"
-                       hx-target="next .content"
-                       /> {{.Label}}
-            </label>
+            <input type="radio"
+                   name="tab-radio-buttons"
+                   class="tab"
+                   aria-label="{{.Label}}"
+                   {{if .Active}}checked{{end}}
+                   hx-get="{{.Href}}"
+                   hx-trigger="change{{if .Active}}, load{{end}}"
+                   hx-target="next .content"
+                   />
         {{end}}
     </div>
 

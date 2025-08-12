@@ -20,5 +20,5 @@ lint-fix: # Run the linter and fix things.
 	golangci-lint run --fix ./cmd/web
 	golangci-lint run --fix ./internal/*
 
-tailwind:
+tailwind: # Run the tailwind server.
 	npx @tailwindcss/cli --input ./assets/css/input.css --output ./assets/css/style.css --watch
