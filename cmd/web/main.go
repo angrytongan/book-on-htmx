@@ -28,6 +28,8 @@ func run() error {
 	app.mux.Get("/theme-chooser", app.themeChooser)
 	app.mux.Post("/theme-chooser", app.themeChooserSave)
 
+	app.mux.Get("/tabs/links", app.tabsLinks)
+	app.mux.Get("/tabs/links/{tab}", app.tabsLinks)
 	app.mux.Get("/tabs/buttons", app.tabsButtons)
 	app.mux.Get("/tabs/buttons/{tab}", app.tabsButtons)
 	app.mux.Get("/tabs/radio-buttons", app.tabsRadioButtons)
