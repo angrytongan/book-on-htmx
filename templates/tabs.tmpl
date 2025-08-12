@@ -14,34 +14,48 @@
   <div class="flex flex-col gap-4">
 
     <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full h-50">
+      <div class="card-body flex flex-col w-full">
         <div class="card-title">links</div>
+        <p class="my-4">
+          Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
+          a changed "active" tab and oob-swap a div that loads the matching
+          content.
+        </p>
         <div hx-get="/tabs/links"
-             hx-trigger="load delay:100ms"
+             hx-trigger="load delay:500ms"
              hx-target="this"
              hx-swap="outerHTML"></div>
-        <div id="tab-links-content"></div>
+        <div id="tab-links-content">{{template "tab-loading"}}</div>
       </div>
     </div>
 
     <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full h-50">
+      <div class="card-body flex flex-col w-full">
         <div class="card-title">buttons</div>
+        <p class="my-4">
+          Tabs are &lt;buttons&gt;. Each click swaps in a new set of buttons
+          with a changed "active" button and oob-swap a div that loads the
+          matching content.
+        </p>
         <div hx-get="/tabs/buttons"
-             hx-trigger="load delay:100ms"
+             hx-trigger="load delay:500ms"
              hx-target="this"
              hx-swap="outerHTML"></div>
-        <div id="tab-buttons-content"></div>
+        <div id="tab-buttons-content">{{template "tab-loading"}}</div>
       </div>
     </div>
 
     <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full h-50">
+      <div class="card-body flex flex-col w-full">
         <div class="card-title">radio buttons</div>
-        <div hx-get="/tabs/radio-buttons"
-             hx-trigger="load delay:100ms"
+        <p class="my-4">
+          Tabs are radio buttons. Each click swaps in a div that loads the
+          matching content.
+        </p>
+        <div hx-get="/tabs/radio"
+             hx-trigger="load delay:500ms"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML">{{template "tab-loading"}}</div>
       </div>
     </div>
 
@@ -64,7 +78,7 @@
         <div hx-get="/tabs/content/{{.Active}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML">{{template "tab-content-loading"}}</div>
     </div>
 {{end}}
 
@@ -84,15 +98,15 @@
         <div hx-get="/tabs/content/{{.Active}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML">{{template "tab-content-loading"}}</div>
     </div>
 {{end}}
 
-{{block "tab-radio-buttons" .}}
+{{block "tab-radio" .}}
     <div class="tabs">
         {{range .Tabs}}
             <input type="radio"
-                   name="tab-radio-buttons"
+                   name="tab-radio"
                    class="tab"
                    aria-label="{{.Label}}"
                    {{if .Active}}checked{{end}}
@@ -100,7 +114,7 @@
                    hx-trigger="change{{if .Active}}, load{{end}}"
                    hx-target="next .content"
                    hx-swap="innertHTML"
-                   hx-params="not tab-radio-buttons"
+                   hx-params="not tab-radio"
                    />
         {{end}}
     </div>
@@ -118,4 +132,12 @@
 
 {{define "tab-content-three"}}
     <p>This is content three.</p>
+{{end}}
+
+{{define "tab-loading"}}
+  <div class="skeleton w-full h-16 rounded"></div>
+{{end}}
+
+{{define "tab-content-loading"}}
+  <div class="skeleton w-full h-5 rounded"></div>
 {{end}}

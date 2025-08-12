@@ -66,7 +66,7 @@ func (app *Application) tabsButtons(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "tab-buttons", pageData, http.StatusOK)
 }
 
-func (app *Application) tabsRadioButtons(w http.ResponseWriter, r *http.Request) {
+func (app *Application) tabsRadios(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("tab")
 	if tab == "" {
 		tab = "one"
@@ -82,7 +82,7 @@ func (app *Application) tabsRadioButtons(w http.ResponseWriter, r *http.Request)
 		"Tabs": tabs,
 	}
 
-	app.render(w, r, "tab-radio-buttons", pageData, http.StatusOK)
+	app.render(w, r, "tab-radio", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsContent(w http.ResponseWriter, r *http.Request) {

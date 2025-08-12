@@ -32,8 +32,8 @@ func run() error {
 	app.mux.Get("/tabs/links/{tab}", app.tabsLinks)
 	app.mux.Get("/tabs/buttons", app.tabsButtons)
 	app.mux.Get("/tabs/buttons/{tab}", app.tabsButtons)
-	app.mux.Get("/tabs/radio-buttons", app.tabsRadioButtons)
-	app.mux.Get("/tabs/radio-buttons/{tab}", app.tabsRadioButtons)
+	app.mux.Get("/tabs/radio", app.tabsRadios)
+	app.mux.Get("/tabs/radio/{tab}", app.tabsRadios)
 	app.mux.Get("/tabs/content/{content}", app.tabsContent)
 
 	return app.listen(port)
