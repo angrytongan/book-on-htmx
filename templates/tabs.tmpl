@@ -28,8 +28,43 @@
     <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full h-50">
         <div class="card-title">radio buttons</div>
+        <div hx-get="/tabs/radio-buttons"
+             hx-trigger="load delay:100ms"
+             hx-target="this"
+             hx-swap="outerHTML"></div>
       </div>
     </div>
 
   </div>
+{{end}}
+
+{{block "tab-radio-buttons" .}}
+    <div>
+        {{range .Tabs}}
+            <label>
+                <input type="radio"
+                       name="tab-radio-buttons"
+                       class="{{if .Active}}tab-active{{end}}"
+                       {{if .Active}}checked{{end}}
+                       hx-get="{{.Href}}"
+                       hx-trigger="change{{if .Active}}, load{{end}}"
+                       hx-target="next .content"
+                       /> {{.Label}}
+            </label>
+        {{end}}
+    </div>
+
+    <div class="content"></div>
+{{end}}
+
+{{define "tab-content-one"}}
+    <p>This is content one.</p>
+{{end}}
+
+{{define "tab-content-two"}}
+    <p>This is content two.</p>
+{{end}}
+
+{{define "tab-content-three"}}
+    <p>This is content three.</p>
 {{end}}
