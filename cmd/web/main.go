@@ -28,6 +28,12 @@ func run() error {
 	app.mux.Get("/theme-chooser", app.themeChooser)
 	app.mux.Post("/theme-chooser", app.themeChooserSave)
 
+	app.mux.Get("/tabs/buttons", app.tabsButtons)
+	app.mux.Get("/tabs/buttons/{tab}", app.tabsButtons)
+	app.mux.Get("/tabs/radio-buttons", app.tabsRadioButtons)
+	app.mux.Get("/tabs/radio-buttons/{tab}", app.tabsRadioButtons)
+	app.mux.Get("/tabs/content/{content}", app.tabsContent)
+
 	return app.listen(port)
 }
 
