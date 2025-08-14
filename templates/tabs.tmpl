@@ -15,13 +15,27 @@
 
     <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full">
-        <div class="card-title">links</div>
+        <div class="card-title">links + content</div>
+        <p class="my-4">
+          Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
+          a changed "active" tab and new content.
+        </p>
+        <div hx-get="/tabs/links"
+             hx-trigger="load delay:500ms"
+             hx-target="this"
+             hx-swap="outerHTML">{{template "tab-loading"}}</div>
+      </div>
+    </div>
+
+    <div class="card card-border w-full">
+      <div class="card-body flex flex-col w-full">
+        <div class="card-title">links + oob content</div>
         <p class="my-4">
           Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
           a changed "active" tab and oob-swap a div that loads the matching
           content.
         </p>
-        <div hx-get="/tabs/links"
+        <div hx-get="/tabs/links-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
              hx-swap="outerHTML"></div>
@@ -31,13 +45,13 @@
 
     <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full">
-        <div class="card-title">buttons</div>
+        <div class="card-title">buttons + oob content</div>
         <p class="my-4">
           Tabs are &lt;buttons&gt;. Each click swaps in a new set of buttons
           with a changed "active" button and oob-swap a div that loads the
           matching content.
         </p>
-        <div hx-get="/tabs/buttons"
+        <div hx-get="/tabs/buttons-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
              hx-swap="outerHTML"></div>
@@ -47,12 +61,12 @@
 
     <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full">
-        <div class="card-title">radio buttons</div>
+        <div class="card-title">radio buttons + oob content</div>
         <p class="my-4">
           Tabs are radio buttons. Each click swaps in a div that loads the
           matching content.
         </p>
-        <div hx-get="/tabs/radio"
+        <div hx-get="/tabs/radio-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
              hx-swap="outerHTML">{{template "tab-loading"}}</div>
@@ -63,6 +77,25 @@
 {{end}}
 
 {{block "tab-links" .}}
+  <div class="wrapper">
+    <div class="tabs">
+        {{range .Tabs}}
+            <a class="tab{{if .Active}} tab-active{{end}}"
+                    hx-get="{{.Href}}"
+                    hx-trigger="click"
+                    hx-target="closest div.wrapper"
+                    hx-swap="outerHTML"
+                   hx-indicator="#tab-radio-oob-loading"
+                    >{{.Label}}</a>
+        {{end}}
+        <div id="tab-radio-oob-loading" class="htmx-indicator loading loading-spinner"></div>
+    </div>
+
+    <p>{{.Content}}</p>
+  </div>
+{{end}}
+
+{{block "tab-links-oob" .}}
     <div class="tabs">
         {{range .Tabs}}
             <a class="tab{{if .Active}} tab-active{{end}}"
@@ -82,7 +115,7 @@
     </div>
 {{end}}
 
-{{block "tab-buttons" .}}
+{{block "tab-buttons-oob" .}}
     <div class="tabs">
         {{range .Tabs}}
             <button class="tab{{if .Active}} tab-active{{end}}"
@@ -102,7 +135,7 @@
     </div>
 {{end}}
 
-{{block "tab-radio" .}}
+{{block "tab-radio-oob" .}}
     <div class="tabs">
         {{range .Tabs}}
             <input type="radio"
@@ -115,8 +148,10 @@
                    hx-target="next .content"
                    hx-swap="innertHTML"
                    hx-params="not tab-radio"
+                   hx-indicator="#tab-radio-oob-loading"
                    />
         {{end}}
+        <div id="tab-radio-oob-loading" class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <div class="content"></div>

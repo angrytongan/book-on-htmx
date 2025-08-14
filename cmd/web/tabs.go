@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"time"
 )
 
 type LinkTabLink struct {
@@ -39,23 +40,25 @@ func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pageData := map[string]any{
-		"Tabs":   tabs,
-		"Active": tab,
+		"Tabs":    tabs,
+		"Content": "This is content " + tab + ".",
 	}
+
+	time.Sleep(time.Second)
 
 	app.render(w, r, "tab-links", pageData, http.StatusOK)
 }
 
-func (app *Application) tabsButtons(w http.ResponseWriter, r *http.Request) {
+func (app *Application) tabsLinksOOB(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("tab")
 	if tab == "" {
 		tab = "one"
 	}
 
-	tabs := []ButtonTabLink{
-		{"One", "/tabs/buttons/one", tab == "one"},
-		{"Two", "/tabs/buttons/two", tab == "two"},
-		{"Three", "/tabs/buttons/three", tab == "three"},
+	tabs := []LinkTabLink{
+		{"One", "/tabs/links-oob/one", tab == "one"},
+		{"Two", "/tabs/links-oob/two", tab == "two"},
+		{"Three", "/tabs/links-oob/three", tab == "three"},
 	}
 
 	pageData := map[string]any{
@@ -63,10 +66,30 @@ func (app *Application) tabsButtons(w http.ResponseWriter, r *http.Request) {
 		"Active": tab,
 	}
 
-	app.render(w, r, "tab-buttons", pageData, http.StatusOK)
+	app.render(w, r, "tab-links-oob", pageData, http.StatusOK)
 }
 
-func (app *Application) tabsRadios(w http.ResponseWriter, r *http.Request) {
+func (app *Application) tabsButtonsOOB(w http.ResponseWriter, r *http.Request) {
+	tab := r.PathValue("tab")
+	if tab == "" {
+		tab = "one"
+	}
+
+	tabs := []ButtonTabLink{
+		{"One", "/tabs/buttons-oob/one", tab == "one"},
+		{"Two", "/tabs/buttons-oob/two", tab == "two"},
+		{"Three", "/tabs/buttons-oob/three", tab == "three"},
+	}
+
+	pageData := map[string]any{
+		"Tabs":   tabs,
+		"Active": tab,
+	}
+
+	app.render(w, r, "tab-buttons-oob", pageData, http.StatusOK)
+}
+
+func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("tab")
 	if tab == "" {
 		tab = "one"
@@ -82,12 +105,14 @@ func (app *Application) tabsRadios(w http.ResponseWriter, r *http.Request) {
 		"Tabs": tabs,
 	}
 
-	app.render(w, r, "tab-radio", pageData, http.StatusOK)
+	app.render(w, r, "tab-radio-oob", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsContent(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("content")
 	block := "tab-content-" + tab
+
+	time.Sleep(time.Second)
 
 	app.render(w, r, block, nil, http.StatusOK)
 }
