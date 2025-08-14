@@ -25,7 +25,7 @@ func run() error {
 	app.mux.Get("/theme", app.theme)
 
 	// Widgets.
-	app.mux.Get("/theme-chooser", app.themeChooser)
+	app.mux.Get("/theme", app.theme)
 	app.mux.Post("/theme-chooser", app.themeChooserSave)
 
 	app.mux.Get("/tabs/links", app.tabsLinks)

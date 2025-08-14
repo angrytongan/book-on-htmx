@@ -7,10 +7,6 @@ import (
 )
 
 func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "theme", nil, http.StatusOK)
-}
-
-func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 	id := 1
 
 	activeTheme, err := app.themeRepo.Active(context.Background(), id)
@@ -41,7 +37,7 @@ func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 		"Themes": themes,
 	}
 
-	app.render(w, r, "theme-chooser", pageData, http.StatusOK)
+	app.render(w, r, "theme", pageData, http.StatusOK)
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {
@@ -65,5 +61,5 @@ func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	app.clientRedirect(w, r, "/settings", http.StatusSeeOther)
+	app.clientRedirect(w, r, "/theme", http.StatusSeeOther)
 }

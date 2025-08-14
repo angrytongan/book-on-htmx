@@ -1,14 +1,14 @@
 BEGIN;
 
-DROP TABLE IF EXISTS settings;
-CREATE TABLE settings (
+DROP TABLE IF EXISTS theme;
+CREATE TABLE theme (
   id INTEGER GENERATED ALWAYS AS IDENTITY,
-  theme TEXT NOT NULL DEFAULT 'light',
+  name TEXT NOT NULL DEFAULT 'light',
   
   PRIMARY KEY (id)
 );
 
-INSERT INTO settings (id, theme) VALUES (1, 'light');
+INSERT INTO theme (id, name) VALUES (1, 'light');
 
 DROP TABLE IF EXISTS themes;
 CREATE TABLE themes (

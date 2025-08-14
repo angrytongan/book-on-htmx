@@ -1849,6 +1849,9 @@
     background-repeat: no-repeat;
     background-position-x: -50%;
   }
+  .cursor-pointer {
+    cursor: pointer;
+  }
   .resize {
     resize: both;
   }

@@ -10,11 +10,11 @@ import (
 
 const (
 	pgxThemeByID = `
-		SELECT theme FROM settings WHERE id = $1;
+		SELECT name FROM theme WHERE id = $1;
 	`
 
 	pgxSetThemeByID = `
-		UPDATE settings SET theme = $2 WHERE id = $1;
+		UPDATE theme SET name = $2 WHERE id = $1;
 	`
 
 	pgxThemes = `
