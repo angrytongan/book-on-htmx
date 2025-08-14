@@ -85,10 +85,10 @@
                     hx-trigger="click"
                     hx-target="closest div.wrapper"
                     hx-swap="outerHTML"
-                   hx-indicator="#tab-radio-oob-loading"
+                    hx-indicator="next div.htmx-indicator"
                     >{{.Label}}</a>
         {{end}}
-        <div id="tab-radio-oob-loading" class="htmx-indicator loading loading-spinner"></div>
+        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <p>{{.Content}}</p>
@@ -103,16 +103,21 @@
                     hx-trigger="click"
                     hx-target="closest div.tabs"
                     hx-swap="outerHTML"
+                    hx-indicator="next div.htmx-indicator"
                     >{{.Label}}</a>
         {{end}}
+        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <div id="tab-links-content" hx-swap-oob="true">
         <div hx-get="/tabs/content/{{.Active}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML">{{template "tab-content-loading"}}</div>
+             hx-swap="outerHTML"
+             hx-indicator="previous div.htmx-indicator"
+             ></div>
     </div>
+
 {{end}}
 
 {{block "tab-buttons-oob" .}}
@@ -131,7 +136,7 @@
         <div hx-get="/tabs/content/{{.Active}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML">{{template "tab-content-loading"}}</div>
+             hx-swap="outerHTML"></div>
     </div>
 {{end}}
 
@@ -148,10 +153,10 @@
                    hx-target="next .content"
                    hx-swap="innertHTML"
                    hx-params="not tab-radio"
-                   hx-indicator="#tab-radio-oob-loading"
+                   hx-indicator="next div.htmx-indicator"
                    />
         {{end}}
-        <div id="tab-radio-oob-loading" class="htmx-indicator loading loading-spinner"></div>
+        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <div class="content"></div>
