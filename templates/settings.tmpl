@@ -1,19 +1,19 @@
-{{block "settings-page" .}}
+{{block "theme-page" .}}
   {{template "head" .}}
   {{template "nav-head" .}}
 
-  {{template "settings" .}}
+  {{template "theme" .}}
 
   {{template "nav-foot" .}}
   {{template "foot" .}}
 {{end}}
 
-{{block "settings" .}}
-  <h1 class="text-xl">Settings</h1>
+{{block "theme" .}}
+  <h1 class="text-xl">Theme</h1>
 
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-row">
 
-    <div class="card card-border w-1/2">
+    <div class="card card-border w-full">
       <div class="card-body flex flex-col w-full h-50">
         <div class="card-title">Theme</div>
         <div class="grow overflow-auto">
@@ -23,12 +23,6 @@
                hx-swap="outerHTML"
                hx-target-error="this">{{template "theme-chooser-loader"}}</div>
         </div>
-      </div>
-    </div>
-
-    <div class="card card-border w-1/2">
-      <div class="card-body">
-        <div class="card-title">Something else</div>
       </div>
     </div>
 

@@ -1,6 +1,6 @@
 {{block "head" .}}
 <!doctype html>
-<html {{if .DataTheme}}data-theme="{{.DataTheme}}"{{end}}>
+<html {{if .PageLoad.DataTheme}}data-theme="{{.PageLoad.DataTheme}}"{{end}}>
   <head>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="stylesheet" href="/css/style.css" />
@@ -22,9 +22,9 @@
 {{end}}
 
 {{block "nav-head" .}}
-  <div class="flex flex-row gap-2 m-2">
+  <div class="flex flex-row m-2 gap-2"> <!-- page wrapper -->
     <nav>
-      <ul class="menu bg-base-200 rounded-box w-56">
+      <ul class="menu bg-base-200 rounded-box">
         {{block "nav" .}}
           {{range .Nav}}
             <li><a href="{{.Href}}"
@@ -39,7 +39,7 @@
       </ul>
     </nav>
 
-    <main id="main" class="m-4 grow">
+    <main id="main" class="grow">
 {{end}}
 
 {{block "nav-foot" .}}
@@ -50,9 +50,9 @@
 {{block "nav-main" .}}
   {{template "nav" .}}
 
-  <div id="main" class="m-4 grow" hx-swap-oob="true">
+  <div id="main" class="grow" hx-swap-oob="true">
     <div hx-get="{{.Href}}"
-         hx-trigger="load delay:100ms"
+         hx-trigger="load"
          hx-target="this"
          hx-swap="outerHTML"
          >{{template "main-loading"}}</div>

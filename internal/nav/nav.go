@@ -10,7 +10,7 @@ func PageLinks(activeHref string) []PageLink {
 	pageLinks := []PageLink{
 		{"/", "Home", false},
 		{"/tabs", "Tabs", false},
-		{"/settings", "Settings", false},
+		{"/theme", "Theme", false},
 	}
 
 	for i, p := range pageLinks {

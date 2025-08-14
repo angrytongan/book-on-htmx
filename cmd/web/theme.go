@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "theme", nil, http.StatusOK)
+}
+
 func (app *Application) themeChooser(w http.ResponseWriter, r *http.Request) {
 	id := 1
 

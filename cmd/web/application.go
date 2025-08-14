@@ -80,7 +80,11 @@ func (app *Application) render(w http.ResponseWriter,
 
 		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
 
-		pageData["DataTheme"] = activeTheme
+		pageLoad := map[string]any{
+			"DataTheme": activeTheme,
+		}
+
+		pageData["PageLoad"] = pageLoad
 		pageData["Nav"] = nav.PageLinks(r.URL.String())
 
 		block += "-page"

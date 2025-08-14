@@ -22,7 +22,7 @@ func run() error {
 	// Pages.
 	app.mux.Get("/", app.home)
 	app.mux.Get("/tabs", app.tabs)
-	app.mux.Get("/settings", app.settings)
+	app.mux.Get("/theme", app.theme)
 
 	// Widgets.
 	app.mux.Get("/theme-chooser", app.themeChooser)
