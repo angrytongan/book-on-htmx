@@ -10,6 +10,30 @@
     <script type="text/javascript" src="/js/hyperscript@0.9.14.min.js"></script>
     <script type="text/javascript" src="/js/htmx-ext-reponse-targets@2.0.2.min.js"></script>
     <meta name="htmx-config" content='{"historyCacheSize": 0,"refreshOnHistoryMiss": true, "responseTargetUnsetsError": false}'>
+
+    <script type="text/javascript">
+      function saveScrollTop(e) {
+        const url = new URL(window.location);
+        const params = url.searchParams;
+        params.set('main-scroll', e.target.scrollTop)
+
+        window.history.replaceState({}, '', url.toString());
+      }
+
+      function restoreScrollTop() {
+        const url = new URL(window.location);
+        const params = url.searchParams;
+        const scrollTop = params.get('main-scroll');
+        if (scrollTop) {
+          document.getElementById('main').scrollTop = scrollTop;
+        }
+      }
+    </script>
+
+    <script type="text/hyperscript">
+      on load restoreScrollTop()
+    </script>
+
   </head>
 
   <body hx-history="false"
@@ -40,7 +64,11 @@
       </ul>
     </nav>
 
-    <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto">
+    <main id="main"
+          class="flex-1 ml-32 p-2 overflow-y-auto"
+          _="on scroll debounced at 200ms call saveScrollTop(event)"
+      >
+
 {{end}}
 
 {{block "nav-foot" .}}
@@ -51,7 +79,11 @@
 {{block "nav-main" .}}
   {{template "nav" .}}
 
-  <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto" hx-swap-oob="true">
+  <main id="main"
+        class="flex-1 ml-32 p-2 overflow-y-auto"
+        hx-swap-oob="true"
+        _="on scroll debounced at 200ms call saveScrollTop(event)"
+  >
     <div hx-get="{{.Href}}"
          hx-trigger="load"
          hx-target="this"

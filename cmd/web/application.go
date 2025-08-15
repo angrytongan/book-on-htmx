@@ -89,7 +89,7 @@ func (app *Application) render(w http.ResponseWriter,
 		}
 
 		pageData["PageLoad"] = pageLoad
-		pageData["Nav"] = nav.PageLinks(r.URL.String())
+		pageData["Nav"] = nav.PageLinks(r.URL.Path)
 
 		block += "-page"
 	}
