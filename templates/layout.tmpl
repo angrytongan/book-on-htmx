@@ -48,8 +48,8 @@
 {{block "nav-head" .}}
   <div class="flex flex-row h-screen"> <!-- page wrapper -->
 
-    <nav class="fixed h-screen w-32 overflow-y-auto">
-      <ul class="menu bg-base-200 gap-2 h-full w-32">
+    <nav class="fixed bg-base-200 h-screen w-32 overflow-y-auto">
+      <ul class="menu gap-2 w-32">
         {{block "nav" .}}
           {{range .Nav}}
             <li><a href="{{.Href}}"
