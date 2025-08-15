@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 func (app *Application) search(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +13,6 @@ func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {
 	term := r.URL.Query().Get("term")
 	block := "search-results"
 	results := []string{}
-
-	time.Sleep(time.Second)
 
 	if term == "" {
 		block = "search-instructions"

@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 const (
@@ -25,22 +28,27 @@ func run() error {
 	app.mux.Get("/theme", app.theme)
 	app.mux.Get("/search", app.search)
 
-	// Widgets.
-	app.mux.Get("/theme", app.theme)
-	app.mux.Post("/theme-chooser", app.themeChooserSave)
+	app.mux.Group(func(r chi.Router) {
+		r.Use(delayResponse(500))
+		r.Use(middleware.Logger)
 
-	app.mux.Get("/tabs/links", app.tabsLinks)
-	app.mux.Get("/tabs/links/{tab}", app.tabsLinks)
+		// Widgets.
+		r.Get("/theme", app.theme)
+		r.Post("/theme-chooser", app.themeChooserSave)
 
-	app.mux.Get("/tabs/links-oob", app.tabsLinksOOB)
-	app.mux.Get("/tabs/links-oob/{tab}", app.tabsLinksOOB)
-	app.mux.Get("/tabs/buttons-oob", app.tabsButtonsOOB)
-	app.mux.Get("/tabs/buttons-oob/{tab}", app.tabsButtonsOOB)
-	app.mux.Get("/tabs/radio-oob", app.tabsRadiosOOB)
-	app.mux.Get("/tabs/radio-oob/{tab}", app.tabsRadiosOOB)
-	app.mux.Get("/tabs/content/{content}", app.tabsContent)
+		r.Get("/tabs/links", app.tabsLinks)
+		r.Get("/tabs/links/{tab}", app.tabsLinks)
 
-	app.mux.Get("/search/term", app.searchTerm)
+		r.Get("/tabs/links-oob", app.tabsLinksOOB)
+		r.Get("/tabs/links-oob/{tab}", app.tabsLinksOOB)
+		r.Get("/tabs/buttons-oob", app.tabsButtonsOOB)
+		r.Get("/tabs/buttons-oob/{tab}", app.tabsButtonsOOB)
+		r.Get("/tabs/radio-oob", app.tabsRadiosOOB)
+		r.Get("/tabs/radio-oob/{tab}", app.tabsRadiosOOB)
+		r.Get("/tabs/content/{content}", app.tabsContent)
+
+		r.Get("/search/term", app.searchTerm)
+	})
 
 	return app.listen(port)
 }

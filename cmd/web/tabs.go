@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"time"
 )
 
 type LinkTabLink struct {
@@ -109,8 +108,6 @@ func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
 func (app *Application) tabsContent(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("content")
 	block := "tab-content-" + tab
-
-	time.Sleep(time.Second)
 
 	app.render(w, r, block, nil, http.StatusOK)
 }

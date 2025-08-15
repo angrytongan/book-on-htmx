@@ -22,9 +22,10 @@
 {{end}}
 
 {{block "nav-head" .}}
-  <div class="flex flex-row m-2 gap-2"> <!-- page wrapper -->
-    <nav>
-      <ul class="menu bg-base-200 rounded-box gap-2">
+  <div class="flex flex-row h-screen"> <!-- page wrapper -->
+
+    <nav class="fixed h-screen w-32 overflow-y-auto">
+      <ul class="menu bg-base-200 gap-2 h-full w-32">
         {{block "nav" .}}
           {{range .Nav}}
             <li><a href="{{.Href}}"
@@ -39,7 +40,7 @@
       </ul>
     </nav>
 
-    <main id="main" class="grow">
+    <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto">
 {{end}}
 
 {{block "nav-foot" .}}
@@ -50,13 +51,13 @@
 {{block "nav-main" .}}
   {{template "nav" .}}
 
-  <div id="main" class="grow" hx-swap-oob="true">
+  <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto" hx-swap-oob="true">
     <div hx-get="{{.Href}}"
          hx-trigger="load"
          hx-target="this"
          hx-swap="outerHTML"
          >{{template "main-loading"}}</div>
-  </div>
+  </main>
 {{end}}
 
 {{define "main-loading"}}
