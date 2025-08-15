@@ -23,7 +23,7 @@
                    hx-target-error="next p.error"
                    hx-indicator="next .htmx-indicator"
                    _="on htmx:beforeRequest set innerHTML of the next <p.error/> to '' end
-                      on htmx:responseError log 'got an error' end
+                      on htmx:responseError set innerHTML of <div.results/> to '' end
                    "
                    />
             <div class="htmx-indicator loading loading-spinner"></div>
