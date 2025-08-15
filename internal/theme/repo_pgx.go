@@ -9,12 +9,12 @@ import (
 )
 
 const (
-	pgxThemeByID = `
-		SELECT name FROM theme WHERE id = $1;
+	pgxThemeByUserID = `
+		SELECT theme FROM setting WHERE user_id = $1;
 	`
 
 	pgxSetThemeByID = `
-		UPDATE theme SET name = $2 WHERE id = $1;
+		UPDATE setting SET theme = $2 WHERE user_id = $1;
 	`
 
 	pgxThemes = `
@@ -23,7 +23,7 @@ const (
 			value,
 			value = $1 AS active
 		FROM
-			themes
+			theme
 		ORDER BY
 			label
 	`
@@ -40,7 +40,7 @@ func NewPGXPoolRepository(pool *pgxpool.Pool) Repository {
 func (tr *PGXPoolRepository) Active(ctx context.Context, id int) (string, error) {
 	var activeTheme string
 
-	row := tr.pool.QueryRow(ctx, pgxThemeByID, id)
+	row := tr.pool.QueryRow(ctx, pgxThemeByUserID, id)
 	if err := row.Scan(&activeTheme); err != nil {
 		return "", fmt.Errorf("row.Scan(): %w", err)
 	}

@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"bonh/internal/nav"
+	"bonh/internal/search"
 	"bonh/internal/theme"
 
 	"github.com/go-chi/chi/v5"
@@ -26,7 +27,8 @@ type Application struct {
 	mux *chi.Mux
 	tpl *template.Template
 
-	themeRepo theme.Repository
+	themeRepo  theme.Repository
+	searchRepo search.Repository
 }
 
 func mustGetenv(key string) string {
@@ -51,15 +53,17 @@ func newApplication() (*Application, error) {
 
 	pool, err := pgxpool.New(context.Background(), mustGetenv("DATABASE_CONNECTION_STRING"))
 	if err != nil {
-		return nil, fmt.Errorf("pgxpool.New(%s): %w", mustGetenv("DATABASE_CONNECTION_STRING"), err)
+		return nil, fmt.Errorf("pgxpool.New(): %w", err)
 	}
 
 	themeRepo := theme.NewPGXPoolRepository(pool)
+	searchRepo := search.NewPGXPoolRepository(pool)
 
 	return &Application{
 		mux,
 		tpl,
 		themeRepo,
+		searchRepo,
 	}, nil
 }
 

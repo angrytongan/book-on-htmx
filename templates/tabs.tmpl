@@ -128,15 +128,19 @@
                     hx-trigger="click"
                     hx-target="closest div.tabs"
                     hx-swap="outerHTML"
+                    hx-indicator="next div.htmx-indicator"
                     >{{.Label}}</button>
         {{end}}
+        <div class="htmx-indicator loading loading-indicator"></div>
     </div>
 
     <div id="tab-buttons-content" hx-swap-oob="true">
         <div hx-get="/tabs/content/{{.Active}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML"
+             hx-indicator="previous div.htmx-indicator"
+             ></div>
     </div>
 {{end}}
 

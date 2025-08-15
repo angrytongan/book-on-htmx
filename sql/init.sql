@@ -1,24 +1,24 @@
 BEGIN;
 
+DROP TABLE IF EXISTS setting;
+CREATE TABLE setting (
+  user_id INTEGER GENERATED ALWAYS AS IDENTITY,
+  theme TEXT NOT NULL DEFAULT 'light',
+  
+  PRIMARY KEY (user_id)
+);
+
+INSERT INTO setting (theme) VALUES ('light');
+
 DROP TABLE IF EXISTS theme;
 CREATE TABLE theme (
-  id INTEGER GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL DEFAULT 'light',
-  
-  PRIMARY KEY (id)
-);
-
-INSERT INTO theme (id, name) VALUES (1, 'light');
-
-DROP TABLE IF EXISTS themes;
-CREATE TABLE themes (
-  id INTEGER GENERATED ALWAYS AS IDENTITY,
+  theme_id INTEGER GENERATED ALWAYS AS IDENTITY,
   label TEXT NOT NULL,
   value TEXT NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (theme_id)
 );
 
-INSERT INTO themes (label, value) VALUES
+INSERT INTO theme (label, value) VALUES
   ('Light', 'light'),
   ('Dark', 'dark'),
   ('Cupcake', 'cupcake'),
@@ -54,6 +54,66 @@ INSERT INTO themes (label, value) VALUES
   ('Caramellatte', 'caramellatte'),
   ('Abyss', 'abyss'),
   ('Silk', 'silk')
+;
+
+DROP TABLE IF EXISTS word;
+CREATE TABLE word (
+  word_id INTEGER GENERATED ALWAYS AS IDENTITY,
+  word TEXT NOT NULL,
+  PRIMARY KEY (word_id)
+);
+
+INSERT INTO word (word) VALUES
+  ('domineering'),
+  ('rag'),
+  ('burrowstown'),
+  ('unown'),
+  ('uncalcined'),
+  ('narwhal'),
+  ('dragonfly'),
+  ('hold'),
+  ('pyrrhotite'),
+  ('buttocked'),
+  ('octogenarianism'),
+  ('periwinkled'),
+  ('sjambok'),
+  ('decadal'),
+  ('blooddrop'),
+  ('consulship'),
+  ('glycosine'),
+  ('Teutonize'),
+  ('Sybil'),
+  ('eupolyzoan'),
+  ('sibilatory'),
+  ('Carica'),
+  ('matronly'),
+  ('interstellary'),
+  ('siphonoplax'),
+  ('tyrannicly'),
+  ('Fourierite'),
+  ('Pop'),
+  ('slagging'),
+  ('kokan'),
+  ('shelteringly'),
+  ('endocystitis'),
+  ('chordoid'),
+  ('angiostegnosis'),
+  ('tuberculid'),
+  ('bouillabaisse'),
+  ('batsman'),
+  ('contracture'),
+  ('oversmoothly'),
+  ('trachelomastoid'),
+  ('orbitofrontal'),
+  ('retinerved'),
+  ('fadable'),
+  ('chromoplasm'),
+  ('pericardotomy'),
+  ('complex'),
+  ('thoracic'),
+  ('allude'),
+  ('preinitiate'),
+  ('Eogaea')
 ;
 
 COMMIT;
