@@ -23,6 +23,7 @@ func run() error {
 	app.mux.Get("/", app.home)
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
+	app.mux.Get("/search", app.search)
 
 	// Widgets.
 	app.mux.Get("/theme", app.theme)
@@ -38,6 +39,8 @@ func run() error {
 	app.mux.Get("/tabs/radio-oob", app.tabsRadiosOOB)
 	app.mux.Get("/tabs/radio-oob/{tab}", app.tabsRadiosOOB)
 	app.mux.Get("/tabs/content/{content}", app.tabsContent)
+
+	app.mux.Get("/search/term", app.searchTerm)
 
 	return app.listen(port)
 }

@@ -1,0 +1,52 @@
+{{block "search-page" .}}
+  {{template "head" .}}
+  {{template "nav-head" .}}
+
+  {{template "search" .}}
+
+  {{template "nav-foot" .}}
+  {{template "foot" .}}
+{{end}}
+
+{{block "search" .}}
+    <h1 class="text-xl">Search</h1>
+
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-row gap-2">
+            <input type="search"
+                   class="input"
+                   name="term"
+                   hx-get="/search/term"
+                   hx-trigger="load, input changed delay:250ms"
+                   hx-target="next div.results"
+                   hx-swap="innerHTML"
+                   hx-target-error="next p.error"
+                   hx-indicator="next .htmx-indicator"
+                   _="on htmx:beforeRequest set innerHTML of the next <p.error/> to '' end
+                      on htmx:responseError set innerHTML of <div.results/> to '' end
+                   "
+                   />
+            <div class="htmx-indicator loading loading-spinner"></div>
+        </div>
+
+        <p class="error"></p>
+
+        <div class="results">
+            {{block "search-results" .}}
+                <ul class="list">
+                    {{range .Results}}
+                        <li class="list-row">{{.}}</li>
+                    {{end}}
+                </ul>
+            {{end}}
+        </div>
+    </div>
+{{end}}
+
+{{define "search-no-results"}}
+    <p>No results for your term.</p>
+{{end}}
+
+{{define "search-instructions"}}
+    <p>Type a word to start a search.</p>
+{{end}}

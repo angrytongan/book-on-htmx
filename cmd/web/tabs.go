@@ -44,8 +44,6 @@ func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {
 		"Content": "This is content " + tab + ".",
 	}
 
-	time.Sleep(time.Second)
-
 	app.render(w, r, "tab-links", pageData, http.StatusOK)
 }
 
