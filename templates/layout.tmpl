@@ -87,6 +87,7 @@
     <div hx-get="{{.Href}}"
          hx-trigger="load"
          hx-target="this"
+         hx-target-error="this"
          hx-swap="outerHTML"
          >{{template "main-loading"}}</div>
   </main>

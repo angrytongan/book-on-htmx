@@ -26,6 +26,7 @@ func run() error {
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
 	app.mux.Get("/search", app.search)
+	app.mux.Get("/toast", app.toast)
 
 	app.mux.Group(func(r chi.Router) {
 		r.Use(delayResponse(500))
@@ -46,6 +47,8 @@ func run() error {
 		r.Get("/tabs/content/{content}", app.tabsContent)
 
 		r.Get("/search/term", app.searchTerm)
+
+		r.Get("/toast/server-time", app.toastServerTime)
 	})
 
 	return app.listen(port)
