@@ -6,35 +6,27 @@ import (
 	"net/http"
 )
 
+const (
+	ErrTextCouldntLoadActiveTheme = "Couldn't load active theme!"
+	ErrTextCouldntLoadThemes      = "Couldn't load themes!"
+)
+
 func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 	id := 1
 
-	activeTheme, err := app.themeRepo.Active(context.Background(), id)
-	if err != nil {
-		app.serverError(
-			w,
-			r,
-			fmt.Errorf("app.themeRepo.Active(%d): %w", id, err),
-			http.StatusInternalServerError,
-			"Couldn't load active theme!",
-		)
-
-		return
-	}
-
-	themes, err := app.themeRepo.Themes(r.Context(), activeTheme)
-	if err != nil {
-		app.serverError(
-			w,
-			r,
-			fmt.Errorf("app.themeRepo.Themes(%s): %w", activeTheme, err),
-			http.StatusInternalServerError,
-			"Couldn't load themes!",
-		)
-	}
+	activeTheme, errActiveTheme := app.themeRepo.Active(context.Background(), id)
+	themes, errThemes := app.themeRepo.Themes(r.Context(), activeTheme)
 
 	pageData := map[string]any{
 		"Themes": themes,
+	}
+
+	if errActiveTheme != nil {
+		pageData["Error"] = ErrTextCouldntLoadActiveTheme
+	}
+
+	if errThemes != nil {
+		pageData["Error"] = ErrTextCouldntLoadThemes
 	}
 
 	app.render(w, r, "theme", pageData, http.StatusOK)
