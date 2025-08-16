@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 )
 
 const (
@@ -30,7 +29,6 @@ func run() error {
 
 	app.mux.Group(func(r chi.Router) {
 		r.Use(delayResponse(500))
-		r.Use(middleware.Logger)
 
 		// Widgets.
 		r.Get("/theme", app.theme)
