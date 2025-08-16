@@ -11,24 +11,18 @@
     <script type="text/javascript" src="/js/htmx-ext-reponse-targets@2.0.2.min.js"></script>
     <meta name="htmx-config" content='{"historyCacheSize": 0,"refreshOnHistoryMiss": true, "responseTargetUnsetsError": false}'>
 
-    <script type="text/javascript">
-      function saveScrollTop(e) {
-        const url = new URL(window.location);
-        const params = url.searchParams;
-        params.set('main-scroll', e.target.scrollTop)
-
-        window.history.replaceState({}, '', url.toString());
-      }
-
-      function restoreScrollTop() {
-        const url = new URL(window.location);
-        const params = url.searchParams;
-        const scrollTop = params.get('main-scroll');
-        if (scrollTop) {
-          document.getElementById('main').scrollTop = scrollTop;
-        }
-      }
+    <!-- leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+       crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+       crossorigin=""></script>
     </script>
+    <script type="text/javascript" src="/js/map.js"></script>
+
+    <!-- local utilities -->
+    <script type="text/javascript" src="/js/scrollto.js"></script>
 
     <script type="text/hyperscript">
       on load restoreScrollTop()

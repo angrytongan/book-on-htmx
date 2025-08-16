@@ -23,9 +23,10 @@ func run() error {
 
 	// Pages.
 	app.mux.Get("/", app.home)
+	app.mux.Get("/leaflet", app.leaflet)
+	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
-	app.mux.Get("/search", app.search)
 	app.mux.Get("/toast", app.toast)
 
 	app.mux.Group(func(r chi.Router) {

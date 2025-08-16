@@ -1531,6 +1531,9 @@
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
+  .h-56 {
+    height: calc(var(--spacing) * 56);
+  }
   .h-screen {
     height: 100vh;
   }
@@ -1539,6 +1542,9 @@
   }
   .w-32 {
     width: calc(var(--spacing) * 32);
+  }
+  .w-auto {
+    width: auto;
   }
   .w-full {
     width: 100%;
