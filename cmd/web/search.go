@@ -10,7 +10,7 @@ const (
 )
 
 func (app *Application) search(w http.ResponseWriter, r *http.Request) {
-	app.renderPage(w, r, "search", nil, http.StatusOK)
+	app.renderWithNav(w, r, "search", nil, http.StatusOK)
 }
 
 func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {

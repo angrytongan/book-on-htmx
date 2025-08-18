@@ -45,7 +45,7 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.renderPage(w, r, "theme", pageData, http.StatusOK)
+	app.renderWithNav(w, r, "theme", pageData, http.StatusOK)
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {

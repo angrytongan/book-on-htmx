@@ -6,7 +6,7 @@ import (
 )
 
 func (app *Application) toast(w http.ResponseWriter, r *http.Request) {
-	app.renderPage(w, r, "toast", nil, http.StatusOK)
+	app.renderWithNav(w, r, "toast", nil, http.StatusOK)
 }
 
 func (app *Application) toastServerTime(w http.ResponseWriter, r *http.Request) {

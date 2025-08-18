@@ -124,7 +124,7 @@ func (app *Application) render(
 	}
 }
 
-func (app *Application) renderPage(
+func (app *Application) renderWithNav(
 	w http.ResponseWriter,
 	r *http.Request,
 	block string,
