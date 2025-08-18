@@ -2,13 +2,13 @@
   {{template "head" .}}
   {{template "nav-head" .}}
 
-  {{template "theme" .}}
+  {{template "theme-content" .}}
 
   {{template "nav-foot" .}}
   {{template "foot" .}}
 {{end}}
 
-{{block "theme" .}}
+{{block "theme-content" .}}
   <h1 class="text-xl">Theme</h1>
 
   <div class="flex flex-row">
@@ -34,4 +34,9 @@
       </div>
     </div>
   </div>
+{{end}}
+
+{{block "theme" .}}
+  {{template "theme-content" .}}
+  {{template "nav-oob" .}}
 {{end}}

@@ -2,22 +2,28 @@
   {{template "head" .}}
   {{template "nav-head" .}}
 
-  {{template "toast"}}
+  {{template "toast-content"}}
 
   {{template "nav-foot" .}}
   {{template "foot" .}}
 {{end}}
 
-{{block "toast" .}}
+{{block "toast-content" .}}
   <h1 class="text-xl">Toast</h1>
 
   <button class="btn btn-primary"
           hx-get="/toast/server-time"
           hx-target="div.toast"
           hx-swap="afterbegin"
+          hx-disabled-elt="this"
           >Get server time</button>
 
   <div class="toast toast-top toast-end"></div>
+{{end}}
+
+{{block "toast" .}}
+  {{template "toast-content" .}}
+  {{template "nav-oob" .}}
 {{end}}
 
 {{block "toast-server-time" .}}

@@ -34,61 +34,39 @@
         hx-ext="response-targets">
 {{end}}
 
-{{block "foot" .}}
-  </body>
-</html>
-{{end}}
-
 {{block "nav-head" .}}
-  <div class="flex flex-row h-screen"> <!-- page wrapper -->
+    <div class="flex flex-row h-screen"> <!-- page wrapper -->
 
-    <nav class="fixed bg-base-200 h-screen w-32 overflow-y-auto">
-      <ul class="menu gap-2 w-32">
-        {{block "nav" .}}
-          {{range .Nav}}
-            <li><a href="{{.Href}}"
-                   class="{{if .Active}}menu-active{{end}}"
-                   hx-get="/nav{{.Href}}"
-                   hx-trigger="click"
-                   hx-target="closest ul"
-                   hx-swap="innerHTML"
-                >{{.Label}}</a></li>
+      <aside class="fixed bg-base-200 h-screen w-32 overflow-y-auto">
+          <nav id="nav">
+            {{block "nav" .}}
+              <ul class="menu gap-2 w-32">
+                {{range .Nav}}
+                  <li><a href="{{.Href}}"
+                         {{- if .Active}} class="menu-active" {{end -}}
+                         hx-get="{{.Href}}"
+                         hx-trigger="click"
+                         hx-target="main"
+                         hx-swap="innerHTML"
+                         hx-push-url="true"
+                      >{{.Label}}</a></li>
+                {{end}}
+              </ul>
           {{end}}
-        {{end}}
-      </ul>
-    </nav>
+        </nav>
+      </aside>
 
-    <main id="main"
-          class="flex-1 ml-32 p-2 overflow-y-auto"
-          _="on scroll debounced at 200ms call saveScrollTop(event)"
-      >
-
+      <main class="flex-1 ml-32 p-2 overflow-y-auto"
+            _="on scroll debounced at 200ms call saveScrollTop(event)"
+        >
 {{end}}
 
 {{block "nav-foot" .}}
-    </main>
-  </div>
+      </main>
+    </div>
 {{end}}
 
-{{block "nav-main" .}}
-  {{template "nav" .}}
-
-  <main id="main"
-        class="flex-1 ml-32 p-2 overflow-y-auto"
-        hx-swap-oob="true"
-        _="on scroll debounced at 200ms call saveScrollTop(event)"
-  >
-    <div hx-get="{{.Href}}"
-         hx-trigger="load"
-         hx-target="this"
-         hx-target-error="this"
-         hx-swap="outerHTML"
-         >{{template "main-loading"}}</div>
-  </main>
-{{end}}
-
-{{define "main-loading"}}
-  <div class="flex flex-col gap-4">
-    <div class="skeleton h-8 w-full"></div>
-  </div>
+{{block "foot" .}}
+  </body>
+</html>
 {{end}}
