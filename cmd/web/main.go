@@ -17,10 +17,6 @@ func run() error {
 		return fmt.Errorf("newApplication(): %w", err)
 	}
 
-	// Navigation.
-	app.mux.Get("/nav/", app.nav)
-	app.mux.Get("/nav/{href}", app.nav)
-
 	// Pages.
 	app.mux.Get("/", app.home)
 	app.mux.Get("/leaflet", app.leaflet)
@@ -33,7 +29,6 @@ func run() error {
 		r.Use(delayResponse(500))
 
 		// Widgets.
-		r.Get("/theme", app.theme)
 		r.Post("/theme-chooser", app.themeChooserSave)
 
 		r.Get("/tabs/links", app.tabsLinks)

@@ -75,12 +75,16 @@ func (app *Application) render(w http.ResponseWriter,
 ) {
 	var b bytes.Buffer
 
-	// Render a full page if we didn't get a htmx request.
+	if pageData == nil {
+		pageData = map[string]any{}
+	}
+
+	// Update nav.
+	pageData["Nav"] = nav.PageLinks(r.URL.Path)
+
+	// Setup anything required for full page load.
 	if r.Header.Get("Hx-Request") != "true" {
 		// Setup non-specific page template data here.
-		if pageData == nil {
-			pageData = map[string]any{}
-		}
 
 		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
 
@@ -89,7 +93,6 @@ func (app *Application) render(w http.ResponseWriter,
 		}
 
 		pageData["PageLoad"] = pageLoad
-		pageData["Nav"] = nav.PageLinks(r.URL.Path)
 
 		block += "-page"
 	}
