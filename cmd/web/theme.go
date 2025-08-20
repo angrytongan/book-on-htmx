@@ -22,14 +22,30 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if errActiveTheme != nil {
-		pageData["Error"] = ErrTextCouldntLoadActiveTheme
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("%s", ErrTextCouldntLoadActiveTheme),
+			http.StatusInternalServerError,
+			ErrTextCouldntLoadActiveTheme,
+		)
+
+		return
 	}
 
 	if errThemes != nil {
-		pageData["Error"] = ErrTextCouldntLoadThemes
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("%s", ErrTextCouldntLoadThemes),
+			http.StatusInternalServerError,
+			ErrTextCouldntLoadThemes,
+		)
+
+		return
 	}
 
-	app.render(w, r, "theme", pageData, http.StatusOK)
+	app.renderWithNav(w, r, "theme", pageData, http.StatusOK)
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {

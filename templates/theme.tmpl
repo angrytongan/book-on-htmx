@@ -25,6 +25,7 @@
                        hx-post="/theme-chooser"
                        hx-trigger="change"
                        hx-indicator="next span.htmx-indicator"
+                       hx-target-error="next p.error"
                       /> {{.Label}} <span class="htmx-indicator loading loading-spinner loading-sm"></span>
               </label>
             </li>

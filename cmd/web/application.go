@@ -67,11 +67,13 @@ func newApplication() (*Application, error) {
 	}, nil
 }
 
-func (app *Application) render(w http.ResponseWriter,
+func (app *Application) render(
+	w http.ResponseWriter,
 	r *http.Request,
 	block string,
 	pageData map[string]any,
 	statusCode int,
+	includeNav bool,
 ) {
 	var b bytes.Buffer
 
@@ -79,8 +81,9 @@ func (app *Application) render(w http.ResponseWriter,
 		pageData = map[string]any{}
 	}
 
-	// Update nav.
-	pageData["Nav"] = nav.PageLinks(r.URL.Path)
+	if includeNav {
+		pageData["Nav"] = nav.PageLinks(r.URL.Path)
+	}
 
 	// Setup anything required for full page load.
 	if r.Header.Get("Hx-Request") != "true" {
@@ -121,6 +124,29 @@ func (app *Application) render(w http.ResponseWriter,
 	}
 }
 
+func (app *Application) renderWithNav(
+	w http.ResponseWriter,
+	r *http.Request,
+	block string,
+	pageData map[string]any,
+	statusCode int,
+) {
+	app.render(w, r, block, pageData, statusCode, true)
+}
+
+func (app *Application) renderPartial(
+	w http.ResponseWriter,
+	r *http.Request,
+	block string,
+	pageData map[string]any,
+	statusCode int,
+) {
+	// Only render partials for htmx requests.
+	if r.Header.Get("Hx-Request") == "true" {
+		app.render(w, r, block, pageData, statusCode, false)
+	}
+}
+
 func (app *Application) listen(port int) error {
 	log.Printf("listening on port %d\n", port)
 
@@ -140,7 +166,7 @@ func (app *Application) serverError(
 
 	clientMessage := http.StatusText(statusCode)
 	if len(msg) > 0 {
-		clientMessage = strings.Join(msg, " - ") // :shrug:
+		clientMessage = strings.Join([]string{clientMessage, strings.Join(msg, ":")}, " - ") // :shrug:
 	}
 
 	http.Error(w, clientMessage, statusCode)
