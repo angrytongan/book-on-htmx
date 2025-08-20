@@ -46,5 +46,5 @@ func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {
 		"Results": results,
 	}
 
-	app.renderPartial(w, r, block, pageData, http.StatusOK)
+	app.render(w, r, block, pageData, http.StatusOK)
 }
