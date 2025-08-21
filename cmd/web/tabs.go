@@ -43,7 +43,7 @@ func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {
 		"Content": "This is content " + tab + ".",
 	}
 
-	app.renderPartial(w, r, "tab-links", pageData, http.StatusOK)
+	app.render(w, r, "tab-links", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsLinksOOB(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +63,7 @@ func (app *Application) tabsLinksOOB(w http.ResponseWriter, r *http.Request) {
 		"Active": tab,
 	}
 
-	app.renderPartial(w, r, "tab-links-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-links-oob", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsButtonsOOB(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +83,7 @@ func (app *Application) tabsButtonsOOB(w http.ResponseWriter, r *http.Request) {
 		"Active": tab,
 	}
 
-	app.renderPartial(w, r, "tab-buttons-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-buttons-oob", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
@@ -102,12 +102,12 @@ func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
 		"Tabs": tabs,
 	}
 
-	app.renderPartial(w, r, "tab-radio-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-radio-oob", pageData, http.StatusOK)
 }
 
 func (app *Application) tabsContent(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("content")
 	block := "tab-content-" + tab
 
-	app.renderPartial(w, r, block, nil, http.StatusOK)
+	app.render(w, r, block, nil, http.StatusOK)
 }

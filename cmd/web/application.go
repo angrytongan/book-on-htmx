@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -73,16 +74,11 @@ func (app *Application) render(
 	block string,
 	pageData map[string]any,
 	statusCode int,
-	includeNav bool,
 ) {
 	var b bytes.Buffer
 
 	if pageData == nil {
 		pageData = map[string]any{}
-	}
-
-	if includeNav {
-		pageData["Nav"] = nav.PageLinks(r.URL.Path)
 	}
 
 	// Setup anything required for full page load.
@@ -131,20 +127,12 @@ func (app *Application) renderWithNav(
 	pageData map[string]any,
 	statusCode int,
 ) {
-	app.render(w, r, block, pageData, statusCode, true)
-}
-
-func (app *Application) renderPartial(
-	w http.ResponseWriter,
-	r *http.Request,
-	block string,
-	pageData map[string]any,
-	statusCode int,
-) {
-	// Only render partials for htmx requests.
-	if r.Header.Get("Hx-Request") == "true" {
-		app.render(w, r, block, pageData, statusCode, false)
+	if pageData == nil {
+		pageData = map[string]any{}
 	}
+
+	pageData["Nav"] = nav.PageLinks(r.URL.Path)
+	app.render(w, r, block, pageData, statusCode)
 }
 
 func (app *Application) listen(port int) error {
@@ -175,6 +163,24 @@ func (app *Application) serverError(
 func (app *Application) clientRedirect(w http.ResponseWriter, r *http.Request, url string, code int) {
 	if r.Header.Get("Hx-Request") == "true" {
 		w.Header().Set("Hx-Redirect", url)
+	} else {
+		http.Redirect(w, r, url, code)
+	}
+}
+
+func (app *Application) clientLocation(w http.ResponseWriter, r *http.Request, url string, code int) {
+	if r.Header.Get("Hx-Request") == "true" {
+		locationVars := map[string]string{
+			"path":   url,
+			"target": "#main",
+		}
+
+		bytes, err := json.Marshal(locationVars)
+		if err != nil {
+			http.Redirect(w, r, url, code)
+		}
+
+		w.Header().Set("HX-Location", string(bytes))
 	} else {
 		http.Redirect(w, r, url, code)
 	}

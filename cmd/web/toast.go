@@ -16,5 +16,5 @@ func (app *Application) toastServerTime(w http.ResponseWriter, r *http.Request) 
 		"Now": now,
 	}
 
-	app.renderPartial(w, r, "toast-server-time", pageData, http.StatusOK)
+	app.render(w, r, "toast-server-time", pageData, http.StatusOK)
 }

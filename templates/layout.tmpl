@@ -46,8 +46,8 @@
                          {{- if .Active}} class="menu-active" {{end -}}
                          hx-get="{{.Href}}"
                          hx-trigger="click"
-                         hx-target="main"
-                         hx-target-error="main"
+                         hx-target="#main"
+                         hx-target-error="#main"
                          hx-swap="innerHTML"
                          hx-push-url="true"
                       >{{.Label}}</a></li>
@@ -57,7 +57,7 @@
         </nav>
       </aside>
 
-      <main class="flex-1 ml-32 p-2 overflow-y-auto"
+      <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto"
             _="on scroll debounced at 200ms call saveScrollTop(event)"
         >
 {{end}}
