@@ -1,0 +1,36 @@
+{{block "weather" .}}
+  <div class="card card-border">
+    <div class="card-body">
+      <div class="card-title">Weather</div>
+      {{block "weather-current" .}}
+        <div hx-get="/weather/current"
+             hx-trigger="load"
+             hx-target="this"
+             hx-swap="outerHTML">{{template "weather-loading"}}</div>
+       {{end}}
+    </div>
+  </div>
+{{end}}
+
+{{define "weather-loading"}}
+  <div class="skeleton w-full h-20"></div>
+{{end}}
+
+{{block "weather-data" .}}
+  <div class="flex flex-col gap-2">
+    <table class="table">
+      <tr><th>Conditions</th><td>{{.Conditions}}</td></tr>
+      <tr><th>Temperature</th><td>{{.Temperature}} degrees</td></tr>
+      <tr><th>Wind</th><td>{{.WindSpeed}}kph @ {{.WindDirection}}</td></tr>
+    </table>
+
+    <div class="text-xs">Last updated {{.ServerTime}}</div>
+    <button class="btn btn-primary btn-xs"
+            hx-get="/weather/current"
+            hx-target="closest div.flex"
+            hx-swap="outerHTML"
+            hx-disabled-elt="this"
+            hx-indicator="this"
+            >Update <span class="htmx-indicator loading loading-spinner"></span></button>
+  </div>
+{{end}}

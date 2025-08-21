@@ -1,0 +1,22 @@
+{{block "time" .}}
+  <div class="card card-border">
+    <div class="card-body">
+      <div class="card-title">Time</div>
+      <div hx-get="/time/servertime"
+           hx-trigger="load"
+           hx-target="this"
+           hx-swap="outerHTML">{{template "time-loading"}}</div>
+    </div>
+  </div>
+{{end}}
+
+{{block "time-servertime" .}}
+  <div hx-get="/time/servertime"
+       hx-trigger="every 1s"
+       hx-target="this"
+       hx-swap="outerHTML">{{.Time}}</div>
+{{end}}
+
+{{define "time-loading"}}
+  <div class="skeleton w-full h-20"></div>
+{{end}}

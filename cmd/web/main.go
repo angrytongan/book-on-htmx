@@ -19,11 +19,13 @@ func run() error {
 
 	// Pages.
 	app.mux.Get("/", app.home)
+	app.mux.Get("/dashboard", app.dashboard)
 	app.mux.Get("/leaflet", app.leaflet)
 	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
 	app.mux.Get("/toast", app.toast)
+
 	app.mux.Get("/settings", app.settings)
 	app.mux.Get("/settings/{tab}", app.settings)
 
@@ -47,6 +49,12 @@ func run() error {
 		r.Get("/search/term", app.searchTerm)
 
 		r.Get("/toast/server-time", app.toastServerTime)
+
+		r.Get("/weather", app.weather)
+		r.Get("/weather/current", app.weatherCurrent)
+
+		r.Get("/time", app.time)
+		r.Get("/time/servertime", app.servertime)
 	})
 
 	return app.listen(port)

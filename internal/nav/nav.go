@@ -9,6 +9,7 @@ type PageLink struct {
 func PageLinks(activeHref string) []PageLink {
 	pageLinks := []PageLink{
 		{"/", "Home", false},
+		{"/dashboard", "Dashboard", false},
 		{"/leaflet", "Leaflet", false},
 		{"/search", "Search", false},
 		{"/settings", "Settings", false},
