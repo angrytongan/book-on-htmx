@@ -12,7 +12,7 @@
 
 {{block "time-servertime" .}}
   <div hx-get="/time/servertime"
-       hx-trigger="every 1s"
+       hx-trigger="every 1s[isPageVisible()]"
        hx-target="this"
        hx-swap="outerHTML"
        hx-indicator="this"
