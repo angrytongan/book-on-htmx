@@ -14,7 +14,9 @@
   <div hx-get="/time/servertime"
        hx-trigger="every 1s"
        hx-target="this"
-       hx-swap="outerHTML">{{.Time}}</div>
+       hx-swap="outerHTML"
+       hx-indicator="this"
+       >{{.Time}} <span class="htmx-indicator loading loading-spinner"></span></div>
 {{end}}
 
 {{define "time-loading"}}
