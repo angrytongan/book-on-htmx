@@ -11,6 +11,7 @@ func PageLinks(activeHref string) []PageLink {
 		{"/", "Home", false},
 		{"/leaflet", "Leaflet", false},
 		{"/search", "Search", false},
+		{"/settings", "Settings", false},
 		{"/tabs", "Tabs", false},
 		{"/toast", "Toast", false},
 		{"/theme", "Theme", false},

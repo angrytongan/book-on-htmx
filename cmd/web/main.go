@@ -24,6 +24,8 @@ func run() error {
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
 	app.mux.Get("/toast", app.toast)
+	app.mux.Get("/settings", app.settings)
+	app.mux.Get("/settings/{tab}", app.settings)
 
 	app.mux.Group(func(r chi.Router) {
 		r.Use(delayResponse(500))
