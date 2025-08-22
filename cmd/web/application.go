@@ -115,7 +115,7 @@ func (app *Application) render(
 	// present in the page header or footer, eg. theme name for the data-theme
 	// attribute in <html>.
 	if r.Header.Get("Hx-Request") != "true" {
-		extraBlockData = append(extraBlockData, "theme")
+		extraBlockData = append(extraBlockData, "theme", "navigation")
 
 		// Full page loads require us to load the entire page. Blocks that are
 		// for entire pages should have "-page" appended to them in the
