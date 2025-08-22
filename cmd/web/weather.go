@@ -10,7 +10,7 @@ func (app *Application) weather(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) weatherCurrent(w http.ResponseWriter, r *http.Request) {
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Temperature":   16,
 		"WindDirection": "NE",
 		"WindSpeed":     20,
@@ -18,5 +18,5 @@ func (app *Application) weatherCurrent(w http.ResponseWriter, r *http.Request) {
 		"ServerTime":    time.Now().Format(time.DateTime),
 	}
 
-	app.render(w, r, "weather-data", pageData, http.StatusOK)
+	app.render(w, r, "weather-data", blockData, http.StatusOK)
 }

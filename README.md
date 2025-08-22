@@ -3,7 +3,7 @@ Random notes that might make a good online book.
 ## Rendering pages
 
 -   Each page has an associated `GET` handler.
--   The handler will render the page with whatever page data is necessary.
+-   The handler will render the page with whatever block data is necessary.
 -   The template used for rendering the page will be either:
     - the name of the block for htmx requests; or
     - the name of the block with "-page" appended for non-htmx requests.
@@ -20,7 +20,7 @@ Random notes that might make a good online book.
     the name of the block.
 -   `app.render()` also reconstructs the navigation links. These links are
     oob-swapped if the block includes the nav swap
--   Other page data is set.
+-   Other block data is set.
 -   Page is rendered and sent to the client.
 
 ### Improvements

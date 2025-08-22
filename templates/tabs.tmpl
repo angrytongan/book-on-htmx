@@ -8,6 +8,11 @@
   {{template "foot" .}}
 {{end}}
 
+{{block "tabs" .}}
+  {{template "nav-oob" .}}
+  {{template "tabs-content" .}}
+{{end}}
+
 {{block "tabs-content" .}}
   <h1 class="text-xl">Tabs</h1>
 
@@ -74,11 +79,6 @@
     </div>
 
   </div>
-{{end}}
-
-{{block "tabs" .}}
-  {{template "nav-oob" .}}
-  {{template "tabs-content" .}}
 {{end}}
 
 {{block "tab-links" .}}

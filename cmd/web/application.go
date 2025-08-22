@@ -68,35 +68,69 @@ func newApplication() (*Application, error) {
 	}, nil
 }
 
+// includeExtraBlockData adds data outside of that required for rendering the
+// page to be added for inclusion when executing the template. Templates may
+// rely on data that isn't native to themselves; for example, an endpoint that
+// renders itself as a "full page" may require updating a navigation component
+// showing the current page, but the endpoint doesn't (and shouldn't) know
+// anything about the navigation component. We do that resolution here, keeping
+// the endpoint (relatively) clean.
+func (app *Application) includeExtraBlockData(
+	r *http.Request,
+	blockData map[string]any,
+	extraBlockData []string,
+) map[string]any {
+	if blockData == nil {
+		blockData = map[string]any{}
+	}
+
+	for _, extra := range extraBlockData {
+		switch extra {
+		case "navigation":
+			blockData["Nav"] = nav.PageLinks(r.URL.Path)
+
+		case "theme":
+			activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
+			blockData["PageTheme"] = activeTheme
+		}
+	}
+
+	return blockData
+}
+
+// render pulls together the data required for the template to be rendered, and
+// executes it. statusCode is sent as the response.
 func (app *Application) render(
 	w http.ResponseWriter,
 	r *http.Request,
 	block string,
-	pageData map[string]any,
+	blockData map[string]any,
 	statusCode int,
+	extraBlockData ...string,
 ) {
 	var b bytes.Buffer
 
-	if pageData == nil {
-		pageData = map[string]any{}
-	}
-
-	// Setup anything required for full page load.
+	// If the client is doing a full page load, add in any "global" data for
+	// the full page template block(s). This will typically be stuff that is
+	// present in the page header or footer, eg. theme name for the data-theme
+	// attribute in <html>.
 	if r.Header.Get("Hx-Request") != "true" {
-		// Setup non-specific page template data here.
+		extraBlockData = append(extraBlockData, "theme")
 
-		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
-
-		pageLoad := map[string]any{
-			"DataTheme": activeTheme,
-		}
-
-		pageData["PageLoad"] = pageLoad
-
+		// Full page loads require us to load the entire page. Blocks that are
+		// for entire pages should have "-page" appended to them in the
+		// template files. This allows each endpoint to specify it's own layout
+		// in the "-page" block.
 		block += "-page"
 	}
 
-	err := app.tpl.ExecuteTemplate(&b, block, pageData)
+	// Amend the block data to include anything that has been specified as
+	// extra. We rely on the block template that is being rendered to contain
+	// correct extra templates so this data can be shown.
+	blockData = app.includeExtraBlockData(r, blockData, extraBlockData)
+
+	// Run the template.
+	err := app.tpl.ExecuteTemplate(&b, block, blockData)
 	if err != nil {
 		app.serverError(
 			w,
@@ -112,27 +146,13 @@ func (app *Application) render(
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(statusCode)
 
+	// Send to client.
 	_, err = w.Write(b.Bytes())
 	if err != nil {
 		app.serverError(w, r, fmt.Errorf("w.Write(): %w", err), http.StatusInternalServerError)
 
 		return
 	}
-}
-
-func (app *Application) renderWithNav(
-	w http.ResponseWriter,
-	r *http.Request,
-	block string,
-	pageData map[string]any,
-	statusCode int,
-) {
-	if pageData == nil {
-		pageData = map[string]any{}
-	}
-
-	pageData["Nav"] = nav.PageLinks(r.URL.Path)
-	app.render(w, r, block, pageData, statusCode)
 }
 
 func (app *Application) listen(port int) error {

@@ -23,7 +23,7 @@ type RadioTabLink struct {
 }
 
 func (app *Application) tabs(w http.ResponseWriter, r *http.Request) {
-	app.renderWithNav(w, r, "tabs", nil, http.StatusOK)
+	app.render(w, r, "tabs", nil, http.StatusOK, "navigation")
 }
 
 func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {
@@ -38,12 +38,12 @@ func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {
 		{"Three", "/tabs/links/three", tab == "three"},
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Tabs":    tabs,
 		"Content": "This is content " + tab + ".",
 	}
 
-	app.render(w, r, "tab-links", pageData, http.StatusOK)
+	app.render(w, r, "tab-links", blockData, http.StatusOK)
 }
 
 func (app *Application) tabsLinksOOB(w http.ResponseWriter, r *http.Request) {
@@ -58,12 +58,12 @@ func (app *Application) tabsLinksOOB(w http.ResponseWriter, r *http.Request) {
 		{"Three", "/tabs/links-oob/three", tab == "three"},
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Tabs":   tabs,
 		"Active": tab,
 	}
 
-	app.render(w, r, "tab-links-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-links-oob", blockData, http.StatusOK)
 }
 
 func (app *Application) tabsButtonsOOB(w http.ResponseWriter, r *http.Request) {
@@ -78,12 +78,12 @@ func (app *Application) tabsButtonsOOB(w http.ResponseWriter, r *http.Request) {
 		{"Three", "/tabs/buttons-oob/three", tab == "three"},
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Tabs":   tabs,
 		"Active": tab,
 	}
 
-	app.render(w, r, "tab-buttons-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-buttons-oob", blockData, http.StatusOK)
 }
 
 func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
@@ -98,11 +98,11 @@ func (app *Application) tabsRadiosOOB(w http.ResponseWriter, r *http.Request) {
 		{"Three", "three", tab == "three"},
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Tabs": tabs,
 	}
 
-	app.render(w, r, "tab-radio-oob", pageData, http.StatusOK)
+	app.render(w, r, "tab-radio-oob", blockData, http.StatusOK)
 }
 
 func (app *Application) tabsContent(w http.ResponseWriter, r *http.Request) {
