@@ -29,8 +29,10 @@ func run() error {
 	app.mux.Get("/settings", app.settings)
 	app.mux.Get("/settings/{tab}", app.settings)
 
+	// htmx requests.
 	app.mux.Group(func(r chi.Router) {
 		r.Use(delayResponse(500))
+		r.Use(app.mustBeHtmxRequest)
 
 		// Widgets.
 		r.Post("/theme-chooser", app.themeChooserSave)
