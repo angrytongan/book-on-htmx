@@ -10,7 +10,7 @@ const (
 )
 
 func (app *Application) search(w http.ResponseWriter, r *http.Request) {
-	app.renderWithNav(w, r, "search", nil, http.StatusOK)
+	app.render(w, r, "search", nil, http.StatusOK, "navigation")
 }
 
 func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {
@@ -42,9 +42,9 @@ func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Results": results,
 	}
 
-	app.render(w, r, block, pageData, http.StatusOK)
+	app.render(w, r, block, blockData, http.StatusOK)
 }

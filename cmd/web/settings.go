@@ -9,7 +9,7 @@ import (
 func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 	tab := r.URL.Query().Get("tab")
 	if tab == "" {
-		app.clientLocation(w, r, "/settings?tab=first", http.StatusSeeOther)
+		app.clientLocation(w, r, "/settings?tab=first&update-nav=true", http.StatusSeeOther)
 
 		return
 	}
@@ -39,7 +39,7 @@ func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 		content = settingsThird()
 	}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Tab":     tab,
 		"Tabs":    tabs,
 		"Content": content,
@@ -54,10 +54,10 @@ func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("Hx-Push-Url", activeTab.Href)
 
-	if r.URL.Query().Get("updateNav") == "" {
-		app.renderWithNav(w, r, "settings", pageData, http.StatusOK)
+	if r.URL.Query().Get("update-nav") != "" {
+		app.render(w, r, "settings", blockData, http.StatusOK, "navigation")
 	} else {
-		app.render(w, r, "settings-tab", pageData, http.StatusOK)
+		app.render(w, r, "settings-tab", blockData, http.StatusOK)
 	}
 }
 

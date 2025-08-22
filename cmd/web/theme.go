@@ -17,7 +17,7 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 	activeTheme, errActiveTheme := app.themeRepo.Active(context.Background(), id)
 	themes, errThemes := app.themeRepo.Themes(r.Context(), activeTheme)
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Themes": themes,
 	}
 
@@ -45,7 +45,7 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.renderWithNav(w, r, "theme", pageData, http.StatusOK)
+	app.render(w, r, "theme", blockData, http.StatusOK, "navigation")
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {

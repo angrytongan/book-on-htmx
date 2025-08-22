@@ -8,6 +8,11 @@
   {{template "foot" .}}
 {{end}}
 
+{{block "toast" .}}
+  {{template "nav-oob" .}}
+  {{template "toast-content" .}}
+{{end}}
+
 {{block "toast-content" .}}
   <h1 class="text-xl">Toast</h1>
 
@@ -19,11 +24,6 @@
           >Get server time</button>
 
   <div class="toast toast-top toast-end"></div>
-{{end}}
-
-{{block "toast" .}}
-  {{template "toast-content" .}}
-  {{template "nav-oob" .}}
 {{end}}
 
 {{block "toast-server-time" .}}

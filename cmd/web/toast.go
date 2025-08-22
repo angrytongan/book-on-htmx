@@ -6,15 +6,15 @@ import (
 )
 
 func (app *Application) toast(w http.ResponseWriter, r *http.Request) {
-	app.renderWithNav(w, r, "toast", nil, http.StatusOK)
+	app.render(w, r, "toast", nil, http.StatusOK, "navigation")
 }
 
 func (app *Application) toastServerTime(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Format(time.DateTime)
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Now": now,
 	}
 
-	app.render(w, r, "toast-server-time", pageData, http.StatusOK)
+	app.render(w, r, "toast-server-time", blockData, http.StatusOK)
 }

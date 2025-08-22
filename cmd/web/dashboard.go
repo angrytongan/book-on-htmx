@@ -5,9 +5,9 @@ import "net/http"
 func (app *Application) dashboard(w http.ResponseWriter, r *http.Request) {
 	widgets := []string{"/weather", "/time"}
 
-	pageData := map[string]any{
+	blockData := map[string]any{
 		"Widgets": widgets,
 	}
 
-	app.renderWithNav(w, r, "dashboard", pageData, http.StatusOK)
+	app.render(w, r, "dashboard", blockData, http.StatusOK, "navigation")
 }
