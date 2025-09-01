@@ -20,6 +20,7 @@ func run() error {
 	// Pages.
 	app.mux.Get("/", app.home)
 	app.mux.Get("/dashboard", app.dashboard)
+	app.mux.Get("/dog", app.dog)
 	app.mux.Get("/leaflet", app.leaflet)
 	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)

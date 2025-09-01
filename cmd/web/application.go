@@ -11,6 +11,7 @@ import (
 	"os"
 	"strings"
 
+	"bonh/internal/dog"
 	"bonh/internal/nav"
 	"bonh/internal/search"
 	"bonh/internal/theme"
@@ -18,6 +19,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -30,6 +33,7 @@ type Application struct {
 
 	themeRepo  theme.Repository
 	searchRepo search.Repository
+	dogRepo    dog.Repository
 }
 
 func mustGetenv(key string) string {
@@ -50,7 +54,14 @@ func newApplication() (*Application, error) {
 	mux.Handle("/css/*", assetFileServer)
 	mux.Handle("/js/*", assetFileServer)
 
-	tpl := template.Must(template.ParseGlob("templates/*.tmpl"))
+	funcMap := template.FuncMap{
+		"title": func(s string) string {
+			c := cases.Title(language.Und)
+			return c.String(s)
+		},
+	}
+
+	tpl := template.Must(template.New("").Funcs(funcMap).ParseGlob("templates/*.tmpl"))
 
 	pool, err := pgxpool.New(context.Background(), mustGetenv("DATABASE_CONNECTION_STRING"))
 	if err != nil {
@@ -59,12 +70,14 @@ func newApplication() (*Application, error) {
 
 	themeRepo := theme.NewPGXPoolRepository(pool)
 	searchRepo := search.NewPGXPoolRepository(pool)
+	dogRepo := dog.NewPGXPoolRepository(pool)
 
 	return &Application{
 		mux,
 		tpl,
 		themeRepo,
 		searchRepo,
+		dogRepo,
 	}, nil
 }
 

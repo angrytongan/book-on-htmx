@@ -10,6 +10,22 @@ CREATE TABLE setting (
 
 INSERT INTO setting (theme) VALUES ('light');
 
+DROP TABLE IF EXISTS dog;
+CREATE TABLE dog (
+  dog_id INTEGER GENERATED ALWAYS AS IDENTITY,
+  colour TEXT NOT NULL,
+  breed TEXT NOT NULL,
+  name TEXT NOT NULL,
+  PRIMARY KEY (dog_id)
+);
+
+INSERT INTO dog (colour, breed, name) VALUES
+  ('black', 'cocker spaniel', 'Banjo'),
+  ('black', 'border collie', 'Sebastian'),
+  ('tan', 'border collie', 'Marcus'),
+  ('gold', 'labrador', 'Fido')
+;
+
 DROP TABLE IF EXISTS theme;
 CREATE TABLE theme (
   theme_id INTEGER GENERATED ALWAYS AS IDENTITY,

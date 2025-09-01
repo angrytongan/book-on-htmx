@@ -1,0 +1,83 @@
+package dog
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+type PGXPoolRepository struct {
+	pool *pgxpool.Pool
+}
+
+const (
+	sqlBreeds = `
+		SELECT DISTINCT breed FROM dog ORDER BY breed
+	`
+
+	sqlColours = `
+		SELECT DISTINCT colour FROM dog ORDER BY colour
+	`
+
+	sqlAll = `
+		SELECT
+			colour,
+			breed,
+			name
+		FROM dog
+			WHERE
+				   ('all' = '%s' OR colour = $1)
+				AND ('all' = '%s' OR breed = $2)
+		ORDER BY
+			colour,
+			breed,
+			name
+	`
+)
+
+func NewPGXPoolRepository(pool *pgxpool.Pool) Repository {
+	return &PGXPoolRepository{pool}
+}
+
+func basic[T any](p *PGXPoolRepository, ctx context.Context, q string) ([]T, error) {
+	rows, _ := p.pool.Query(ctx, q)
+
+	out, err := pgx.CollectRows(rows, pgx.RowTo[T])
+	if err != nil {
+		return out, fmt.Errorf("pgx.CollectRows(): %w", err)
+	}
+
+	return out, nil
+}
+
+func (p *PGXPoolRepository) Colours(ctx context.Context) ([]string, error) {
+	out, err := basic[string](p, ctx, sqlColours)
+	if err != nil {
+		return out, fmt.Errorf("p.basic(sqlColours): %w", err)
+	}
+
+	return out, nil
+}
+
+func (p *PGXPoolRepository) Breeds(ctx context.Context) ([]string, error) {
+	out, err := basic[string](p, ctx, sqlBreeds)
+	if err != nil {
+		return out, fmt.Errorf("p.basic(sqlBreeds): %w", err)
+	}
+
+	return out, nil
+}
+
+func (p *PGXPoolRepository) All(ctx context.Context, colour, breed string) ([]Dog, error) {
+	f := fmt.Sprintf(sqlAll, colour, breed)
+	rows, _ := p.pool.Query(ctx, f, colour, breed)
+
+	out, err := pgx.CollectRows(rows, pgx.RowToStructByName[Dog])
+	if err != nil {
+		return out, fmt.Errorf("pgx.CollectRows(): %w", err)
+	}
+
+	return out, nil
+}

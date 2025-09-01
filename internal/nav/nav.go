@@ -12,6 +12,7 @@ var (
 	pageLinks = []PageLink{
 		{"/", "Home", false},
 		{"/dashboard", "Dashboard", false},
+		{"/dog", "Dog", false},
 		{"/leaflet", "Leaflet", false},
 		{"/search", "Search", false},
 		{"/settings", "Settings", false},

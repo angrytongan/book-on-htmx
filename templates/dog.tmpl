@@ -1,0 +1,49 @@
+{{block "dog" .}}
+  <table class="table p-4">
+    <thead>
+      <tr>
+        <th>{{template "dog-colours" .}}</th>
+        <th>{{template "dog-breeds" .}}</th>
+        <th>Name</th>
+    </thead>
+    <tbody>
+      {{range .Dogs}}
+        <tr>
+          <td>{{.Colour}}</td>
+          <td>{{.Breed}}</td>
+          <td>{{.Name}}</td>
+        </tr>
+      {{end}}
+    </tbody>
+  </table>
+{{end}}
+
+{{block "dog-colours" .}}
+  <select name="colour"
+          class="select"
+          hx-get="/dog"
+          hx-trigger="change"
+          hx-target="closest table"
+          hx-swap="outerHTML"
+          hx-include="[name='breed']"
+  >
+    {{range .Colours}}
+      <option value="{{.}}"{{if eq . $.Colour}} selected{{end}}>{{title .}}</option>
+    {{end}}
+  </select>
+{{end}}
+
+{{block "dog-breeds" .}}
+  <select name="breed"
+          class="select"
+          hx-get="/dog"
+          hx-trigger="change"
+          hx-target="closest table"
+          hx-swap="outerHTML"
+          hx-include="[name='colour']"
+  >
+    {{range .Breeds}}
+      <option value="{{.}}"{{if eq . $.Breed}} selected{{end}}>{{title .}}</option>
+    {{end}}
+  </select>
+{{end}}
