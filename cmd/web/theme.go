@@ -45,7 +45,7 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, r, "theme", blockData, http.StatusOK, "navigation")
+	app.render(w, r, "theme", blockData, http.StatusOK)
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {
@@ -69,5 +69,5 @@ func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	app.clientRedirect(w, r, "/theme", http.StatusSeeOther)
+	app.clientRedirect(w, r, r.URL.RawPath, http.StatusSeeOther)
 }

@@ -23,7 +23,7 @@ type RadioTabLink struct {
 }
 
 func (app *Application) tabs(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "tabs", nil, http.StatusOK, "navigation")
+	app.render(w, r, "tabs", nil, http.StatusOK)
 }
 
 func (app *Application) tabsLinks(w http.ResponseWriter, r *http.Request) {

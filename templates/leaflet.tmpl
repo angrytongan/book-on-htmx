@@ -1,22 +1,7 @@
-{{block "leaflet-page" .}}
-  {{template "head" .}}
-  {{template "nav-head" .}}
-
-  {{template "leaflet-content" .}}
-
-  {{template "nav-foot" .}}
-  {{template "foot" .}}
-{{end}}
-
-{{block "leaflet-content" .}}
+{{block "leaflet" .}}
   <h1 class="text-xl">Leaflet<h1>
 
   <div id="map"
        class="w-auto h-56"
        _="on load call createMap(me.id)"></div>
-{{end}}
-
-{{block "leaflet" .}}
-  {{template "nav-oob" .}}
-  {{template "leaflet-content" .}}
 {{end}}

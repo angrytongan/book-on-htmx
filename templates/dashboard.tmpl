@@ -1,14 +1,4 @@
-{{block "dashboard-page" .}}
-  {{template "head" .}}
-  {{template "nav-head" .}}
-
-  {{template "dashboard-content" .}}
-
-  {{template "nav-foot" .}}
-  {{template "foot" .}}
-{{end}}
-
-{{block "dashboard-content" .}}
+{{block "dashboard" .}}
     <h1 class="text-xl">Dashboard</h1>
 
     <div class="grid grid-cols-2 gap-4">
@@ -19,11 +9,6 @@
              hx-swap="innerHTML">{{template "widget-loading"}}</div>
       {{end}}
     </div>
-{{end}}
-
-{{block "dashboard" .}}
-  {{template "nav-oob" .}}
-  {{template "dashboard-content" .}}
 {{end}}
 
 {{define "widget-loading"}}

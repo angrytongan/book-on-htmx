@@ -55,7 +55,7 @@ func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Hx-Push-Url", activeTab.Href)
 
 	if r.URL.Query().Get("update-nav") != "" {
-		app.render(w, r, "settings", blockData, http.StatusOK, "navigation")
+		app.render(w, r, "settings", blockData, http.StatusOK)
 	} else {
 		app.render(w, r, "settings-tab", blockData, http.StatusOK)
 	}
