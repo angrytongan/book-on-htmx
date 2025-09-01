@@ -1,14 +1,4 @@
-{{block "search-page" .}}
-  {{template "head" .}}
-  {{template "nav-head" .}}
-
-  {{template "search-content" .}}
-
-  {{template "nav-foot" .}}
-  {{template "foot" .}}
-{{end}}
-
-{{block "search-content" .}}
+{{block "search" .}}
     <h1 class="text-xl">Search</h1>
 
     <div class="flex flex-col gap-2">
@@ -43,11 +33,6 @@
             {{end}}
         </div>
     </div>
-{{end}}
-
-{{block "search" .}}
-  {{template "nav-oob" .}}
-  {{template "search-content" .}}
 {{end}}
 
 {{define "search-no-results"}}

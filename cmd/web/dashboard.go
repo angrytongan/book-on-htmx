@@ -9,5 +9,5 @@ func (app *Application) dashboard(w http.ResponseWriter, r *http.Request) {
 		"Widgets": widgets,
 	}
 
-	app.render(w, r, "dashboard", blockData, http.StatusOK, "navigation")
+	app.render(w, r, "dashboard", blockData, http.StatusOK)
 }

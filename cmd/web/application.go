@@ -68,36 +68,6 @@ func newApplication() (*Application, error) {
 	}, nil
 }
 
-// includeExtraBlockData adds data outside of that required for rendering the
-// page to be added for inclusion when executing the template. Templates may
-// rely on data that isn't native to themselves; for example, an endpoint that
-// renders itself as a "full page" may require updating a navigation component
-// showing the current page, but the endpoint doesn't (and shouldn't) know
-// anything about the navigation component. We do that resolution here, keeping
-// the endpoint (relatively) clean.
-func (app *Application) includeExtraBlockData(
-	r *http.Request,
-	blockData map[string]any,
-	extraBlockData []string,
-) map[string]any {
-	if blockData == nil {
-		blockData = map[string]any{}
-	}
-
-	for _, extra := range extraBlockData {
-		switch extra {
-		case "navigation":
-			blockData["Nav"] = nav.PageLinks(r.URL.Path)
-
-		case "theme":
-			activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
-			blockData["PageTheme"] = activeTheme
-		}
-	}
-
-	return blockData
-}
-
 // render pulls together the data required for the template to be rendered, and
 // executes it. statusCode is sent as the response.
 func (app *Application) render(
@@ -106,50 +76,72 @@ func (app *Application) render(
 	block string,
 	blockData map[string]any,
 	statusCode int,
-	extraBlockData ...string,
 ) {
 	var b bytes.Buffer
+	var templatesToRender []string
 
-	// If the client is doing a full page load, add in any "global" data for
-	// the full page template block(s). This will typically be stuff that is
-	// present in the page header or footer, eg. theme name for the data-theme
-	// attribute in <html>.
-	if r.Header.Get("Hx-Request") != "true" {
-		extraBlockData = append(extraBlockData, "theme", "navigation")
-
-		// Full page loads require us to load the entire page. Blocks that are
-		// for entire pages should have "-page" appended to them in the
-		// template files. This allows each endpoint to specify it's own layout
-		// in the "-page" block.
-		block += "-page"
+	if blockData == nil {
+		blockData = map[string]any{}
 	}
 
-	// Amend the block data to include anything that has been specified as
-	// extra. We rely on the block template that is being rendered to contain
-	// correct extra templates so this data can be shown.
-	blockData = app.includeExtraBlockData(r, blockData, extraBlockData)
+	if r.Header.Get("Hx-Request") != "true" {
+		// This isn't a partial render, so we have to render the entire page. Grab
+		// all the bits that are required to render an entire pgae, and construct
+		// it from the bits.
+		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
+		blockData["PageTheme"] = activeTheme
+		blockData["Nav"] = nav.PageLinks(r.URL.Path)
+		templatesToRender = []string{"head", "nav-head", block, "nav-foot", "foot"}
+	} else {
+		// We are doing a partial render. If the render requires updating
+		// navigation, include the oob version of the navigation so it gets swapped
+		// in alongside the requested block.
+		if nav.IsNavLink(r.URL.Path) {
+			blockData["Nav"] = nav.PageLinks(r.URL.Path)
+			templatesToRender = []string{"nav-oob"}
+		}
 
-	// Run the template.
-	err := app.tpl.ExecuteTemplate(&b, block, blockData)
-	if err != nil {
-		app.serverError(
-			w,
-			r,
-			fmt.Errorf("app.tpl.ExecuteTemplate(%s): %w", block, err),
-			http.StatusInternalServerError,
-		)
+		// Add in the requested block.
+		templatesToRender = append(templatesToRender, block)
+	}
 
-		return
+	// Execute all the templates in turn and store in the output buffer.
+	for _, t := range templatesToRender {
+		if app.tpl.Lookup(t) == nil {
+			app.serverError(
+				w,
+				r,
+				fmt.Errorf("app.tpl.Lookup(%s): no such template", block),
+				http.StatusInternalServerError,
+			)
+			return
+		}
+
+		var lb bytes.Buffer
+		if err := app.tpl.ExecuteTemplate(&lb, t, blockData); err != nil {
+			app.serverError(
+				w,
+				r,
+				fmt.Errorf("app.tpl.ExecuteTemplate(%s): %w", t, err),
+				http.StatusInternalServerError,
+			)
+			return
+		}
+		b.Write(lb.Bytes())
 	}
 
 	// NOTE hardcoded content type here
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(statusCode)
 
-	// Send to client.
-	_, err = w.Write(b.Bytes())
-	if err != nil {
-		app.serverError(w, r, fmt.Errorf("w.Write(): %w", err), http.StatusInternalServerError)
+	// Send final buffer to the client.
+	if _, err := w.Write(b.Bytes()); err != nil {
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("w.Write(): %w", err),
+			http.StatusInternalServerError,
+		)
 
 		return
 	}

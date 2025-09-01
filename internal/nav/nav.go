@@ -1,13 +1,15 @@
 package nav
 
+import "slices"
+
 type PageLink struct {
 	Href   string
 	Label  string
 	Active bool
 }
 
-func PageLinks(activeHref string) []PageLink {
-	pageLinks := []PageLink{
+var (
+	pageLinks = []PageLink{
 		{"/", "Home", false},
 		{"/dashboard", "Dashboard", false},
 		{"/leaflet", "Leaflet", false},
@@ -17,14 +19,28 @@ func PageLinks(activeHref string) []PageLink {
 		{"/toast", "Toast", false},
 		{"/theme", "Theme", false},
 	}
+)
 
-	for i, p := range pageLinks {
+func PageLinks(activeHref string) []PageLink {
+	pl := slices.Clone(pageLinks)
+
+	for i, p := range pl {
 		if p.Href == activeHref {
-			pageLinks[i].Active = true
+			pl[i].Active = true
 
 			break
 		}
 	}
 
-	return pageLinks
+	return pl
+}
+
+func IsNavLink(href string) bool {
+	for _, l := range pageLinks {
+		if l.Href == href {
+			return true
+		}
+	}
+
+	return false
 }
