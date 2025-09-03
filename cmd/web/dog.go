@@ -12,7 +12,11 @@ type Dog struct {
 }
 
 func (app *Application) dog(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "dog", nil, http.StatusOK)
+	blockData := map[string]any{
+		"QP": r.URL.Query().Encode(),
+	}
+
+	app.render(w, r, "dog", blockData, http.StatusOK)
 }
 
 func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
@@ -56,5 +60,6 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 		"Breed":  breed,
 	}
 
+	w.Header().Set("Hx-Push-Url", "/dog?"+r.URL.Query().Encode())
 	app.render(w, r, "dog-table", blockData, http.StatusOK)
 }

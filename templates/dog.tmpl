@@ -1,18 +1,28 @@
 {{block "dog" .}}
-  <div hx-get="/dog/table"
+  <h1 class="text-xl font-bold">Dog</h1>
+
+  <div hx-get="/dog/table?{{.QP}}"
        hx-trigger="load"
        hx-target="this"
-       hx-swap="outerHTML"></div>
+       hx-swap="outerHTML"><div class="loading loading-spinner"></div></div>
 {{end}}
 
 {{block "dog-table" .}}
   <table class="table p-4">
     <thead>
-      <tr>
-        <th><div id="loading-indicator" class="htmx-indicator loading loading-spinner"></div></th>
-        <th>{{template "dog-colours" .}}</th>
-        <th>{{template "dog-breeds" .}}</th>
-        <th>Name</th>
+      <tr id="reloader"
+          hx-get="/dog/table"
+          hx-target="closest table"
+          hx-swap="outerHTML"
+          hx-indicator="#loading-indicator"
+          hx-trigger="reload"
+          hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
+          hx-include="{{template "dog-hx-include"}}"
+      >
+          <th class="w-8"><div id="loading-indicator" class="htmx-indicator loading loading-spinner"></div></th>
+          <th>{{template "dog-colours" .}}</th>
+          <th>{{template "dog-breeds" .}}</th>
+          <th>Name</th>
     </thead>
     <tbody>
       {{range .Dogs}}
@@ -30,13 +40,7 @@
 {{block "dog-colours" .}}
   <select name="colour"
           class="select"
-          hx-get="/dog/table"
-          hx-trigger="change"
-          hx-target="closest table"
-          hx-swap="outerHTML"
-          hx-indicator="#loading-indicator"
-          hx-include="{{template "dog-hx-include"}}"
-          hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
+          _="on change send reload to #reloader"
   >
     {{range .Colours}}
       <option value="{{.}}"{{if eq . $.Colour}} selected{{end}}>{{title .}}</option>
@@ -47,13 +51,7 @@
 {{block "dog-breeds" .}}
   <select name="breed"
           class="select"
-          hx-get="/dog/table"
-          hx-trigger="change"
-          hx-target="closest table"
-          hx-swap="outerHTML"
-          hx-indicator="#loading-indicator"
-          hx-include="{{template "dog-hx-include"}}"
-          hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
+          _="on change send reload to #reloader"
   >
     {{range .Breeds}}
       <option value="{{.}}"{{if eq . $.Breed}} selected{{end}}>{{title .}}</option>
