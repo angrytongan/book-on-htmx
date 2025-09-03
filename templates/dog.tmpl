@@ -4,6 +4,7 @@
   <div hx-get="/dog/table?{{.QP}}"
        hx-trigger="load"
        hx-target="this"
+       hx-target-error="this"
        hx-swap="outerHTML"><div class="loading loading-spinner"></div></div>
 {{end}}
 
@@ -13,6 +14,7 @@
       <tr id="reloader"
           hx-get="/dog/table"
           hx-target="closest table"
+          hx-target-error="closest table"
           hx-swap="outerHTML"
           hx-indicator="#loading-indicator"
           hx-trigger="reload"

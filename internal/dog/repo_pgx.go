@@ -28,8 +28,8 @@ const (
 			name
 		FROM dog
 			WHERE
-				    ('all' = '%s' OR colour = $1)
-				AND ('all' = '%s' OR breed = $2)
+				    ('all' = $1 OR colour = $1)
+				AND ('all' = $2 OR breed = $2)
 		ORDER BY
 			colour,
 			breed,
@@ -71,8 +71,7 @@ func (p *PGXPoolRepository) Breeds(ctx context.Context) ([]string, error) {
 }
 
 func (p *PGXPoolRepository) All(ctx context.Context, colour, breed string) ([]Dog, error) {
-	f := fmt.Sprintf(sqlAll, colour, breed)
-	rows, _ := p.pool.Query(ctx, f, colour, breed)
+	rows, _ := p.pool.Query(ctx, sqlAll, colour, breed)
 
 	out, err := pgx.CollectRows(rows, pgx.RowToStructByName[Dog])
 	if err != nil {
