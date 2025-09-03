@@ -106,9 +106,8 @@ func (app *Application) render(
 		blockData["Nav"] = nav.PageLinks(r.URL.Path)
 		templatesToRender = []string{"head", "nav-head", block, "nav-foot", "foot"}
 	} else {
-		// We are doing a partial render. If the render requires updating
-		// navigation, include the oob version of the navigation so it gets swapped
-		// in alongside the requested block.
+		// We are doing a partial render.
+
 		if nav.IsNavLink(r.URL.Path) {
 			blockData["Nav"] = nav.PageLinks(r.URL.Path)
 			templatesToRender = []string{"nav-oob"}
@@ -140,6 +139,7 @@ func (app *Application) render(
 			)
 			return
 		}
+
 		b.Write(lb.Bytes())
 	}
 

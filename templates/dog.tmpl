@@ -1,7 +1,15 @@
 {{block "dog" .}}
+  <div hx-get="/dog/table"
+       hx-trigger="load"
+       hx-target="this"
+       hx-swap="outerHTML"></div>
+{{end}}
+
+{{block "dog-table" .}}
   <table class="table p-4">
     <thead>
       <tr>
+        <th><div id="loading-indicator" class="htmx-indicator loading loading-spinner"></div></th>
         <th>{{template "dog-colours" .}}</th>
         <th>{{template "dog-breeds" .}}</th>
         <th>Name</th>
@@ -9,6 +17,7 @@
     <tbody>
       {{range .Dogs}}
         <tr>
+          <td></td>
           <td>{{.Colour}}</td>
           <td>{{.Breed}}</td>
           <td>{{.Name}}</td>
@@ -21,11 +30,13 @@
 {{block "dog-colours" .}}
   <select name="colour"
           class="select"
-          hx-get="/dog"
+          hx-get="/dog/table"
           hx-trigger="change"
           hx-target="closest table"
           hx-swap="outerHTML"
-          hx-include="[name='breed']"
+          hx-indicator="#loading-indicator"
+          hx-include="{{template "dog-hx-include"}}"
+          hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
   >
     {{range .Colours}}
       <option value="{{.}}"{{if eq . $.Colour}} selected{{end}}>{{title .}}</option>
@@ -36,14 +47,24 @@
 {{block "dog-breeds" .}}
   <select name="breed"
           class="select"
-          hx-get="/dog"
+          hx-get="/dog/table"
           hx-trigger="change"
           hx-target="closest table"
           hx-swap="outerHTML"
-          hx-include="[name='colour']"
+          hx-indicator="#loading-indicator"
+          hx-include="{{template "dog-hx-include"}}"
+          hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
   >
     {{range .Breeds}}
       <option value="{{.}}"{{if eq . $.Breed}} selected{{end}}>{{title .}}</option>
     {{end}}
   </select>
 {{end}}
+
+{{define "dog-hx-disabled-elt" -}}
+[name='breed'],[name='colour']
+{{- end}}
+
+{{define "dog-hx-include" -}}
+[name='breed'],[name='colour']
+{{- end}}

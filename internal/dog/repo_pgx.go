@@ -28,7 +28,7 @@ const (
 			name
 		FROM dog
 			WHERE
-				   ('all' = '%s' OR colour = $1)
+				    ('all' = '%s' OR colour = $1)
 				AND ('all' = '%s' OR breed = $2)
 		ORDER BY
 			colour,
