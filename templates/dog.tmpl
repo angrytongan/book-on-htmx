@@ -1,11 +1,11 @@
 {{block "dog" .}}
-  <h1 class="text-xl font-bold">Dog</h1>
+  <h1 class="text-xl font-bold pb-4">Dog</h1>
 
   <div hx-get="/dog/table?{{.QP}}"
        hx-trigger="load"
        hx-target="this"
        hx-target-error="this"
-       hx-swap="outerHTML"><div class="loading loading-spinner"></div></div>
+       hx-swap="outerHTML">{{template "dog-loader"}}</div>
 {{end}}
 
 {{block "dog-table" .}}
@@ -42,7 +42,7 @@
 {{block "dog-colours" .}}
   <select name="colour"
           class="select"
-          _="on change send reload to #reloader"
+          hx-on:change="htmx.trigger('#reloader', 'reload')"
   >
     {{range .Colours}}
       <option value="{{.}}"{{if eq . $.Colour}} selected{{end}}>{{title .}}</option>
@@ -53,7 +53,7 @@
 {{block "dog-breeds" .}}
   <select name="breed"
           class="select"
-          _="on change send reload to #reloader"
+          hx-on:change="htmx.trigger('#reloader', 'reload')"
   >
     {{range .Breeds}}
       <option value="{{.}}"{{if eq . $.Breed}} selected{{end}}>{{title .}}</option>
@@ -68,3 +68,7 @@
 {{define "dog-hx-include" -}}
 [name='breed'],[name='colour']
 {{- end}}
+
+{{define "dog-loader"}}
+  <div class="skeleton w-full h-20"></div>
+{{end}}
