@@ -13,6 +13,7 @@ var (
 		{"/", "Home", false},
 		{"/dashboard", "Dashboard", false},
 		{"/dog", "Dog", false},
+		{"/drawer", "Drawer", false},
 		{"/leaflet", "Leaflet", false},
 		{"/search", "Search", false},
 		{"/settings", "Settings", false},
