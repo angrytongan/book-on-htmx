@@ -37,35 +37,38 @@
 {{end}}
 
 {{block "nav-head" .}}
-    <div class="flex flex-row h-screen"> <!-- page wrapper -->
+    <div class="flex flex-col">
+        <progress id="loading-indicator" class="progress htmx-indicator"></progress>
+        <div class="flex flex-row h-screen"> <!-- page wrapper -->
+            <aside class="fixed bg-base-200 h-screen w-32 overflow-y-auto">
+                <nav id="nav">
+                    {{block "nav" .}}
+                        <ul class="menu gap-2 w-32">
+                            {{range .Nav}}
+                                <li><a href="{{.Href}}"
+                                       class="{{if .Active}}menu-active{{end}}"
+                                       hx-get="{{.Href}}"
+                                       hx-trigger="click"
+                                       hx-target="#main"
+                                       hx-target-error="#main"
+                                       hx-swap="innerHTML"
+                                       hx-push-url="true"
+                                       hx-indicator="#loading-indicator"
+                                       >{{.Label}}</a></li>
+                            {{end}}
+                        </ul>
+                    {{end}}
+                </nav>
+            </aside>
 
-      <aside class="fixed bg-base-200 h-screen w-32 overflow-y-auto">
-          <nav id="nav">
-            {{block "nav" .}}
-              <ul class="menu gap-2 w-32">
-                {{range .Nav}}
-                  <li><a href="{{.Href}}"
-                         {{- if .Active}} class="menu-active" {{end -}}
-                         hx-get="{{.Href}}"
-                         hx-trigger="click"
-                         hx-target="#main"
-                         hx-target-error="#main"
-                         hx-swap="innerHTML"
-                         hx-push-url="true"
-                      >{{.Label}}</a></li>
-                {{end}}
-              </ul>
-          {{end}}
-        </nav>
-      </aside>
-
-      <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto"
-            _="on scroll debounced at 200ms call saveScrollTop(event)"
-        >
+            <main id="main" class="flex-1 ml-32 p-2 overflow-y-auto"
+                _="on scroll debounced at 200ms call saveScrollTop(event)"
+            >
 {{end}}
 
 {{block "nav-foot" .}}
-      </main>
+          </main>
+        </div>
     </div>
 {{end}}
 

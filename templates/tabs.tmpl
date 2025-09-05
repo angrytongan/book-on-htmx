@@ -13,7 +13,9 @@
         <div hx-get="/tabs/links"
              hx-trigger="load delay:500ms"
              hx-target="this"
-             hx-swap="outerHTML">{{template "tab-loading"}}</div>
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             >{{template "tab-loading"}}</div>
       </div>
     </div>
 
@@ -28,7 +30,9 @@
         <div hx-get="/tabs/links-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             ></div>
         <div id="tab-links-content">{{template "tab-loading"}}</div>
       </div>
     </div>
@@ -44,7 +48,9 @@
         <div hx-get="/tabs/buttons-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
-             hx-swap="outerHTML"></div>
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             ></div>
         <div id="tab-buttons-content">{{template "tab-loading"}}</div>
       </div>
     </div>
@@ -59,7 +65,9 @@
         <div hx-get="/tabs/radio-oob"
              hx-trigger="load delay:500ms"
              hx-target="this"
-             hx-swap="outerHTML">{{template "tab-loading"}}</div>
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             >{{template "tab-loading"}}</div>
       </div>
     </div>
 
@@ -75,10 +83,9 @@
                     hx-trigger="click"
                     hx-target="closest div.wrapper"
                     hx-swap="outerHTML"
-                    hx-indicator="next div.htmx-indicator"
+                    hx-indicator="#loading-indicator"
                     >{{.Label}}</a>
         {{end}}
-        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <p>{{.Content}}</p>
@@ -93,10 +100,9 @@
                     hx-trigger="click"
                     hx-target="closest div.tabs"
                     hx-swap="outerHTML"
-                    hx-indicator="next div.htmx-indicator"
+                    hx-indicator="#loading-indicator"
                     >{{.Label}}</a>
         {{end}}
-        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <div id="tab-links-content" hx-swap-oob="true">
@@ -104,7 +110,7 @@
              hx-trigger="load"
              hx-target="this"
              hx-swap="outerHTML"
-             hx-indicator="previous div.htmx-indicator"
+             hx-indicator="#loading-indicator"
              >{{template "tab-content-loading"}}</div>
     </div>
 
@@ -118,10 +124,9 @@
                     hx-trigger="click"
                     hx-target="closest div.tabs"
                     hx-swap="outerHTML"
-                    hx-indicator="next div.htmx-indicator"
+                    hx-indicator="#loading-indicator"
                     >{{.Label}}</button>
         {{end}}
-        <div class="htmx-indicator loading loading-indicator"></div>
     </div>
 
     <div id="tab-buttons-content" hx-swap-oob="true">
@@ -129,7 +134,7 @@
              hx-trigger="load"
              hx-target="this"
              hx-swap="outerHTML"
-             hx-indicator="previous div.htmx-indicator"
+             hx-indicator="#loading-indicator"
              >{{template "tab-content-loading"}}</div>
     </div>
 {{end}}
@@ -147,10 +152,9 @@
                    hx-target="next .content"
                    hx-swap="innertHTML"
                    hx-params="not tab-radio"
-                   hx-indicator="next div.htmx-indicator"
+                   hx-indicator="#loading-indicator"
                    />
         {{end}}
-        <div class="htmx-indicator loading loading-spinner"></div>
     </div>
 
     <div class="content"></div>

@@ -14,9 +14,9 @@
                        {{if .Active}}checked{{end}}
                        hx-post="/theme-chooser"
                        hx-trigger="change"
-                       hx-indicator="next span.htmx-indicator"
+                       hx-indicator="#loading-indicator"
                        hx-target-error="next p.error"
-                      /> {{.Label}} <span class="htmx-indicator loading loading-spinner loading-sm"></span>
+                      /> {{.Label}}
               </label>
             </li>
           {{end}}

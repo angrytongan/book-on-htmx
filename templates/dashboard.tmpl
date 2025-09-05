@@ -6,7 +6,9 @@
         <div hx-get="{{.}}"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="innerHTML">{{template "widget-loading"}}</div>
+             hx-swap="innerHTML"
+             hx-indicator="#loading-indicator"
+             >{{template "widget-loading"}}</div>
       {{end}}
     </div>
 {{end}}
