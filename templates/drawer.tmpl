@@ -2,7 +2,14 @@
   <h1 class="text-xl font-bold">Drawer</h1>
 
   <div class="drawer drawer-end">
-    <input id="drawer-1" type="checkbox" class="drawer-toggle" />
+    <input id="drawer-1"
+           type="checkbox"
+           class="drawer-toggle"
+           hx-get="/weather/current"
+           hx-target="#drawer-1-thingie"
+           hx-trigger="change[this.checked]"
+           hx-swap="innerHTML"
+    />
     <div class="drawer-content">
       {{template "drawer-2"}}
       <!-- Page content here -->
@@ -39,6 +46,8 @@
           <p>
           This is the first drawer.
           </p>
+
+          <div id="drawer-1-thingie"></div>
 
           <label for="drawer-2" class="drawer-button btn btn-primary">Open drawer 2</label>
           <label for="drawer-1" class="drawer-button btn btn-secondary">Close drawer</label>
