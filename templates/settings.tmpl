@@ -8,10 +8,9 @@
                         hx-trigger="click"
                         hx-target="closest div.wrapper"
                         hx-swap="outerHTML"
-                        hx-indicator="next div.htmx-indicator"
+                        hx-indicator="#loading-indicator"
                         >{{.Label}}</a>
             {{end}}
-            <div class="htmx-indicator loading loading-spinner"></div>
         </div>
 
         <div class="content">

@@ -12,13 +12,12 @@
                hx-swap="innerHTML"
                hx-sync="this:replace"
                hx-target-error="next p.error"
-               hx-indicator="next .htmx-indicator"
+               hx-indicator="#loading-indicator"
                hx-disabled-elt="this"
                _="on htmx:beforeRequest set innerHTML of the next <p.error/> to '' end
                   on htmx:responseError set innerHTML of <div.results/> to '' end
                "
                />
-        <div class="htmx-indicator loading loading-spinner"></div>
       </div>
 
       <p class="error"></p>

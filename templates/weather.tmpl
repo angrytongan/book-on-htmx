@@ -6,7 +6,9 @@
         <div hx-get="/weather/current"
              hx-trigger="load"
              hx-target="this"
-             hx-swap="outerHTML">{{template "weather-loading"}}</div>
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             >{{template "weather-loading"}}</div>
        {{end}}
     </div>
   </div>
@@ -30,7 +32,7 @@
             hx-target="closest div.flex"
             hx-swap="outerHTML"
             hx-disabled-elt="this"
-            hx-indicator="this"
-            >Update <span class="htmx-indicator loading loading-spinner"></span></button>
+            hx-indicator="#loading-indicator"
+            >Update</button>
   </div>
 {{end}}

@@ -5,6 +5,7 @@
        hx-trigger="load"
        hx-target="this"
        hx-target-error="this"
+       hx-indicator="#loading-indicator"
        hx-swap="outerHTML">{{template "dog-loader"}}</div>
 {{end}}
 
@@ -21,7 +22,6 @@
           hx-disabled-elt="{{template "dog-hx-disabled-elt"}}"
           hx-include="{{template "dog-hx-include"}}"
       >
-          <th class="w-8"><div id="loading-indicator" class="htmx-indicator loading loading-spinner"></div></th>
           <th>{{template "dog-colours" .}}</th>
           <th>{{template "dog-breeds" .}}</th>
           <th>Name</th>
@@ -29,7 +29,6 @@
     <tbody>
       {{range .Dogs}}
         <tr>
-          <td></td>
           <td>{{.Colour}}</td>
           <td>{{.Breed}}</td>
           <td>{{.Name}}</td>
