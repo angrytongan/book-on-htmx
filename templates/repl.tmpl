@@ -1,0 +1,34 @@
+{{block "repl" .}}
+  <div class="flex flex-col h-dvh w-full justify-center items-center gap-4 p-2 overflow-hidden">
+    <div class="flex flex-col md:flex-row h-full w-full gap-4 overflow-hidden">
+      <div class="flex-1 w-full h-full border">
+        <textarea id="editor"
+                  class="w-full h-full focus:outline-none font-mono p-2"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  _="
+                      on load
+                        call textareaTabs('editor')
+
+                      on keyup debounced at 300ms or load
+                        put my value into #output-destination
+                        -- call _hyperscript.processNode('#output-destination')
+                        call htmx.process('#output-destination')
+
+                      on exception from #output-destination
+                        send showError(error: the message of the event's detail's error) to '#errors'
+                  "
+          ></textarea>
+      </div>
+
+      <div class="flex-1 w-full h-full border p-2 overflow-y-auto">
+        <div id="output-destination"></div>
+      </div>
+    </div>
+
+    <div id="errors" class="w-full h-20 border p-2 overflow-y-auto">
+    </div>
+  </div>
+{{end}}

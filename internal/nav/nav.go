@@ -15,6 +15,7 @@ var (
 		{"/dog", "Dog", false},
 		{"/drawer", "Drawer", false},
 		{"/leaflet", "Leaflet", false},
+		{"/repl", "REPL", false},
 		{"/search", "Search", false},
 		{"/settings", "Settings", false},
 		{"/tabs", "Tabs", false},

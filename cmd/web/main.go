@@ -23,6 +23,7 @@ func run() error {
 	app.mux.Get("/dog", app.dog)
 	app.mux.Get("/drawer", app.drawer)
 	app.mux.Get("/leaflet", app.leaflet)
+	app.mux.Get("/repl", app.repl)
 	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
