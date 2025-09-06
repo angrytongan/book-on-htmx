@@ -61,6 +61,8 @@ func run() error {
 		r.Get("/time/servertime", app.servertime)
 
 		r.Get("/dog/table", app.dogTable)
+
+		r.Get("/drawer/content", app.drawerContent)
 	})
 
 	return app.listen(port)

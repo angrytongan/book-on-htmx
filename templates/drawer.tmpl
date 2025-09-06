@@ -5,35 +5,36 @@
     <input id="drawer-1"
            type="checkbox"
            class="drawer-toggle"
-           hx-get="/weather/current"
-           hx-target="#drawer-1-thingie"
-           hx-trigger="change[this.checked]"
-           hx-swap="innerHTML"
+           _="on change set #drawer-1-body.innerHTML to '<span class=\'loading loading-spinnner\'></span>'"
     />
     <div class="drawer-content">
       {{template "drawer-2"}}
       <!-- Page content here -->
 
-      <div class="flex flex-col space-y-4 w-1/3">
+      <div class="flex flex-col space-y-4 w-1/2">
         <p>
         A drawer is a panel that slides onto the page from the left or right
-        side of the screen, obscuring the page, focusing the attention of the
-        user to the drawer.
-        </p>
-
-        <label for="drawer-1" class="btn btn-primary drawer-button">Open drawer</label>
-
-        <p>
-        In this example, clicking the button above will slide in a drawer on
-        the right hand side of the page. This drawer also has a button, that
-        when clicked, will bring in another drawer also from the right side of
-        the page.
+        side of the screen, obscuring part of the page, focusing the attention
+        of the user to the drawer.
         </p>
 
         <p>
-        Clicking either on the dark overlay part of the page, or the close buttons
-        on the drawers, will close one drawer layer.
+        The drawer is triggered by a checkbox. To load responses from the
+        server, we can do a <code>hx-get</code> and <code>hx-target</code>
+        the drawer body, then use hyperscript to toggle the checkbox.
         </p>
+
+        <div class="flex flex-row space-x-4">
+          {{range $k, $v := .Content}}
+            <button class="btn btn-primary"
+                        hx-get="/drawer/content?q={{$v}}"
+                        hx-target="#drawer-1-body"
+                        hx-swap="innerHTML"
+                        hx-indicator="#loading-indicator"
+                        _="on click set #drawer-1.checked to true">button {{$k}}</button>
+          {{end}}
+        </div>
+        </ul>
       </div>
     </div>
 
@@ -47,12 +48,11 @@
           This is the first drawer.
           </p>
 
-          <div id="drawer-1-thingie"></div>
+          <div id="drawer-1-body"><span class="loading loading-spinner"></span></div>
 
           <label for="drawer-2" class="drawer-button btn btn-primary">Open drawer 2</label>
           <label for="drawer-1" class="drawer-button btn btn-secondary">Close drawer</label>
         </div>
-
       </div>
     </div>
   </div>
@@ -73,4 +73,8 @@
     </div>
   </div>
 </div>
+{{end}}
+
+{{block "drawer-content" .}}
+  <p>{{.Stuff}}</p>
 {{end}}
