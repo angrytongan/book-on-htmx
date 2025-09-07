@@ -31,7 +31,7 @@
                        name="order-direction"
                        value="{{if eq .Order "name"}}name-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}name-asc{{end}}"
                        hx-on:change="htmx.trigger('#reloader', 'reload')"
-                       /> Name {{if eq .Order "name"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{end}}
+                       /> Name {{if eq .Order "name"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{else}}&#8597;{{end}}
               </label>
           </th>
           <th><label class="cursor-pointer">
@@ -40,7 +40,7 @@
                        name="order-direction"
                        value="{{if eq .Order "age"}}age-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}age-asc{{end}}"
                        hx-on:change="htmx.trigger('#reloader', 'reload')"
-                       /> Age {{if eq .Order "age"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{end}}
+                       /> Age {{if eq .Order "age"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{else}}&#8597;{{end}}
               </label>
           </th>
       </tr>
@@ -67,6 +67,14 @@
       <option value="{{.}}"{{if eq . $.Colour}} selected{{end}}>{{title .}}</option>
     {{end}}
   </select>
+  <label class="cursor-pointer">
+    <input type="radio"
+           class="opacity-0"
+           name="order-direction"
+           value="{{if eq .Order "colour"}}colour-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}colour-asc{{end}}"
+           hx-on:change="htmx.trigger('#reloader', 'reload')"
+           /> {{if eq .Order "colour"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{else}}&#8597;{{end}}
+  </label>
 {{end}}
 
 {{block "dog-breeds" .}}
@@ -78,6 +86,14 @@
       <option value="{{.}}"{{if eq . $.Breed}} selected{{end}}>{{title .}}</option>
     {{end}}
   </select>
+  <label class="cursor-pointer">
+    <input type="radio"
+           class="opacity-0"
+           name="order-direction"
+           value="{{if eq .Order "breed"}}breed-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}breed-asc{{end}}"
+           hx-on:change="htmx.trigger('#reloader', 'reload')"
+           /> {{if eq .Order "breed"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{else}}&#8597;{{end}}
+  </label>
 {{end}}
 
 {{define "dog-hx-disabled-elt" -}}

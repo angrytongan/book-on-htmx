@@ -79,8 +79,8 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 		lastOrderDirection = orderDirection
 	} else if lastOrderDirection != "" {
 		// Radio button wasn't used to order - some other control asked for the
-		// refresh. Use lastOrderDirection to give us the order and direction for
-		// the query. Leave it as-is for the next render.
+		// refresh. Use lastOrderDirection to give us the order and direction that
+		// was used last time. Retain it for render.
 		tokens := strings.Split(lastOrderDirection, "-")
 		order = tokens[0]
 		direction = tokens[1]
