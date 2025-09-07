@@ -11,6 +11,7 @@
 
 {{block "dog-table" .}}
   <table class="table p-4">
+    <input type="hidden" name="last-order-direction" value="{{.LastOrderDirection}}" />
     <thead>
       <tr id="reloader"
           hx-get="/dog/table"
@@ -24,7 +25,16 @@
       >
           <th>{{template "dog-colours" .}}</th>
           <th>{{template "dog-breeds" .}}</th>
-          <th>Name</th>
+          <th><label class="cursor-pointer">
+                <input type="radio"
+                       class="opacity-0"
+                       name="order-direction"
+                       value="{{if eq .Order "name"}}name-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}name-asc{{end}}"
+                       hx-on:change="htmx.trigger('#reloader', 'reload')"
+                       /> Name {{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{else}}{{end}}
+              </label>
+          </th>
+      </tr>
     </thead>
     <tbody>
       {{range .Dogs}}
@@ -61,11 +71,11 @@
 {{end}}
 
 {{define "dog-hx-disabled-elt" -}}
-[name='breed'],[name='colour']
+[name='breed'],[name='colour'],[name='order-direction'],[name='last-order-direction']
 {{- end}}
 
 {{define "dog-hx-include" -}}
-[name='breed'],[name='colour']
+[name='breed'],[name='colour'],[name='order-direction'],[name='last-order-direction']
 {{- end}}
 
 {{define "dog-loader"}}

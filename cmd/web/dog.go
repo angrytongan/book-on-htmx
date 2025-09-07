@@ -4,6 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"slices"
+	"strings"
+)
+
+const (
+	maxRows = 100
 )
 
 type Dog struct {
@@ -21,7 +26,6 @@ func (app *Application) dog(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
-
 	ctx := r.Context()
 	colours, err := app.dogRepo.Colours(ctx)
 	if err != nil {
@@ -39,6 +43,8 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 
 	colour := r.URL.Query().Get("colour")
 	breed := r.URL.Query().Get("breed")
+	orderDirection := r.URL.Query().Get("order-direction")
+	lastOrderDirection := r.URL.Query().Get("last-order-direction")
 
 	if colour == "" {
 		colour = "all"
@@ -56,18 +62,48 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	order := ""
+	direction := ""
+	queryOrderDirection := "colour ASC, breed ASC, name ASC"
+
+	if orderDirection != "" {
+		// Radio button was used to determine order and column. Use orderDirection
+		// to figure out how to sort our data.
+		tokens := strings.Split(orderDirection, "-")
+		order = tokens[0]
+		direction = tokens[1]
+		queryOrderDirection = order + " " + direction
+
+		// Remember this order and direction on the page in case the next hit
+		// doesn't come from the radio button.
+		lastOrderDirection = orderDirection
+	} else if lastOrderDirection != "" {
+		// Radio button wasn't used to order - some other control asked for the
+		// refresh. Use lastOrderDirection to give us the order and direction for
+		// the query. Leave it as-is for the next render.
+		tokens := strings.Split(lastOrderDirection, "-")
+		order = tokens[0]
+		direction = tokens[1]
+		queryOrderDirection = order + " " + direction
+	}
+
+	limit := maxRows
+
 	colours = append([]string{"all"}, colours...)
 	breeds = append([]string{"all"}, breeds...)
 
-	dogs, _ := app.dogRepo.All(ctx, colour, breed)
+	dogs, _ := app.dogRepo.All(ctx, colour, breed, queryOrderDirection, limit)
 
 	blockData := map[string]any{
 		"Colours": colours,
 		"Breeds":  breeds,
 		"Dogs":    dogs,
+		"Colour":  colour,
+		"Breed":   breed,
 
-		"Colour": colour,
-		"Breed":  breed,
+		"Order":              order,
+		"Direction":          direction,
+		"LastOrderDirection": lastOrderDirection,
 	}
 
 	w.Header().Set("Hx-Push-Url", "/dog?"+r.URL.Query().Encode())
