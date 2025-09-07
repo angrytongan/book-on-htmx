@@ -19,9 +19,16 @@
         </p>
 
         <p>
-        The drawer is triggered by a checkbox. To load responses from the
-        server, we can do a <code>hx-get</code> and <code>hx-target</code>
-        the drawer body, then use hyperscript to toggle the checkbox.
+        In daisyui, the drawer is controlled by a checkbox. To load content
+        from the server, we can do a <code>hx-get</code> and
+        <code>hx-target</code> the drawer body, then use hyperscript to toggle
+        the checkbox which will open the drawer.
+        </p>
+
+        <p>
+        If we're putting different content into the drawer, we need to clear
+        the drawer when it's closed. Hyperscript can do this by looking for the
+        `change` event on the checkbox.
         </p>
 
         <div class="flex flex-row space-x-4">
