@@ -16,14 +16,15 @@ CREATE TABLE dog (
   colour TEXT NOT NULL,
   breed TEXT NOT NULL,
   name TEXT NOT NULL,
+  age INTEGER NOT NULL,
   PRIMARY KEY (dog_id)
 );
 
-INSERT INTO dog (colour, breed, name) VALUES
-  ('black', 'cocker spaniel', 'Banjo'),
-  ('black', 'border collie', 'Sebastian'),
-  ('tan', 'border collie', 'Marcus'),
-  ('gold', 'labrador', 'Fido')
+INSERT INTO dog (colour, breed, name, age) VALUES
+  ('black', 'cocker spaniel', 'Banjo', 2),
+  ('black', 'border collie', 'Sebastian', 8),
+  ('tan', 'border collie', 'Marcus', 6),
+  ('gold', 'labrador', 'Fido', 14)
 ;
 
 DROP TABLE IF EXISTS theme;

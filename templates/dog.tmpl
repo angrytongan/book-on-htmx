@@ -31,7 +31,16 @@
                        name="order-direction"
                        value="{{if eq .Order "name"}}name-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}name-asc{{end}}"
                        hx-on:change="htmx.trigger('#reloader', 'reload')"
-                       /> Name {{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{else}}{{end}}
+                       /> Name {{if eq .Order "name"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{end}}
+              </label>
+          </th>
+          <th><label class="cursor-pointer">
+                <input type="radio"
+                       class="opacity-0"
+                       name="order-direction"
+                       value="{{if eq .Order "age"}}age-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}age-asc{{end}}"
+                       hx-on:change="htmx.trigger('#reloader', 'reload')"
+                       /> Age {{if eq .Order "age"}}{{if eq .Direction "asc"}}&uarr;{{else if eq .Direction "desc"}}&darr;{{end}}{{end}}
               </label>
           </th>
       </tr>
@@ -42,6 +51,7 @@
           <td>{{.Colour}}</td>
           <td>{{.Breed}}</td>
           <td>{{.Name}}</td>
+          <td>{{.Age}}</td>
         </tr>
       {{end}}
     </tbody>

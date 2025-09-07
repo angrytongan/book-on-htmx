@@ -92,7 +92,17 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 	colours = append([]string{"all"}, colours...)
 	breeds = append([]string{"all"}, breeds...)
 
-	dogs, _ := app.dogRepo.All(ctx, colour, breed, queryOrderDirection, limit)
+	dogs, err := app.dogRepo.All(ctx, colour, breed, queryOrderDirection, limit)
+	if err != nil {
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("app.dogRepo.All(%s, %s, %s, %d): %w", colour, breed, queryOrderDirection, limit, err),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
 
 	blockData := map[string]any{
 		"Colours": colours,

@@ -25,7 +25,8 @@ const (
 		SELECT
 			colour,
 			breed,
-			name
+			name,
+			age
 		FROM dog
 			WHERE
 				    ('all' = $1 OR colour = $1)
