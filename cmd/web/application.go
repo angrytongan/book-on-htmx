@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"log"
@@ -25,6 +26,10 @@ import (
 
 const (
 	muxCompressionLevel = 5
+)
+
+var (
+	ErrMissingPageTemplate = errors.New("missing page template")
 )
 
 type Application struct {
@@ -97,6 +102,8 @@ func (app *Application) render(
 		blockData = map[string]any{}
 	}
 
+	pageBlock := "page-" + block
+
 	if r.Header.Get("Hx-Request") != "true" {
 		// This isn't a partial render, so we have to render the entire page. Grab
 		// all the bits that are required to render an entire pgae, and construct
@@ -104,13 +111,29 @@ func (app *Application) render(
 		activeTheme, _ := app.themeRepo.Active(context.Background(), 1)
 		blockData["PageTheme"] = activeTheme
 		blockData["Nav"] = nav.PageLinks(r.URL.Path)
-		templatesToRender = []string{"head", "nav-head", block, "nav-foot", "foot"}
+
+		// We must have a page block.
+		if app.tpl.Lookup(pageBlock) == nil {
+			app.serverError(
+				w,
+				r,
+				fmt.Errorf("app.tpl.Lookup(%s): %w", pageBlock, ErrMissingPageTemplate),
+				http.StatusInternalServerError,
+			)
+
+			return
+		}
+
+		templatesToRender = append(templatesToRender, pageBlock)
 	} else {
 		// We are doing a partial render.
 
-		if nav.IsNavLink(r.URL.Path) {
+		// If we have a page block for this partial, then load any bits that
+		// may need to be rendered, such as navigation. Use the oob versions,
+		// as these will be rendered out of band.
+		if app.tpl.Lookup(pageBlock) != nil {
 			blockData["Nav"] = nav.PageLinks(r.URL.Path)
-			templatesToRender = []string{"nav-oob"}
+			templatesToRender = append(templatesToRender, "nav-oob")
 		}
 
 		// Add in the requested block.
