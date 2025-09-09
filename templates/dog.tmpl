@@ -27,7 +27,7 @@
           <th>{{template "dog-breeds" .}}</th>
           <th><label class="cursor-pointer">
                 <input type="radio"
-                       class="opacity-0"
+                       class="sr-only"
                        name="order-direction"
                        value="{{if eq .Order "name"}}name-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}name-asc{{end}}"
                        hx-on:change="htmx.trigger('#reloader', 'reload')"
@@ -36,7 +36,7 @@
           </th>
           <th><label class="cursor-pointer">
                 <input type="radio"
-                       class="opacity-0"
+                       class="sr-only"
                        name="order-direction"
                        value="{{if eq .Order "age"}}age-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}age-asc{{end}}"
                        hx-on:change="htmx.trigger('#reloader', 'reload')"
@@ -60,7 +60,7 @@
 
 {{block "dog-colours" .}}
   <select name="colour"
-          class="select"
+          class="select w-full"
           hx-on:change="htmx.trigger('#reloader', 'reload')"
   >
     {{range .Colours}}
@@ -69,7 +69,7 @@
   </select>
   <label class="cursor-pointer">
     <input type="radio"
-           class="opacity-0"
+           class="sr-only"
            name="order-direction"
            value="{{if eq .Order "colour"}}colour-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}colour-asc{{end}}"
            hx-on:change="htmx.trigger('#reloader', 'reload')"
@@ -79,7 +79,7 @@
 
 {{block "dog-breeds" .}}
   <select name="breed"
-          class="select"
+          class="select w-full"
           hx-on:change="htmx.trigger('#reloader', 'reload')"
   >
     {{range .Breeds}}
@@ -88,7 +88,7 @@
   </select>
   <label class="cursor-pointer">
     <input type="radio"
-           class="opacity-0"
+           class="sr-only"
            name="order-direction"
            value="{{if eq .Order "breed"}}breed-{{if eq .Direction "desc"}}asc{{else}}desc{{end}}{{else}}breed-asc{{end}}"
            hx-on:change="htmx.trigger('#reloader', 'reload')"
