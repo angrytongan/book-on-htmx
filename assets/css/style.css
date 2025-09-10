@@ -1618,6 +1618,9 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-none {
+    flex: none;
+  }
   .skeleton {
     border-radius: var(--radius-box);
     background-color: var(--color-base-300);
@@ -1648,6 +1651,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .gap-0 {
+    gap: calc(var(--spacing) * 0);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
