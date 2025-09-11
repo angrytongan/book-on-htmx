@@ -2,14 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Standard workflow
-
-1. Think through the problem. Read the codebase.
-2. Always construct a plan first. The plan should include the changes you will make as well as tests.
-3. When I accept the plan, write it to TODO.md.
-4. Once a todo item is complete, mark it as done in TODO.md.
-5. One all todo items are complete, write a summary at the end of TODO.md.
-
 ## Architecture Overview
 
 This is a Go web application built with:
