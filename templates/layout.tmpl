@@ -2,7 +2,7 @@
 <!doctype html>
 <html {{if .PageTheme}}data-theme="{{.PageTheme}}"{{end}}>
   <head>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="initial-scale=1">
     <link rel="stylesheet" href="/css/style.css" />
 
     <!-- Google Symbols -->
@@ -70,18 +70,17 @@
                 {{end}}
             </nav>
         </aside>
-        
-        <div class="flex flex-row h-screen pt-16 md:pt-0"> <!-- page wrapper -->
 
-            <main id="main" class="flex-1 ml-0 md:ml-32 p-2 overflow-y-auto"
-                _="on scroll debounced at 200ms call saveScrollTop(event)"
-            >
+        <main id="main"
+              class="overflow-y-auto p-4
+                     ml-0 pt-16
+                     md:ml-32 md:pt-0"
+              _="on scroll debounced at 200ms call saveScrollTop(event)">
 {{end}}
 
 {{block "nav-foot" .}}
           </main>
         </div>
-    </div>
 {{end}}
 
 {{block "foot" .}}
