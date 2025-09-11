@@ -5,22 +5,23 @@ import "slices"
 type PageLink struct {
 	Href   string
 	Label  string
+	Icon   string
 	Active bool
 }
 
 var (
 	pageLinks = []PageLink{
-		{"/", "Home", false},
-		{"/dashboard", "Dashboard", false},
-		{"/dog", "Dog", false},
-		{"/drawer", "Drawer", false},
-		{"/leaflet", "Leaflet", false},
-		{"/repl", "REPL", false},
-		{"/search", "Search", false},
-		{"/settings", "Settings", false},
-		{"/tabs", "Tabs", false},
-		{"/toast", "Toast", false},
-		{"/theme", "Theme", false},
+		{"/", "Home", "home", false},
+		{"/dashboard", "Dashboard", "dashboard", false},
+		{"/dog", "Dog", "pets", false},
+		{"/drawer", "Drawer", "menu", false},
+		{"/leaflet", "Leaflet", "map", false},
+		{"/repl", "REPL", "terminal", false},
+		{"/search", "Search", "search", false},
+		{"/settings", "Settings", "settings", false},
+		{"/tabs", "Tabs", "tab", false},
+		{"/toast", "Toast", "notifications", false},
+		{"/theme", "Theme", "palette", false},
 	}
 )
 
