@@ -9,19 +9,43 @@
           hx-indicator="#loading-indicator"
           >Get server time</button>
 
-  <div class="toast toast-top toast-end pt-16 md:pt-0"></div>
+  <button class="btn btn-secondary"
+          hx-get="/toast/random-number"
+          hx-target="div.toast"
+          hx-swap="afterbegin"
+          hx-disabled-elt="this"
+          hx-indicator="#loading-indicator"
+          >Get random number</button>
+
+  <div class="toast toast-top toast-end
+      pt-16
+      md:pt-0 md:pl-40"></div>
 {{end}}
 
 {{block "toast-server-time" .}}
-  <div class="alert alert-info"
+  <div class="alert alert-info flex"
        _="on load
             wait 5s
             transition my opacity to 0% over 500ms
             remove me
        "
     >
-    <span>Server time: {{.Now}}</span>
+    <span class="flex-1">Server time: {{.Now}}</span>
     <button class="btn btn-info btn-sm"
+            _="on click remove closest <div.alert/>">X</button>
+  </div>
+{{end}}
+
+{{block "toast-random-number" .}}
+  <div class="alert alert-success flex"
+       _="on load
+            wait 5s
+            transition my opacity to 0% over 500ms
+            remove me
+       "
+    >
+    <span class="flex-1">as;lkfjasd;fkj as;f jas;fk j;asldfjk a;slkdfj ;aslfjd a;sldfkj as;kdfj ;askf jads;lkf jRandom number: {{.Number}}</span>
+    <button class="btn btn-success btn-sm"
             _="on click remove closest <div.alert/>">X</button>
   </div>
 {{end}}

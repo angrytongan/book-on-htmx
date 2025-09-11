@@ -1,64 +1,47 @@
-# TODO: Unify Mobile and Desktop Navigation
+# TODO: Add Random Number Button to Toasts Page
 
-## Objective
-Combine the duplicate navigation markup (lines 46-66 and 70-89) into a single navigation component that uses responsive Tailwind classes to handle both mobile and desktop layouts.
+## Plan
+Add a new button to the toasts page that makes a request to the server and retrieves a random number between 0 and 100, inclusive.
 
 ## Tasks
-- [x] Replace duplicate mobile and desktop navigation with unified responsive structure
-- [x] Test the unified navigation on both mobile and desktop layouts  
-- [x] Run linter to ensure code quality
+
+- [x] Create a new handler function for random number generation
+- [x] Add route for the random number endpoint in main.go  
+- [x] Add new button to toast.tmpl template
+- [x] Create template block for random number toast display
+- [x] Write tests for the new random number handler
+
+## Implementation Details
+
+1. **Handler Function**: Add `toastRandomNumber` handler in `cmd/web/toast.go` that generates random number 0-100 using `math/rand`
+
+2. **Routing**: Register handler at `/toast/random-number` in HTMX group with delay middleware
+
+3. **Template**: Add button after existing "Get server time" button with HTMX attributes for random number request
+
+4. **Toast Display**: Create `toast-random-number` template block displaying random number with auto-dismiss after 5 seconds
+
+5. **Testing**: Create `cmd/web/toast_test.go` to test random number generation, response format, and HTTP status codes
+
+The implementation follows the existing server time pattern using HTMX for requests and hyperscript for toast behavior.
 
 ## Summary
-Successfully unified the mobile and desktop navigation into a single responsive component. The implementation:
+
+Successfully implemented a random number button for the toasts page. All tasks completed:
 
 ### Changes Made
-- **Reduced code duplication**: Combined ~40 lines of duplicate navigation markup into ~20 lines
-- **Single navigation block**: Replaced separate mobile/desktop `<aside>` sections with one unified structure
-- **Responsive classes**: Used Tailwind responsive classes to handle layout differences
-- **Maintained functionality**: Preserved all existing HTMX behavior and navigation features
+- **Handler Function**: Added `toastRandomNumber` in `cmd/web/toast.go:23-31` that generates random numbers 0-100 using `rand.Intn(101)`
+- **Routing**: Registered `/toast/random-number` endpoint in `cmd/web/main.go:56` within the HTMX group with delay middleware
+- **Template Button**: Added "Get random number" button in `templates/toast.tmpl:12-18` with `btn-secondary` styling and HTMX attributes
+- **Toast Display**: Created `toast-random-number` template block in `templates/toast.tmpl:37-49` with green `alert-success` styling and auto-dismiss behavior
+- **Tests**: Created comprehensive test suite in `cmd/web/toast_test.go` with range validation and multiple request testing
 
-### Mobile Layout (< md breakpoint)
-- Horizontal navigation bar fixed at top (`top-0 left-0 right-0 h-16`)
-- Icons only, labels hidden (`hidden md:inline`)
-- Scrollable horizontal menu when needed (`overflow-x-auto menu-horizontal`)
+### Features Implemented
+- Random number generation between 0-100 inclusive using Go's `math/rand` package
+- HTMX-powered button that makes async requests without page refresh
+- Toast notifications with 5-second auto-dismiss using hyperscript
+- Manual dismiss capability with X button
+- Proper HTTP status code handling and template rendering
+- Full test coverage with edge case validation
 
-### Desktop Layout (>= md breakpoint)  
-- Vertical sidebar fixed on left (`md:h-screen md:w-32`)
-- Icons and labels both visible (`md:inline`)
-- Standard vertical menu layout (`md:menu-vertical`)
-
-The unified navigation provides better maintainability while preserving the same user experience across all screen sizes.
-
-## Implementation Steps
-
-### 1. Replace Duplicate Navigation with Unified Structure
-- Remove both existing `<aside>` sections for mobile and desktop navigation
-- Create a single `<aside>` element that adapts to screen size using Tailwind responsive classes
-
-### 2. Responsive Layout Classes
-- **Mobile**: `md:hidden fixed top-0 left-0 right-0 h-16` (horizontal bar at top)
-- **Desktop**: `hidden md:block fixed bg-base-200 h-screen w-32` (vertical sidebar)
-
-### 3. Menu Orientation & Styling
-- **Mobile menu**: `menu-horizontal gap-2 min-w-max px-2 h-16`
-- **Desktop menu**: `menu gap-2 w-32`
-- Combine: `menu gap-2 md:menu-horizontal md:min-w-max md:px-2 md:h-16 lg:menu-vertical lg:w-32`
-
-### 4. Label Visibility
-- **Mobile**: Hide labels (`hidden`)
-- **Desktop**: Show labels (`inline`)
-- Combine: `hidden md:inline`
-
-### 5. Link Styling Adjustments
-- Unify the anchor tag classes to work for both layouts
-- Use responsive classes for layout-specific styling (flex-col, padding, etc.)
-
-### 6. Update Page Layout
-- Ensure the main content area adapts properly with the unified navigation
-- Maintain existing `pt-16 md:pt-0` and `ml-0 md:ml-32` classes on main content
-
-## Expected Benefits
-- **Reduced code duplication**: ~40 lines reduced to ~20 lines
-- **Easier maintenance**: Single navigation structure to update
-- **Consistent behavior**: Same HTMX functionality across both layouts
-- **Cleaner template**: More maintainable responsive design pattern
+The implementation maintains consistency with existing toast patterns while providing reliable random number functionality with proper testing.

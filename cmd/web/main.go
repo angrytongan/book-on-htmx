@@ -53,6 +53,7 @@ func run() error {
 		r.Get("/search/term", app.searchTerm)
 
 		r.Get("/toast/server-time", app.toastServerTime)
+		r.Get("/toast/random-number", app.toastRandomNumber)
 
 		r.Get("/weather", app.weather)
 		r.Get("/weather/current", app.weatherCurrent)
