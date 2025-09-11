@@ -1,21 +1,43 @@
 {{block "toast" .}}
   <h1 class="text-xl font-bold">Toast</h1>
 
-  <button class="btn btn-primary"
-          hx-get="/toast/server-time"
-          hx-target="div.toast"
-          hx-swap="afterbegin"
-          hx-disabled-elt="this"
-          hx-indicator="#loading-indicator"
-          >Get server time</button>
+  <div class="w-1/2 flex flex-col gap-4 mx-auto">
+    <button class="btn btn-primary w-full"
+            hx-get="/toast/server-time"
+            hx-target="div.toast"
+            hx-target-error="div.toast"
+            hx-swap="afterbegin"
+            hx-disabled-elt="this"
+            hx-indicator="#loading-indicator"
+            >Get server time</button>
 
-  <button class="btn btn-secondary"
-          hx-get="/toast/random-number"
-          hx-target="div.toast"
-          hx-swap="afterbegin"
-          hx-disabled-elt="this"
-          hx-indicator="#loading-indicator"
-          >Get random number</button>
+    <button class="btn btn-secondary w-full"
+            hx-get="/toast/random-number"
+            hx-target="div.toast"
+            hx-target-error="div.toast"
+            hx-swap="afterbegin"
+            hx-disabled-elt="this"
+            hx-indicator="#loading-indicator"
+            >Get random number</button>
+
+    <button class="btn btn-accent w-full"
+            hx-get="/toast/random-letter"
+            hx-target="div.toast"
+            hx-target-error="div.toast"
+            hx-swap="afterbegin"
+            hx-disabled-elt="this"
+            hx-indicator="#loading-indicator"
+            >Get random letter</button>
+
+    <button class="btn btn-warning w-full"
+            hx-get="/toast/random-word"
+            hx-target="div.toast"
+            hx-target-error="div.toast"
+            hx-swap="afterbegin"
+            hx-disabled-elt="this"
+            hx-indicator="#loading-indicator"
+            >Get random word</button>
+  </div>
 
   <div class="toast toast-top toast-end
       pt-16
@@ -44,8 +66,50 @@
             remove me
        "
     >
-    <span class="flex-1">as;lkfjasd;fkj as;f jas;fk j;asldfjk a;slkdfj ;aslfjd a;sldfkj as;kdfj ;askf jads;lkf jRandom number: {{.Number}}</span>
+    <span class="flex-1">Random number: {{.Number}}</span>
     <button class="btn btn-success btn-sm"
+            _="on click remove closest <div.alert/>">X</button>
+  </div>
+{{end}}
+
+{{block "toast-random-letter" .}}
+  <div class="alert alert-accent flex"
+       _="on load
+            wait 5s
+            transition my opacity to 0% over 500ms
+            remove me
+       "
+    >
+    <span class="flex-1">Random letter: {{.Letter}}</span>
+    <button class="btn btn-accent btn-sm"
+            _="on click remove closest <div.alert/>">X</button>
+  </div>
+{{end}}
+
+{{block "toast-random-word" .}}
+  <div class="alert alert-warning flex"
+       _="on load
+            wait 5s
+            transition my opacity to 0% over 500ms
+            remove me
+       "
+    >
+    <span class="flex-1">Random word: {{.Word}}</span>
+    <button class="btn btn-warning btn-sm"
+            _="on click remove closest <div.alert/>">X</button>
+  </div>
+{{end}}
+
+{{block "toast-error" .}}
+  <div class="alert alert-error flex"
+       _="on load
+            wait 5s
+            transition my opacity to 0% over 500ms
+            remove me
+       "
+    >
+    <span class="flex-1">Error: {{.Message}}</span>
+    <button class="btn btn-error btn-sm"
             _="on click remove closest <div.alert/>">X</button>
   </div>
 {{end}}

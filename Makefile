@@ -22,3 +22,6 @@ lint-fix: # Run the linter and fix things.
 
 tailwind: # Run the tailwind server.
 	npx @tailwindcss/cli --input ./assets/css/input.css --output ./assets/css/style.css --watch
+
+test: # Run tests
+	go test -v ./...

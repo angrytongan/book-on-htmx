@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -39,6 +40,7 @@ type Application struct {
 	themeRepo  theme.Repository
 	searchRepo search.Repository
 	dogRepo    dog.Repository
+	words      []string
 }
 
 func mustGetenv(key string) string {
@@ -48,6 +50,36 @@ func mustGetenv(key string) string {
 	}
 
 	return value
+}
+
+func loadWords() ([]string, error) {
+	file, err := os.Open("/usr/share/dict/words")
+	if err != nil {
+		return nil, fmt.Errorf("failed to open dictionary file: %w", err)
+	}
+	defer func() {
+		if closeErr := file.Close(); closeErr != nil {
+			log.Printf("error closing dictionary file: %v", closeErr)
+		}
+	}()
+
+	var words []string
+	scanner := bufio.NewScanner(file)
+	count := 0
+	
+	for scanner.Scan() && count < 200 {
+		word := strings.TrimSpace(scanner.Text())
+		if word != "" {
+			words = append(words, word)
+			count++
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("failed to read dictionary file: %w", err)
+	}
+
+	return words, nil
 }
 
 func newApplication() (*Application, error) {
@@ -77,12 +109,18 @@ func newApplication() (*Application, error) {
 	searchRepo := search.NewPGXPoolRepository(pool)
 	dogRepo := dog.NewPGXPoolRepository(pool)
 
+	words, err := loadWords()
+	if err != nil {
+		return nil, fmt.Errorf("loadWords(): %w", err)
+	}
+
 	return &Application{
 		mux,
 		tpl,
 		themeRepo,
 		searchRepo,
 		dogRepo,
+		words,
 	}, nil
 }
 

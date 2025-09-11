@@ -1,29 +1,20 @@
-# TODO: Add Random Number Button to Toasts Page
-
-## Plan
-Add a new button to the toasts page that makes a request to the server and retrieves a random number between 0 and 100, inclusive.
+# Plan: Vertical Button Layout at Half Page Width
 
 ## Tasks
 
-- [x] Create a new handler function for random number generation
-- [x] Add route for the random number endpoint in main.go  
-- [x] Add new button to toast.tmpl template
-- [x] Create template block for random number toast display
-- [x] Write tests for the new random number handler
+- [x] Wrap buttons in a container div with half-width and vertical layout classes
+- [x] Add vertical spacing between buttons  
+- [x] Center the container on the page
+- [x] Make buttons full-width within container
+- [x] Test the layout and HTMX functionality
 
 ## Implementation Details
 
-1. **Handler Function**: Add `toastRandomNumber` handler in `cmd/web/toast.go` that generates random number 0-100 using `math/rand`
-
-2. **Routing**: Register handler at `/toast/random-number` in HTMX group with delay middleware
-
-3. **Template**: Add button after existing "Get server time" button with HTMX attributes for random number request
-
-4. **Toast Display**: Create `toast-random-number` template block displaying random number with auto-dismiss after 5 seconds
-
-5. **Testing**: Create `cmd/web/toast_test.go` to test random number generation, response format, and HTTP status codes
-
-The implementation follows the existing server time pattern using HTMX for requests and hyperscript for toast behavior.
+Modifying `templates/toast.tmpl` to:
+1. Add container div around the four buttons (lines 4-38)
+2. Apply TailwindCSS classes: `w-1/2 flex flex-col gap-4 mx-auto`
+3. Add `w-full` class to each button for full-width within container
+4. Maintain existing HTMX functionality and DaisyUI button styling
 
 ## Summary
 
@@ -44,4 +35,22 @@ Successfully implemented a random number button for the toasts page. All tasks c
 - Proper HTTP status code handling and template rendering
 - Full test coverage with edge case validation
 
-The implementation maintains consistency with existing toast patterns while providing reliable random number functionality with proper testing.
+## Summary of Changes
+
+Successfully modified `templates/toast.tmpl` to display four buttons in a vertical layout at half page width:
+
+### Changes Made
+- **Container Layout**: Wrapped all four buttons in a container div with classes `w-1/2 flex flex-col gap-4 mx-auto`
+  - `w-1/2`: Sets container width to 50% of page width  
+  - `flex flex-col`: Creates vertical flexbox layout
+  - `gap-4`: Adds consistent spacing between buttons
+  - `mx-auto`: Centers the container horizontally
+- **Button Styling**: Added `w-full` class to each button to make them stretch full width within the container
+- **Preserved Functionality**: Maintained all existing HTMX attributes and DaisyUI button styling
+
+### Layout Achieved
+- Four buttons now display vertically stacked
+- Container is centered and takes up half the page width
+- Consistent spacing between buttons using TailwindCSS gap utility
+- Buttons stretch to full width of the container for better visual consistency
+- All HTMX toast functionality preserved

@@ -54,6 +54,8 @@ func run() error {
 
 		r.Get("/toast/server-time", app.toastServerTime)
 		r.Get("/toast/random-number", app.toastRandomNumber)
+		r.Get("/toast/random-letter", app.toastRandomLetter)
+		r.Get("/toast/random-word", app.toastRandomWord)
 
 		r.Get("/weather", app.weather)
 		r.Get("/weather/current", app.weatherCurrent)
