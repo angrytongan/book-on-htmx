@@ -42,29 +42,38 @@
 {{block "nav-head" .}}
     <div class="flex flex-col">
         <progress id="loading-indicator" class="progress htmx-indicator z-50"></progress>
-        <div class="flex flex-row h-screen"> <!-- page wrapper -->
-            <aside class="fixed bg-base-200 h-screen w-16 md:w-32 overflow-y-auto">
-                <nav id="nav">
-                    {{block "nav" .}}
-                        <ul class="menu gap-2 w-16 md:w-32">
-                            {{range .Nav}}
-                                <li><a href="{{.Href}}"
-                                       class="{{if .Active}}menu-active{{end}}"
-                                       hx-get="{{.Href}}"
-                                       hx-trigger="click"
-                                       hx-target="#main"
-                                       hx-target-error="#main"
-                                       hx-swap="innerHTML"
-                                       hx-push-url="true"
-                                       hx-indicator="#loading-indicator"
-                                       ><span class="material-symbols-outlined">{{.Icon}}</span><span class="hidden md:inline">{{.Label}}</span></a></li>
-                            {{end}}
-                        </ul>
-                    {{end}}
-                </nav>
-            </aside>
+        
+        <!-- Unified responsive navigation -->
+        <aside class="fixed bg-base-200 z-40
+                      top-0 left-0 right-0 h-16 overflow-x-auto
+                      md:h-screen md:w-32 md:right-auto md:overflow-y-auto">
+            <nav id="nav">
+                {{block "nav" .}}
+                    <ul class="menu gap-2 
+                               menu-horizontal min-w-max px-2 h-16
+                               md:menu-vertical md:w-32 md:min-w-0 md:px-0 md:h-auto">
+                        {{range .Nav}}
+                            <li><a href="{{.Href}}"
+                                   class="{{if .Active}}menu-active{{end}} 
+                                          flex-col gap-1 min-w-max px-3
+                                          md:flex-row md:gap-2 md:min-w-0 md:px-4"
+                                   hx-get="{{.Href}}"
+                                   hx-trigger="click"
+                                   hx-target="#main"
+                                   hx-target-error="#main"
+                                   hx-swap="innerHTML"
+                                   hx-push-url="true"
+                                   hx-indicator="#loading-indicator"
+                                   ><span class="material-symbols-outlined text-sm md:text-base">{{.Icon}}</span><span class="hidden md:inline">{{.Label}}</span></a></li>
+                        {{end}}
+                    </ul>
+                {{end}}
+            </nav>
+        </aside>
+        
+        <div class="flex flex-row h-screen pt-16 md:pt-0"> <!-- page wrapper -->
 
-            <main id="main" class="flex-1 ml-16 md:ml-32 p-2 overflow-y-auto"
+            <main id="main" class="flex-1 ml-0 md:ml-32 p-2 overflow-y-auto"
                 _="on scroll debounced at 200ms call saveScrollTop(event)"
             >
 {{end}}
