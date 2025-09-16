@@ -1535,6 +1535,14 @@
       background-image: none;
     }
   }
+  .fieldset {
+    display: grid;
+    gap: calc(0.25rem * 1.5);
+    padding-block: calc(0.25rem * 1);
+    font-size: 0.75rem;
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+  }
   .card-title {
     display: flex;
     align-items: center;

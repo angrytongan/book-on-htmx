@@ -15,6 +15,7 @@ var (
 		{"/dashboard", "Dashboard", "dashboard", false},
 		{"/dog", "Dog", "pets", false},
 		{"/drawer", "Drawer", "menu", false},
+		{"/form", "Form", "dynamic_form", false},
 		{"/leaflet", "Leaflet", "map", false},
 		{"/repl", "REPL", "terminal", false},
 		{"/search", "Search", "search", false},

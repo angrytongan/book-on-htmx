@@ -1,0 +1,39 @@
+{{block "form" .}}
+    <h1 class="text-xl font-bold">Form</h1>
+
+    <form id="myform"
+          hx-post="/form"
+          hx-disabled-elt="#myform fieldset"
+    >
+
+        <fieldset class="flex flex-col space-y-4">
+            <label>
+                <input type="checkbox"
+                       class="checkbox"
+                /> foobar
+            </label>
+
+            <input type="text"
+                   class="input"
+                   placeholder="words" />
+
+            <div class="flex space-x-4">
+                <button class="btn btn-secondary"
+                        type="submit"
+                        name="advance"
+                        value="back">Back</button>
+
+                <button class="btn btn-secondary"
+                        type="submit"
+                        name="advance"
+                        value="close">Close</button>
+
+                <button class="btn btn-primary"
+                        type="submit"
+                        name="advance"
+                        value="next">Next</button>
+            </div>
+        </fieldset>
+    </form>
+{{end}}
+
