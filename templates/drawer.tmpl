@@ -5,7 +5,13 @@
     <input id="drawer-1"
            type="checkbox"
            class="drawer-toggle"
-           _="on change set #drawer-1-body.innerHTML to '<span class=\'loading loading-spinnner\'></span>'"
+           _="on opendrawer
+                set my.checked to true
+                set #drawer-1-body.innerHTML to '<span class=\'loading loading-spinnner\'></span>'
+
+              on closedrawer
+                set my.checked to false
+             "
     />
     <div class="drawer-content">
       {{template "drawer-2"}}
@@ -34,11 +40,11 @@
         <div class="flex flex-row space-x-4">
           {{range $k, $v := .Content}}
             <button class="btn btn-primary"
-                        hx-get="/drawer/content?q={{$v}}"
-                        hx-target="#drawer-1-body"
-                        hx-swap="innerHTML"
-                        hx-indicator="#loading-indicator"
-                        _="on click set #drawer-1.checked to true">button {{$k}}</button>
+                    hx-get="/drawer/content?q={{$v}}"
+                    hx-target="#drawer-1-body"
+                    hx-swap="innerHTML"
+                    hx-indicator="#loading-indicator"
+                    _="on click send opendrawer to #drawer-1">button {{$k}}</button>
           {{end}}
         </div>
         </ul>
@@ -57,8 +63,21 @@
 
           <div id="drawer-1-body"><span class="loading loading-spinner"></span></div>
 
-          <label for="drawer-2" class="drawer-button btn btn-primary">Open drawer 2</label>
-          <label for="drawer-1" class="drawer-button btn btn-secondary">Close drawer</label>
+          <label for="drawer-2" class="drawer-button btn btn-primary">Open drawer 2 by label</label>
+          <button type="submit"
+                  name="advance"
+                  value="close"
+                  class="btn btn-primary"
+                  _="on click send opendrawer to #drawer-2"
+                  >Open drawer by event</button>
+
+          <label for="drawer-1" class="drawer-button btn btn-secondary">Close drawer by label</label>
+          <button type="submit"
+                  name="advance"
+                  value="close"
+                  class="btn btn-secondary"
+                  _="on click send closedrawer to #drawer-1"
+                  >Close drawer by event</button>
         </div>
       </div>
     </div>
@@ -67,7 +86,16 @@
 
 {{define "drawer-2"}}
   <div class="drawer drawer-end">
-  <input id="drawer-2" type="checkbox" class="drawer-toggle" />
+  <input id="drawer-2"
+         type="checkbox"
+         class="drawer-toggle"
+         _="on opendrawer
+              set my.checked to true
+
+            on closedrawer
+              set my.checked to false
+           "
+  />
   <div class="drawer-content"></div>
   <div class="drawer-side z-20">
     <label for="drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -75,7 +103,9 @@
       <div class="flex flex-col space-y-4">
         <!-- Drawer content here -->
         <p>This is the second drawer.</p>
-        <label for="drawer-2" class="drawer-button btn btn-secondary">Close drawer-2</label>
+        <button class="btn btn-primary"
+                _="on click send closedrawer to #drawer-2">Close drawer 2 by event</button>
+        <label for="drawer-2" class="drawer-button btn btn-secondary">Close drawer 2 by label</label>
       </div>
     </div>
   </div>
