@@ -1721,6 +1721,9 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-none {
+    flex: none;
+  }
   .skeleton {
     border-radius: var(--radius-box);
     background-color: var(--color-base-300);
@@ -1754,6 +1757,8 @@
   }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
+  .gap-0 {
+    gap: calc(var(--spacing) * 0);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);

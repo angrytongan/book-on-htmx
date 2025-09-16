@@ -32,58 +32,43 @@
     <script type="text/hyperscript">
       on load restoreScrollTop()
     </script>
-
   </head>
 
   <body hx-history="false"
         hx-ext="response-targets">
-{{end}}
+    <div class="flex h-screen overflow-hidden">
+      <nav id="nav" class="h-full w-32 overflow-y-auto">
+        {{block "nav" .}}
+          <ul class="menu gap-2 w-full">
+            {{range .Nav}}
+              <li><a href="{{.Href}}"
+                     class="{{if .Active}}menu-active{{end}}"
+                     hx-get="{{.Href}}"
+                     hx-trigger="click"
+                     hx-target="#main"
+                     hx-target-error="#main"
+                     hx-swap="innerHTML"
+                     hx-push-url="true"
+                     hx-indicator="#loading-indicator"
+              >{{.Label}}</a></li>
+            {{end}}
+          </ul>
+        {{end}}
+      </nav>
 
-{{block "nav-head" .}}
-    <div class="flex flex-col">
-        <progress id="loading-indicator" class="progress htmx-indicator z-50"></progress>
-        
-        <!-- Unified responsive navigation -->
-        <aside class="fixed bg-base-200 z-40
-                      top-0 left-0 right-0 h-16 overflow-x-auto
-                      md:h-screen md:w-40 md:right-auto md:overflow-y-auto">
-            <nav id="nav">
-                {{block "nav" .}}
-                    <ul class="menu gap-2 
-                               menu-horizontal min-w-max px-2 h-16
-                               md:menu-vertical md:w-40 md:min-w-0 md:px-0 md:h-auto">
-                        {{range .Nav}}
-                            <li><a href="{{.Href}}"
-                                   class="{{if .Active}}menu-active{{end}} 
-                                          flex-col gap-1 min-w-max px-3
-                                          md:flex-row md:gap-2 md:min-w-0 md:px-4"
-                                   hx-get="{{.Href}}"
-                                   hx-trigger="click"
-                                   hx-target="#main"
-                                   hx-target-error="#main"
-                                   hx-swap="innerHTML"
-                                   hx-push-url="true"
-                                   hx-indicator="#loading-indicator"
-                                   ><span class="material-symbols-outlined text-sm md:text-base">{{.Icon}}</span><span class="hidden md:inline">{{.Label}}</span></a></li>
-                        {{end}}
-                    </ul>
-                {{end}}
-            </nav>
-        </aside>
-
+      <div class="h-full flex-1 flex flex-col">
+        <progress id="loading-indicator"
+                  class="flex-none progress htmx-indicator z-50"></progress>
         <main id="main"
-              class="overflow-y-auto p-4
-                     ml-0 pt-16
-                     md:ml-40 md:pt-0"
-              _="on scroll debounced at 200ms call saveScrollTop(event)">
-{{end}}
-
-{{block "nav-foot" .}}
-          </main>
-        </div>
+              class="flex-1 overflow-y-auto"
+              _="on scroll debounced at 200ms call saveScrollTop(event)"
+        >
 {{end}}
 
 {{block "foot" .}}
+        </main>
+      </div>
+    </div>
   </body>
 </html>
 {{end}}
