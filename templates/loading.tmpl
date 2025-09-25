@@ -1,0 +1,37 @@
+{{block "loading" .}}
+  <h1 class="text-xl font-bold pb-4">Loading</h1>
+
+  <div class="flex flex-col">
+    <div class="flex-1 flex flex-wrap w-full gap-4">
+      {{range .NumLoaders}}
+        <div class="card card-border w-30"
+             hx-get="/loading/thing/{{.}}"
+             hx-target="this"
+             hx-swap="outerHTML"
+             hx-trigger="load delay:1s">
+          <div class="card-body text-center">
+            <div class="text-sm">{{.}}</div>
+          </div>
+        </div>
+      {{end}}
+    </div>
+  </div>
+{{end}}
+
+{{block "loading-thing" .}}
+  <div class="card card-border w-30 bg-secondary"
+       hx-get="/loading/thing/{{.Number}}"
+       hx-target="this"
+       hx-swap="outerHTML"
+       hx-trigger="load delay:{{.Delay}}ms"
+       _="
+          on htmx:beforeSend
+            add .bg-primary to me
+            remove .bg-secondary from me
+          "
+       >
+       <div class="card-body text-center">
+         <div class="text-xs">{{.Value}}</div>
+       </div>
+  </div>
+{{end}}

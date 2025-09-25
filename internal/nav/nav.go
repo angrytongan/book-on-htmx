@@ -17,6 +17,7 @@ var (
 		{"/drawer", "Drawer", "menu", false},
 		{"/form", "Form", "dynamic_form", false},
 		{"/leaflet", "Leaflet", "map", false},
+		{"/loading", "Loading", "loading", false},
 		{"/repl", "REPL", "terminal", false},
 		{"/search", "Search", "search", false},
 		{"/settings", "Settings", "settings", false},

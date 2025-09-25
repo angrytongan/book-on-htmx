@@ -66,7 +66,7 @@ func loadWords() ([]string, error) {
 	var words []string
 	scanner := bufio.NewScanner(file)
 	count := 0
-	
+
 	for scanner.Scan() && count < 200 {
 		word := strings.TrimSpace(scanner.Text())
 		if word != "" {

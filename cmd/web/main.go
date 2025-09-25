@@ -24,6 +24,7 @@ func run() error {
 	app.mux.Get("/drawer", app.drawer)
 	app.mux.Get("/form", app.form)
 	app.mux.Get("/leaflet", app.leaflet)
+	app.mux.Get("/loading", app.loading)
 	app.mux.Get("/repl", app.repl)
 	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)
@@ -69,6 +70,8 @@ func run() error {
 		r.Get("/drawer/content", app.drawerContent)
 
 		r.Post("/form", app.formProcess)
+
+		r.Get("/loading/thing/{number}", app.loadingThing)
 	})
 
 	return app.listen(port)
