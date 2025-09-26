@@ -72,6 +72,8 @@ func run() error {
 		r.Post("/form", app.formProcess)
 
 		r.Get("/loading/thing/{number}", app.loadingThing)
+
+		r.Get("/leaflet/location/{name}", app.leafletLocation)
 	})
 
 	return app.listen(port)
