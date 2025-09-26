@@ -9,3 +9,17 @@ function createMap(id) {
 
   return map;
 }
+
+function addMarker(map, data, oldMarker) {
+	const { lat, lng } = data;
+	const marker = L.marker([lat, lng]);
+	
+	if (oldMarker) {
+		map.removeLayer(oldMarker)
+	}
+
+	marker.addTo(map);
+	map.setView([lat, lng], 16);
+
+	return marker;
+}

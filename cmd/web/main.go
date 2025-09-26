@@ -30,7 +30,6 @@ func run() error {
 	app.mux.Get("/tabs", app.tabs)
 	app.mux.Get("/theme", app.theme)
 	app.mux.Get("/toast", app.toast)
-
 	app.mux.Get("/settings", app.settings)
 
 	// htmx requests.
@@ -74,6 +73,11 @@ func run() error {
 		r.Get("/loading/thing/{number}", app.loadingThing)
 
 		r.Get("/leaflet/location/{name}", app.leafletLocation)
+	})
+
+	// api requests.
+	app.mux.Group(func(r chi.Router) {
+		r.Get("/api/v1/location/{name}", app.leafletLocationJSON)
 	})
 
 	return app.listen(port)

@@ -4,7 +4,14 @@
 	<div class="flex flex-col space-y-4 p-4">
 		<div id="map"
 				 class="w-auto h-56"
-				 _="on load call createMap(me.id)">
+				 _="
+					on load
+				 		call createMap(me.id) then set :map to it
+
+					on selected(url) from body
+						fetch `${url}` as json then put it into data
+						call addMarker(:map, data, :marker) then set :marker to it
+				">
 		</div>
 
 		<ul>
