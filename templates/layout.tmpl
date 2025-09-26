@@ -60,7 +60,7 @@
         <progress id="loading-indicator"
                   class="flex-none progress htmx-indicator z-50"></progress>
         <main id="main"
-              class="flex-1 overflow-y-auto"
+							class="flex-1 overflow-y-auto" {{/* should be overflow-hidden; let children decide! */}}
               _="on scroll debounced at 200ms call saveScrollTop(event)"
         >
 {{end}}
