@@ -20,6 +20,7 @@ const (
 			word
 		WHERE
 			word ILIKE '%' || $1 || '%'
+		ORDER BY word ASC
 	`
 )
 

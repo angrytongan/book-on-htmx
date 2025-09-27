@@ -1,21 +1,23 @@
 {{block "loading" .}}
-  <h1 class="text-xl font-bold pb-4">Loading</h1>
+	<div class="h-full overflow-y-auto">
+		<h1 class="text-xl font-bold pb-4">Loading</h1>
 
-  <div class="flex flex-col">
-    <div class="flex-1 flex flex-wrap w-full gap-4">
-      {{range .NumLoaders}}
-        <div class="card card-border w-30"
-             hx-get="/loading/thing/{{.}}"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-trigger="load delay:1s">
-          <div class="card-body text-center">
-            <div class="text-sm">{{.}}</div>
-          </div>
-        </div>
-      {{end}}
-    </div>
-  </div>
+		<div class="flex flex-col">
+			<div class="flex-1 flex flex-wrap w-full gap-4">
+				{{range .NumLoaders}}
+					<div class="card card-border w-30"
+							 hx-get="/loading/thing/{{.}}"
+							 hx-target="this"
+							 hx-swap="outerHTML"
+							 hx-trigger="load delay:1s">
+						<div class="card-body text-center">
+							<div class="text-sm">{{.}}</div>
+						</div>
+					</div>
+				{{end}}
+			</div>
+		</div>
+	</div>
 {{end}}
 
 {{block "loading-thing" .}}

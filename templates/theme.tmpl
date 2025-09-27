@@ -1,28 +1,30 @@
 {{block "theme" .}}
-  <h1 class="text-xl font-bold">Theme</h1>
+	<div class="h-full overflow-y-auto">
+		<h1 class="text-xl font-bold">Theme</h1>
 
-  <div class="flex flex-row">
-    <div class="card card-border w-full">
-      <div class="card-body">
-        <ul>
-          {{range .Themes}}
-            <li>
-              <label class="cursor-pointer">
-                <input type="radio"
-                       name="theme"
-                       value="{{.Value}}"
-                       {{if .Active}}checked{{end}}
-                       hx-post="/theme-chooser"
-                       hx-trigger="change"
-                       hx-indicator="#loading-indicator"
-                       hx-target-error="next p.error"
-                      /> {{.Label}}
-              </label>
-            </li>
-          {{end}}
-        </ul>
-        <p class="error error-bg p-2 rounded">{{.Error}}</p>
-      </div>
-    </div>
-  </div>
+		<div class="flex flex-row">
+			<div class="card card-border w-full">
+				<div class="card-body">
+					<ul>
+						{{range .Themes}}
+							<li>
+								<label class="cursor-pointer">
+									<input type="radio"
+												 name="theme"
+												 value="{{.Value}}"
+												 {{if .Active}}checked{{end}}
+												 hx-post="/theme-chooser"
+												 hx-trigger="change"
+												 hx-indicator="#loading-indicator"
+												 hx-target-error="next p.error"
+												/> {{.Label}}
+								</label>
+							</li>
+						{{end}}
+					</ul>
+					<p class="error error-bg p-2 rounded">{{.Error}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 {{end}}

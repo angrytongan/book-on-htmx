@@ -1,12 +1,13 @@
 {{block "dog" .}}
-  <h1 class="text-xl font-bold pb-4">Dog</h1>
-
-  <div hx-get="/dog/table?{{.QP}}"
-       hx-trigger="load"
-       hx-target="this"
-       hx-target-error="this"
-       hx-indicator="#loading-indicator"
-       hx-swap="outerHTML">{{template "dog-loader"}}</div>
+	<div class="h-full overflow-y-auto">
+  	<h1 class="text-xl font-bold pb-4">Dog</h1>
+		<div hx-get="/dog/table?{{.QP}}"
+				 hx-trigger="load"
+				 hx-target="this"
+				 hx-target-error="this"
+				 hx-indicator="#loading-indicator"
+				 hx-swap="outerHTML">{{template "dog-loader"}}</div>
+	</div>
 {{end}}
 
 {{block "dog-table" .}}

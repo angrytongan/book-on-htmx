@@ -1,77 +1,79 @@
 {{block "tabs" .}}
-  <h1 class="text-xl font-bold">Tabs</h1>
+	<div class="h-full overflow-y-auto">
+		<h1 class="text-xl font-bold">Tabs</h1>
 
-  <div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-2">
 
-    <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full">
-        <div class="card-title">links + content</div>
-        <p class="my-4">
-          Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
-          a changed "active" tab and new content.
-        </p>
-        <div hx-get="/tabs/links"
-             hx-trigger="load delay:500ms"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-indicator="#loading-indicator"
-             >{{template "tab-loading"}}</div>
-      </div>
-    </div>
+			<div class="card card-border w-full">
+				<div class="card-body flex flex-col w-full">
+					<div class="card-title">links + content</div>
+					<p class="my-4">
+						Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
+						a changed "active" tab and new content.
+					</p>
+					<div hx-get="/tabs/links"
+							 hx-trigger="load delay:500ms"
+							 hx-target="this"
+							 hx-swap="outerHTML"
+							 hx-indicator="#loading-indicator"
+							 >{{template "tab-loading"}}</div>
+				</div>
+			</div>
 
-    <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full">
-        <div class="card-title">links + oob content</div>
-        <p class="my-4">
-          Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
-          a changed "active" tab and oob-swap a div that loads the matching
-          content.
-        </p>
-        <div hx-get="/tabs/links-oob"
-             hx-trigger="load delay:500ms"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-indicator="#loading-indicator"
-             ></div>
-        <div id="tab-links-content">{{template "tab-loading"}}</div>
-      </div>
-    </div>
+			<div class="card card-border w-full">
+				<div class="card-body flex flex-col w-full">
+					<div class="card-title">links + oob content</div>
+					<p class="my-4">
+						Tabs are &lt;a&gt; links. Each click swaps in a new set of tabs which
+						a changed "active" tab and oob-swap a div that loads the matching
+						content.
+					</p>
+					<div hx-get="/tabs/links-oob"
+							 hx-trigger="load delay:500ms"
+							 hx-target="this"
+							 hx-swap="outerHTML"
+							 hx-indicator="#loading-indicator"
+							 ></div>
+					<div id="tab-links-content">{{template "tab-loading"}}</div>
+				</div>
+			</div>
 
-    <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full">
-        <div class="card-title">buttons + oob content</div>
-        <p class="my-4">
-          Tabs are &lt;buttons&gt;. Each click swaps in a new set of buttons
-          with a changed "active" button and oob-swap a div that loads the
-          matching content.
-        </p>
-        <div hx-get="/tabs/buttons-oob"
-             hx-trigger="load delay:500ms"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-indicator="#loading-indicator"
-             ></div>
-        <div id="tab-buttons-content">{{template "tab-loading"}}</div>
-      </div>
-    </div>
+			<div class="card card-border w-full">
+				<div class="card-body flex flex-col w-full">
+					<div class="card-title">buttons + oob content</div>
+					<p class="my-4">
+						Tabs are &lt;buttons&gt;. Each click swaps in a new set of buttons
+						with a changed "active" button and oob-swap a div that loads the
+						matching content.
+					</p>
+					<div hx-get="/tabs/buttons-oob"
+							 hx-trigger="load delay:500ms"
+							 hx-target="this"
+							 hx-swap="outerHTML"
+							 hx-indicator="#loading-indicator"
+							 ></div>
+					<div id="tab-buttons-content">{{template "tab-loading"}}</div>
+				</div>
+			</div>
 
-    <div class="card card-border w-full">
-      <div class="card-body flex flex-col w-full">
-        <div class="card-title">radio buttons + oob content</div>
-        <p class="my-4">
-          Tabs are radio buttons. Each click swaps in a div that loads the
-          matching content.
-        </p>
-        <div hx-get="/tabs/radio-oob"
-             hx-trigger="load delay:500ms"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-indicator="#loading-indicator"
-             >{{template "tab-loading"}}</div>
-      </div>
-    </div>
+			<div class="card card-border w-full">
+				<div class="card-body flex flex-col w-full">
+					<div class="card-title">radio buttons + oob content</div>
+					<p class="my-4">
+						Tabs are radio buttons. Each click swaps in a div that loads the
+						matching content.
+					</p>
+					<div hx-get="/tabs/radio-oob"
+							 hx-trigger="load delay:500ms"
+							 hx-target="this"
+							 hx-swap="outerHTML"
+							 hx-indicator="#loading-indicator"
+							 >{{template "tab-loading"}}</div>
+				</div>
+			</div>
 
-  </div>
+		</div>
+	</div>
 {{end}}
 
 {{block "tab-links" .}}
