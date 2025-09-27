@@ -98,8 +98,9 @@ func (app *Application) leafletLocationJSON(w http.ResponseWriter, r *http.Reque
 
 	blockData := map[string]any{
 		"json": map[string]any{
-			"lat": location.Lat,
-			"lng": location.Lng,
+			"name": location.Name,
+			"lat":  location.Lat,
+			"lng":  location.Lng,
 		},
 	}
 

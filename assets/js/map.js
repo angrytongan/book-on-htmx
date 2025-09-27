@@ -18,7 +18,9 @@ function addMarker(map, data, oldMarker) {
 		map.removeLayer(oldMarker)
 	}
 
-	marker.addTo(map);
+	marker.addTo(map).bindPopup(`<span class="text-xl">${data.name}</span>`, {
+		closeButton: false,
+	}).openPopup();
 	map.setView([lat, lng], 17);
 
 	return marker;
