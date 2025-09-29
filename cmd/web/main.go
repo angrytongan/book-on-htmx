@@ -25,6 +25,7 @@ func run() error {
 	app.mux.Get("/form", app.form)
 	app.mux.Get("/leaflet", app.leaflet)
 	app.mux.Get("/loading", app.loading)
+	app.mux.Get("/map-form", app.mapForm)
 	app.mux.Get("/repl", app.repl)
 	app.mux.Get("/search", app.search)
 	app.mux.Get("/tabs", app.tabs)
@@ -73,6 +74,8 @@ func run() error {
 		r.Get("/loading/thing/{number}", app.loadingThing)
 
 		r.Get("/leaflet/location/{name}", app.leafletLocation)
+
+		r.Get("/map-form/form", app.mapFormForm)
 	})
 
 	// api requests.

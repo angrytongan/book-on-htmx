@@ -18,6 +18,7 @@ var (
 		{"/form", "Form", "dynamic_form", false},
 		{"/leaflet", "Leaflet", "map", false},
 		{"/loading", "Loading", "loading", false},
+		{"/map-form", "Map form", "map-form", false},
 		{"/repl", "REPL", "terminal", false},
 		{"/search", "Search", "search", false},
 		{"/settings", "Settings", "settings", false},
