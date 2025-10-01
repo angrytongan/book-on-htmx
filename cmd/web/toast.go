@@ -47,6 +47,7 @@ func (app *Application) toastRandomWord(w http.ResponseWriter, r *http.Request) 
 			"Message": http.StatusText(http.StatusInternalServerError),
 		}
 		app.render(w, r, "toast-error", blockData, http.StatusInternalServerError)
+
 		return
 	}
 

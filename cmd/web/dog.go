@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"slices"
@@ -9,6 +10,10 @@ import (
 
 const (
 	maxRows = 100
+)
+
+var (
+	ErrInvalidColour = errors.New("invalid colour")
 )
 
 type Dog struct {
@@ -27,16 +32,27 @@ func (app *Application) dog(w http.ResponseWriter, r *http.Request) {
 
 func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
 	colours, err := app.dogRepo.Colours(ctx)
 	if err != nil {
-		app.serverError(w, r, fmt.Errorf("app.dogRepo.Colours(): %w", err), http.StatusInternalServerError)
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("app.dogRepo.Colours(): %w", err),
+			http.StatusInternalServerError,
+		)
 
 		return
 	}
 
 	breeds, err := app.dogRepo.Breeds(ctx)
 	if err != nil {
-		app.serverError(w, r, fmt.Errorf("app.dogRepo.Colours(): %w", err), http.StatusInternalServerError)
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("app.dogRepo.Colours(): %w", err),
+			http.StatusInternalServerError,
+		)
 
 		return
 	}
@@ -49,7 +65,13 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 	if colour == "" {
 		colour = "all"
 	} else if colour != "all" && !slices.Contains(colours, colour) {
-		app.serverError(w, r, fmt.Errorf("invalid colour %s", colour), http.StatusBadRequest, "Invalid colour")
+		app.serverError(
+			w,
+			r,
+			fmt.Errorf("%s: %w", colour, ErrInvalidColour),
+			http.StatusBadRequest,
+			"Invalid colour",
+		)
 
 		return
 	}
@@ -97,7 +119,14 @@ func (app *Application) dogTable(w http.ResponseWriter, r *http.Request) {
 		app.serverError(
 			w,
 			r,
-			fmt.Errorf("app.dogRepo.All(%s, %s, %s, %d): %w", colour, breed, queryOrderDirection, limit, err),
+			fmt.Errorf(
+				"app.dogRepo.All(%s, %s, %s, %d): %w",
+				colour,
+				breed,
+				queryOrderDirection,
+				limit,
+				err,
+			),
 			http.StatusInternalServerError,
 		)
 

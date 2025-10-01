@@ -67,7 +67,7 @@ func (app *Application) leafletLocation(w http.ResponseWriter, r *http.Request) 
 		"Lng":  location.Lng,
 	}
 
-	w.Header().Set("HX-Trigger", `{"selected": {"url": "/api/v1/location/`+location.Name+`"}}`)
+	w.Header().Set("Hx-Trigger", `{"selected": {"url": "/api/v1/location/`+location.Name+`"}}`)
 	app.render(w, r, "leaflet-location-info", blockData, http.StatusOK)
 }
 

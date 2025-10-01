@@ -17,7 +17,6 @@ import (
 	"bonh/internal/nav"
 	"bonh/internal/search"
 	"bonh/internal/theme"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -59,13 +58,16 @@ func loadWords() ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open dictionary file: %w", err)
 	}
+
 	defer func() {
-		if closeErr := file.Close(); closeErr != nil {
+		closeErr := file.Close()
+		if closeErr != nil {
 			log.Printf("error closing dictionary file: %v", closeErr)
 		}
 	}()
 
 	var words []string
+
 	scanner := bufio.NewScanner(file)
 	count := 0
 
@@ -96,6 +98,7 @@ func newApplication() (*Application, error) {
 	funcMap := template.FuncMap{
 		"title": func(s string) string {
 			c := cases.Title(language.Und)
+
 			return c.String(s)
 		},
 	}
@@ -135,8 +138,10 @@ func (app *Application) render(
 	blockData map[string]any,
 	statusCode int,
 ) {
-	var b bytes.Buffer
-	var templatesToRender []string
+	var (
+		b                 bytes.Buffer
+		templatesToRender []string
+	)
 
 	if blockData == nil {
 		blockData = map[string]any{}
@@ -174,6 +179,7 @@ func (app *Application) render(
 			// as these will be rendered out of band.
 			if app.tpl.Lookup(pageBlock) != nil {
 				blockData["Nav"] = nav.PageLinks(r.URL.Path)
+
 				templatesToRender = append(templatesToRender, "nav-oob")
 			}
 
@@ -190,24 +196,28 @@ func (app *Application) render(
 					fmt.Errorf("app.tpl.Lookup(%s): no such template", block),
 					http.StatusInternalServerError,
 				)
+
 				return
 			}
 
 			var lb bytes.Buffer
-			if err := app.tpl.ExecuteTemplate(&lb, t, blockData); err != nil {
+
+			err := app.tpl.ExecuteTemplate(&lb, t, blockData)
+			if err != nil {
 				app.serverError(
 					w,
 					r,
 					fmt.Errorf("app.tpl.ExecuteTemplate(%s): %w", t, err),
 					http.StatusInternalServerError,
 				)
+
 				return
 			}
 
 			b.Write(lb.Bytes())
 		}
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	} else {
 		if blockData["json"] == "" {
 			app.serverError(
@@ -280,13 +290,21 @@ func (app *Application) serverError(
 
 	clientMessage := http.StatusText(statusCode)
 	if len(msg) > 0 {
-		clientMessage = strings.Join([]string{clientMessage, strings.Join(msg, ":")}, " - ") // :shrug:
+		clientMessage = strings.Join(
+			[]string{clientMessage, strings.Join(msg, ":")},
+			" - ",
+		) // :shrug:
 	}
 
 	http.Error(w, clientMessage, statusCode)
 }
 
-func (app *Application) clientRedirect(w http.ResponseWriter, r *http.Request, url string, code int) {
+func (app *Application) clientRedirect(
+	w http.ResponseWriter,
+	r *http.Request,
+	url string,
+	code int,
+) {
 	if r.Header.Get("Hx-Request") == "true" {
 		w.Header().Set("Hx-Redirect", url)
 	} else {
@@ -294,7 +312,12 @@ func (app *Application) clientRedirect(w http.ResponseWriter, r *http.Request, u
 	}
 }
 
-func (app *Application) clientLocation(w http.ResponseWriter, r *http.Request, url string, code int) {
+func (app *Application) clientLocation(
+	w http.ResponseWriter,
+	r *http.Request,
+	url string,
+	code int,
+) {
 	if r.Header.Get("Hx-Request") == "true" {
 		locationVars := map[string]string{
 			"path":   url,
@@ -306,7 +329,7 @@ func (app *Application) clientLocation(w http.ResponseWriter, r *http.Request, u
 			http.Redirect(w, r, url, code)
 		}
 
-		w.Header().Set("HX-Location", string(bytes))
+		w.Header().Set("Hx-Location", string(bytes))
 	} else {
 		http.Redirect(w, r, url, code)
 	}

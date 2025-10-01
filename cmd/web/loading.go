@@ -20,8 +20,7 @@ func (app *Application) loading(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) loadingThing(w http.ResponseWriter, r *http.Request) {
-	//time.Sleep(time.Second)
-
+	// time.Sleep(time.Second)
 	number := r.PathValue("number")
 
 	delay := rand.Intn(maxDelay-minDelay+1) + minDelay

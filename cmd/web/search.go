@@ -24,7 +24,6 @@ func (app *Application) searchTerm(w http.ResponseWriter, r *http.Request) {
 		var err error
 
 		results, err = app.searchRepo.Term(r.Context(), term)
-
 		if err != nil {
 			app.serverError(
 				w,

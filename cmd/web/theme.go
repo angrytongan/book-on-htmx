@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -11,10 +12,15 @@ const (
 	ErrTextCouldntLoadThemes      = "Couldn't load themes!"
 )
 
+var (
+	ErrCouldntLoadActiveTheme = errors.New("couldn't load active theme")
+	ErrCouldntLoadThemes      = errors.New("couldn't load themes")
+)
+
 func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 	id := 1
 
-	activeTheme, errActiveTheme := app.themeRepo.Active(context.Background(), id)
+	activeTheme, errActiveTheme := app.themeRepo.Active(r.Context(), id)
 	themes, errThemes := app.themeRepo.Themes(r.Context(), activeTheme)
 
 	blockData := map[string]any{
@@ -25,9 +31,9 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 		app.serverError(
 			w,
 			r,
-			fmt.Errorf("%s", ErrTextCouldntLoadActiveTheme),
+			fmt.Errorf("%d: %w", id, ErrCouldntLoadActiveTheme),
 			http.StatusInternalServerError,
-			ErrTextCouldntLoadActiveTheme,
+			"Couldn't load active theme!",
 		)
 
 		return
@@ -37,7 +43,7 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 		app.serverError(
 			w,
 			r,
-			fmt.Errorf("%s", ErrTextCouldntLoadThemes),
+			fmt.Errorf("%w", ErrCouldntLoadThemes),
 			http.StatusInternalServerError,
 			ErrTextCouldntLoadThemes,
 		)
@@ -49,7 +55,8 @@ func (app *Application) theme(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) themeChooserSave(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	err := r.ParseForm()
+	if err != nil {
 		app.serverError(w, r, fmt.Errorf("r.ParseForm(): %w", err), http.StatusInternalServerError)
 
 		return

@@ -12,6 +12,7 @@ import (
 func TestToastRandomNumber(t *testing.T) {
 	// Create a minimal template for testing
 	tmplContent := `{{block "toast-random-number" .}}<span>Random number: {{.Number}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -22,7 +23,7 @@ func TestToastRandomNumber(t *testing.T) {
 	}
 
 	req := httptest.NewRequest(http.MethodGet, "/toast/random-number", nil)
-	req.Header.Set("HX-Request", "true")
+	req.Header.Set("Hx-Request", "true")
 
 	rr := httptest.NewRecorder()
 
@@ -42,14 +43,17 @@ func TestToastRandomNumber(t *testing.T) {
 	parts := strings.Split(body, "Random number: ")
 	if len(parts) < 2 {
 		t.Errorf("could not find random number in response: %v", body)
+
 		return
 	}
 
 	// Get the part after "Random number: " and before the next tag
 	numberPart := strings.Split(parts[1], "<")[0]
+
 	number, err := strconv.Atoi(numberPart)
 	if err != nil {
 		t.Errorf("could not parse number from response: %v", err)
+
 		return
 	}
 
@@ -61,6 +65,7 @@ func TestToastRandomNumber(t *testing.T) {
 func TestToastRandomNumberMultipleRequests(t *testing.T) {
 	// Create a minimal template for testing
 	tmplContent := `{{block "toast-random-number" .}}<span>Random number: {{.Number}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -71,22 +76,24 @@ func TestToastRandomNumberMultipleRequests(t *testing.T) {
 	}
 
 	numbers := make(map[int]bool)
-	
+
 	// Make multiple requests to ensure randomness (though not a guarantee)
-	for i := 0; i < 20; i++ {
+	for range 20 {
 		req := httptest.NewRequest(http.MethodGet, "/toast/random-number", nil)
-		req.Header.Set("HX-Request", "true")
+		req.Header.Set("Hx-Request", "true")
 
 		rr := httptest.NewRecorder()
 		app.toastRandomNumber(rr, req)
 
 		body := rr.Body.String()
+
 		parts := strings.Split(body, "Random number: ")
 		if len(parts) < 2 {
 			continue
 		}
 
 		numberPart := strings.Split(parts[1], "<")[0]
+
 		number, err := strconv.Atoi(numberPart)
 		if err != nil {
 			continue
@@ -102,13 +109,17 @@ func TestToastRandomNumberMultipleRequests(t *testing.T) {
 
 	// We should get at least some variation in 20 requests (though this could theoretically fail)
 	if len(numbers) < 2 {
-		t.Logf("Warning: Got %d unique numbers in 20 requests, expected more variation", len(numbers))
+		t.Logf(
+			"Warning: Got %d unique numbers in 20 requests, expected more variation",
+			len(numbers),
+		)
 	}
 }
 
 func TestToastRandomLetter(t *testing.T) {
 	// Create a minimal template for testing
 	tmplContent := `{{block "toast-random-letter" .}}<span>Random letter: {{.Letter}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -119,7 +130,7 @@ func TestToastRandomLetter(t *testing.T) {
 	}
 
 	req := httptest.NewRequest(http.MethodGet, "/toast/random-letter", nil)
-	req.Header.Set("HX-Request", "true")
+	req.Header.Set("Hx-Request", "true")
 
 	rr := httptest.NewRecorder()
 
@@ -139,6 +150,7 @@ func TestToastRandomLetter(t *testing.T) {
 	parts := strings.Split(body, "Random letter: ")
 	if len(parts) < 2 {
 		t.Errorf("could not find random letter in response: %v", body)
+
 		return
 	}
 
@@ -146,6 +158,7 @@ func TestToastRandomLetter(t *testing.T) {
 	letterPart := strings.Split(parts[1], "<")[0]
 	if len(letterPart) != 1 {
 		t.Errorf("expected exactly one character, got %s", letterPart)
+
 		return
 	}
 
@@ -158,6 +171,7 @@ func TestToastRandomLetter(t *testing.T) {
 func TestToastRandomLetterMultipleRequests(t *testing.T) {
 	// Create a minimal template for testing
 	tmplContent := `{{block "toast-random-letter" .}}<span>Random letter: {{.Letter}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -168,16 +182,17 @@ func TestToastRandomLetterMultipleRequests(t *testing.T) {
 	}
 
 	letters := make(map[byte]bool)
-	
+
 	// Make multiple requests to ensure randomness and verify range
-	for i := 0; i < 20; i++ {
+	for range 20 {
 		req := httptest.NewRequest(http.MethodGet, "/toast/random-letter", nil)
-		req.Header.Set("HX-Request", "true")
+		req.Header.Set("Hx-Request", "true")
 
 		rr := httptest.NewRecorder()
 		app.toastRandomLetter(rr, req)
 
 		body := rr.Body.String()
+
 		parts := strings.Split(body, "Random letter: ")
 		if len(parts) < 2 {
 			continue
@@ -199,13 +214,17 @@ func TestToastRandomLetterMultipleRequests(t *testing.T) {
 
 	// We should get at least some variation in 20 requests
 	if len(letters) < 2 {
-		t.Logf("Warning: Got %d unique letters in 20 requests, expected more variation", len(letters))
+		t.Logf(
+			"Warning: Got %d unique letters in 20 requests, expected more variation",
+			len(letters),
+		)
 	}
 }
 
 func TestToastRandomWord(t *testing.T) {
 	// Create templates for testing
 	tmplContent := `{{block "toast-random-word" .}}<span>Random word: {{.Word}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -219,7 +238,7 @@ func TestToastRandomWord(t *testing.T) {
 	}
 
 	req := httptest.NewRequest(http.MethodGet, "/toast/random-word", nil)
-	req.Header.Set("HX-Request", "true")
+	req.Header.Set("Hx-Request", "true")
 
 	rr := httptest.NewRecorder()
 
@@ -239,14 +258,17 @@ func TestToastRandomWord(t *testing.T) {
 	parts := strings.Split(body, "Random word: ")
 	if len(parts) < 2 {
 		t.Errorf("could not find random word in response: %v", body)
+
 		return
 	}
 
 	wordPart := strings.Split(parts[1], "<")[0]
 	found := false
+
 	for _, word := range testWords {
 		if wordPart == word {
 			found = true
+
 			break
 		}
 	}
@@ -259,6 +281,7 @@ func TestToastRandomWord(t *testing.T) {
 func TestToastRandomWordError(t *testing.T) {
 	// Create templates for testing
 	tmplContent := `{{block "toast-error" .}}<span>Error: {{.Message}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
@@ -271,7 +294,7 @@ func TestToastRandomWordError(t *testing.T) {
 	}
 
 	req := httptest.NewRequest(http.MethodGet, "/toast/random-word", nil)
-	req.Header.Set("HX-Request", "true")
+	req.Header.Set("Hx-Request", "true")
 
 	rr := httptest.NewRecorder()
 
@@ -291,13 +314,23 @@ func TestToastRandomWordError(t *testing.T) {
 func TestToastRandomWordMultipleRequests(t *testing.T) {
 	// Create templates for testing
 	tmplContent := `{{block "toast-random-word" .}}<span>Random word: {{.Word}}</span>{{end}}`
+
 	tpl, err := template.New("test").Parse(tmplContent)
 	if err != nil {
 		t.Fatalf("failed to parse template: %v", err)
 	}
 
 	// Create application with test words
-	testWords := []string{"apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew"}
+	testWords := []string{
+		"apple",
+		"banana",
+		"cherry",
+		"date",
+		"elderberry",
+		"fig",
+		"grape",
+		"honeydew",
+	}
 	app := &Application{
 		tpl:   tpl,
 		words: testWords,
@@ -306,14 +339,15 @@ func TestToastRandomWordMultipleRequests(t *testing.T) {
 	words := make(map[string]bool)
 
 	// Make multiple requests to ensure randomness
-	for i := 0; i < 20; i++ {
+	for range 20 {
 		req := httptest.NewRequest(http.MethodGet, "/toast/random-word", nil)
-		req.Header.Set("HX-Request", "true")
+		req.Header.Set("Hx-Request", "true")
 
 		rr := httptest.NewRecorder()
 		app.toastRandomWord(rr, req)
 
 		body := rr.Body.String()
+
 		parts := strings.Split(body, "Random word: ")
 		if len(parts) < 2 {
 			continue
@@ -324,9 +358,11 @@ func TestToastRandomWordMultipleRequests(t *testing.T) {
 
 		// Ensure each word is from our test set
 		found := false
+
 		for _, word := range testWords {
 			if wordPart == word {
 				found = true
+
 				break
 			}
 		}

@@ -9,7 +9,7 @@ func (app *Application) drawer(w http.ResponseWriter, r *http.Request) {
 	blockData := map[string]any{
 		"Content": []string{
 			url.QueryEscape("this is the first content"),
-			url.QueryEscape("this is is the second lot of content"),
+			url.QueryEscape("this is the second lot of content"),
 			url.QueryEscape("this is the third lot of content"),
 		},
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -19,7 +19,7 @@ func delayResponse(ms int) func(http.Handler) http.Handler {
 func (app *Application) mustBeHtmxRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Hx-Request") != "true" {
-			app.serverError(w, r, fmt.Errorf("not a hx-request"), http.StatusBadRequest)
+			app.serverError(w, r, errors.New("not a hx-request"), http.StatusBadRequest)
 
 			return
 		}

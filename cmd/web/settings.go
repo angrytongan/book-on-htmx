@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"slices"
 )
@@ -15,7 +15,7 @@ func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !slices.Contains([]string{"first", "second", "third"}, tab) {
-		app.serverError(w, r, fmt.Errorf("invalid tab"), http.StatusBadRequest)
+		app.serverError(w, r, errors.New("invalid tab"), http.StatusBadRequest)
 
 		return
 	}
@@ -47,7 +47,7 @@ func (app *Application) settings(w http.ResponseWriter, r *http.Request) {
 
 	var activeTab LinkTabLink
 	for _, activeTab = range tabs {
-		if activeTab.Active == true {
+		if activeTab.Active {
 			break
 		}
 	}

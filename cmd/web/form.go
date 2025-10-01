@@ -30,9 +30,11 @@ func (app *Application) formStep1Process(w http.ResponseWriter, r *http.Request)
 	// "Validate"
 	name := r.FormValue("name")
 	password := r.FormValue("password")
+
 	if name != "foo" {
 		errors["Name"] = "invalid name (try 'foo')"
 	}
+
 	if password != "bar" {
 		errors["Password"] = "invalid password (try 'bar')"
 	}
@@ -63,8 +65,13 @@ func (app *Application) formStep2(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "form-step2", nil, http.StatusOK)
 }
 
-func (app *Application) formAdvance(w http.ResponseWriter, r *http.Request, url string, fn http.HandlerFunc) error {
-	req, err := http.NewRequestWithContext(r.Context(), "GET", "/form/step2", nil)
+func (app *Application) formAdvance(
+	w http.ResponseWriter,
+	r *http.Request,
+	url string,
+	fn http.HandlerFunc,
+) error {
+	req, err := http.NewRequestWithContext(r.Context(), http.MethodGet, url, nil)
 	if err != nil {
 		return fmt.Errorf("http.NewRequestWithContext(): %w", err)
 	}
