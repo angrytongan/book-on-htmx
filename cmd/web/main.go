@@ -69,7 +69,9 @@ func run() error {
 
 		r.Get("/drawer/content", app.drawerContent)
 
-		r.Post("/form", app.formProcess)
+		r.Get("/form/step1", app.formStep1)
+		r.Post("/form/step1", app.formStep1Process)
+		r.Get("/form/step2", app.formStep2)
 
 		r.Get("/loading/thing/{number}", app.loadingThing)
 

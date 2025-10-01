@@ -1,40 +1,53 @@
 {{block "form" .}}
-	<div class="h-full overflow-y-auto">
-    <h1 class="text-xl font-bold">Form</h1>
+    <div class="h-full overflow-y-auto">
+        <h1 class="text-xl font-bold pb-4">Form</h1>
 
-    <form id="myform"
-          hx-post="/form"
-          hx-disabled-elt="#myform fieldset"
-    >
+        <div hx-get="/form/step1"
+             hx-trigger="load"
+             hx-target="this"
+             hx-swap="outerHTML"
+             hx-indicator="#loading-indicator"
+             ></div>
+	</div>
+{{end}}
 
-        <fieldset class="flex flex-col space-y-4">
-            <label>
-                <input type="checkbox"
-                       class="checkbox"
-                /> foobar
-            </label>
+{{block "form-step1" .}}
+    <form hx-post="/form/step1"
+          hx-target="this"
+          hx-swap="outerHTML"
+          hx-indicator="#loading-indicator"
+          hx-disabled-elt="find fieldset"
+          >
+      <fieldset class="flex flex-col space-y-4">
+            <input type="text"
+                   class="input"
+                   name="name"
+                   placeholder="Type a name..."
+            />
+            <div id="error-name"></div>
 
             <input type="text"
                    class="input"
-                   placeholder="words" />
+                   name="password"
+                   placeholder="Type a password..."
+            />
+            <div id="error-password"></div>
 
-            <div class="flex space-x-4">
-                <button class="btn btn-secondary"
-                        type="submit"
-                        name="advance"
-                        value="back">Back</button>
-
-                <button class="btn btn-secondary"
-                        type="submit"
-                        name="advance"
-                        value="close">Close</button>
-
-                <button class="btn btn-primary"
-                        type="submit"
-                        name="advance"
-                        value="next">Next</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Next</button>
         </fieldset>
     </form>
-	</div>
+{{end}}
+
+{{block "form-step1-errors" .}}
+    <div id="error-name" hx-swap-oob="true" {{if .Name}}class="alert alert-error error-soft">Name error: {{.Name}}{{else}}>{{end}}</div>
+    <div id="error-password" hx-swap-oob="true" {{if .Password}}class="alert alert-error error-soft">Password error: {{.Password}}{{else}}>{{end}}</div>
+{{end}}
+
+{{block "form-step2" .}}
+    <p>
+    All done. <a class="link"
+                 hx-get="/form/step1"
+                 hx-target="closest p"
+                 hx-swap="outerHTML">Try again</a>
+    </p>
 {{end}}
